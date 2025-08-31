@@ -7,7 +7,7 @@
         {{ shortDescription.length > 100 ? shortDescription.substring(0, 100) + "..." : shortDescription }}
       </p>
 
-      <div class="card-actions justify-start mt-4">
+      <div class="card-actions justify-start my-2">
         <NuxtLink :to="`/portfolio/${slug}`" class="btn btn-sm sm:btn-md rounded-full bg-gray-200 hover:bg-gray-300 text-black transition-colors"> More Details </NuxtLink>
       </div>
     </div>

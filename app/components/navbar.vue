@@ -7,7 +7,7 @@
       class="hidden md:flex flex-row shadow-md rounded-full px-12 py-4 space-x-6 text-[1rem] bg-gray-300/40 backdrop-blur-md text-black">
       <NuxtLink to="/">Home</NuxtLink>
       <NuxtLink to="/article">Article</NuxtLink>
-      <NuxtLink to="/portfolios">Our Portfolio</NuxtLink>
+      <NuxtLink to="/portfolio">Our Portfolio</NuxtLink>
       <NuxtLink to="/our-services">Our Service</NuxtLink>
       <NuxtLink to="/about-us">About Us</NuxtLink>
       <NuxtLink to="/contact">Contact</NuxtLink>

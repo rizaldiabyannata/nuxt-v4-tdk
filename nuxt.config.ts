@@ -14,10 +14,21 @@ export default defineNuxtConfig({
   typescript: {
     strict: false,
   },
+  plugins:[
+    '~/plugins/api'
+  ],
   vite: {
     plugins: [
       tailwindcss(),
     ],
   },
-  modules: ["@nuxt/eslint", "@nuxt/image", "@nuxt/icon"],
+  modules: [
+    "@nuxt/eslint",
+    "@nuxt/image",
+    "@nuxt/icon",
+    // "nuxt-tiptap-editor",
+  ],
+  // tiptap: {
+  //   prefix: 'Tiptap',
+  // },
 });

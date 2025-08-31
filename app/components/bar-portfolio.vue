@@ -1,5 +1,5 @@
 <template>
-  <div class="relative h-full w-full">
+  <div class="relative h-11/13 w-full">
     <Bar :data="chartData" :options="chartOptions" />
   </div>
 </template>
@@ -10,19 +10,16 @@ import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, Li
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
-const chartData = {
-  labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-  datasets: [
-    {
-      label: "Penjualan Bulanan",
-      backgroundColor: "#00B4D8",
-      borderRadius: 100,
-      borderSkipped: false,
-      barThickness: 20,
-      data: [40, 20, 12, 39, 10, 80],
-    },
-  ],
-};
+const { chartData, maxData } = defineProps({
+  chartData: {
+    type: Object,
+    required: true,
+  },
+  maxData: {
+    type: Number,
+    required: true,
+  }
+});
 
 const chartOptions = {
   plugins: {
@@ -45,6 +42,8 @@ const chartOptions = {
       },
     },
     y: {
+      min: 0,
+      max: maxData,
       grid: {
         display: false,
       },
@@ -53,6 +52,10 @@ const chartOptions = {
       },
       ticks: {
         drawTicks: false,
+        stepSize: 1,
+        callback: function(value) {
+          return Number.isInteger(value) ? value : null;
+        }
       },
     },
   },

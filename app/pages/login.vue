@@ -82,7 +82,7 @@ export default {
       const password = this.password;
       try {
         const response = await this.$api.post(
-          "user/login",{ 
+          "/api/user/login",{ 
             name, 
             password 
           });

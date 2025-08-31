@@ -36,64 +36,108 @@
       </div>
     </div>
   </div>
-  <div class="max-w-screen min-h-screen flex flex-col justify-center items-center px-8 md:px-32 py-16 bg-slate-300 gap-8">
+  <div id="portfolio-section" class="max-w-screen min-h-screen flex flex-col justify-center items-center px-8 md:px-32 py-16 bg-slate-300 gap-8">
     <div class="flex flex-col w-full">
-      <p>Our Article</p>
+      <p>Our Portfolio</p>
       <h1 class="text-3xl font bold text-[#EB5523]">Lorem Ipsum</h1>
     </div>
     <div class="flex flex-col lg:flex-row w-full mt-5 justify-center items-center">
       <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-24 md:grid-cols-2 md:gap-x-6 w-full gap-y-4">
         <homepage-card class="h-5/6" 
         v-for="portfolio in portfoliosList"
+        :key="portfolio._id"
         :title="portfolio.title"
         :shortDescription="portfolio.shortDescription"
-        :imageUrl="`http://localhost:5000${portfolio.coverImage}`"
+        :imageUrl="portfolio.coverImage"
         :slug="portfolio.slug"
         />
         
       </div>
     </div>
-    <div class="join">
-      <button class="join-item btn bg-white text-black">1</button>
-      <button class="join-item btn bg-white text-black">2</button>
-      <button class="join-item btn bg-white text-black">...</button>
-      <button class="join-item btn bg-white text-black">99</button>
-      <button class="join-item btn bg-white text-black">100</button>
+    <div v-if="portfoliosList.length === 0" class="flex flex-col items-center justify-center py-16">
+      <svg width="64" height="64" fill="none" viewBox="0 0 64 64" class="mb-4 text-gray-300">
+        <circle cx="32" cy="32" r="32" fill="#F3F4F6"/>
+        <path d="M20 40V24a4 4 0 014-4h16a4 4 0 014 4v16" stroke="#A1A1AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M24 32h16" stroke="#A1A1AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p class="text-gray-500 text-lg font-semibold">Tidak ada data portfolio.</p>
+    </div>
+    <div class="pagination flex gap-2 justify-center mt-8">
+      <button
+        @click="goToPageWithScroll(currentPage - 1)"
+        :disabled="currentPage === 1"
+        class="px-4 py-2 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow"
+      >
+        Prev
+      </button>
+      <span v-for="page in totalPages" :key="page">
+        <button
+          @click="goToPageWithScroll(page)"
+          :class="[
+            'mx-1 px-3 py-2 rounded-full border transition-all shadow',
+            page === currentPage
+              ? 'bg-[#EB5523] text-white border-[#EB5523] font-bold scale-110'
+              : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+          ]"
+        >
+          {{ page }}
+        </button>
+      </span>
+      <button
+        @click="goToPageWithScroll(currentPage + 1)"
+        :disabled="currentPage === totalPages"
+        class="px-4 py-2 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow"
+      >
+        Next
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-export default{
+export default {
   data() {
-    return{
-      portfoliosList: []
+    return {
+      portfoliosList: [],
+      currentPage: 1,
+      pageSize: 6,
+      totalPages: 1,
     }
   },
 
-  mounted() {
-    this.fetchPortfolios();
+  async mounted() {
+    await this.fetchPortfolios();
   },
 
   methods: {
     async fetchPortfolios() {
-      console.log("Mencoba mengambil data portfolio dari API...");
+      const baseUrl = useRuntimeConfig().public.apiBaseUrl;
       try {
-        const response = await this.$api.get("/portfolios?limit5&page=1&status=all");
-        console.log("Data portfolio berhasil diambil:", response.data);
-        this.portfoliosList = response.data.data;
+        const response = await this.$api.get(`/api/portfolios?limit=${this.pageSize}&page=${this.currentPage}&status=active`);
+        this.portfoliosList = response.data.data.map(portfolio => ({
+          ...portfolio,
+          coverImage: baseUrl + portfolio.coverImage
+        }));
+        this.totalPages = response.data.pagination.totalPages;
       } catch (error) {
         console.error("Gagal mengambil data portfolio:", error);
       }
     },
-
-    handleFileUpload(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.portfolio.coverImage = file;
+    goToPage(page) {
+      if (page >= 1 && page <= this.totalPages) {
+        this.currentPage = page;
+        this.fetchPortfolios();
       }
     },
+    goToPageWithScroll(page) {
+      this.goToPage(page);
+      this.$nextTick(() => {
+        const section = document.getElementById('portfolio-section');
+        if (section) {
+          section.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    },
   }
-  
 }
 </script>

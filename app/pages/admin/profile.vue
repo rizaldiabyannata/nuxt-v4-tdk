@@ -7,42 +7,76 @@
 
     <hr class="border-0.5 border-black mt-4" />
 
-    <div class="flex flex-col h-full w-full items-center mt-6">
+    <div class="flex flex-col h-full w-full px-12 items-center mt-6">
       <div class="mx-auto w-40 text-center">
         <div class="relative w-40">
-          <img class="w-40 h-40 rounded-full absolute" src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="" />
+          <img
+            class="w-40 h-40 rounded-full absolute"
+            src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+            alt=""
+          />
           <button
             @click="triggerFileInput"
             class="w-40 h-40 group hover:bg-gray-200 opacity-60 rounded-full absolute flex justify-center items-center cursor-pointer transition duration-500"
           >
-            <img class="hidden group-hover:block w-12" src="https://www.svgrepo.com/show/33565/upload.svg" alt="Upload Icon" />
+            <img
+              class="hidden group-hover:block w-12"
+              src="https://www.svgrepo.com/show/33565/upload.svg"
+              alt="Upload Icon"
+            />
           </button>
 
-          <input type="file" ref="fileInput" @change="handleFileChange" accept="image/*" class="hidden" />
+          <input
+            type="file"
+            ref="fileInput"
+            @change="handleFileChange"
+            accept="image/*"
+            class="hidden"
+          />
         </div>
       </div>
 
-      <div class="flex flex-col w-full pt-40 items-center">
-        <form action="" class="text-black w-[45%] flex flex-col space-y-2">
-          <div class="flex flex-col space-y-1">
-            <label for="" class="font-bold text-lg">Name</label>
-            <input type="email" class="rounded-xl border border-black py-2" />
-          </div>
-          <div class="flex flex-col space-y-1">
-            <label for="" class="font-bold text-lg">Email</label>
-            <input type="email" class="rounded-xl border border-black py-2" />
-          </div>
-          <div class="flex flex-col space-y-1">
-            <label for="" class="font-bold text-lg">Password</label>
-            <input type="email" class="rounded-xl border border-black py-2" />
-          </div>
-          <div class="flex flex-col space-y-1">
-            <label for="" class="font-bold text-lg">Confirm Password</label>
-            <input type="email" class="rounded-xl border border-black py-2" />
-          </div>
+      <div class="flex flex-col w-full pt-40 pb-12 items-center">
+        <form action="" class="text-black flex flex-col w-full px-80">
+          <fieldset class="fieldset w-full">
+            <legend class="fieldset-legend">Input Name</legend>
+            <input type="text" class="input w-full" placeholder="Type here" />
+            <p class="label">Optional</p>
+          </fieldset>
+          <fieldset class="fieldset w-full">
+            <legend class="fieldset-legend">Input Recovery Email</legend>
+            <input type="email" class="input w-full" placeholder="Type here" />
+            <p class="label">Require</p>
+          </fieldset>
+          <fieldset class="fieldset w-full">
+            <legend class="fieldset-legend">Input Password</legend>
+            <input
+              type="password"
+              class="input w-full"
+              placeholder="Type here"
+            />
+            <p class="label">Require</p>
+          </fieldset>
+          <fieldset class="fieldset w-full">
+            <legend class="fieldset-legend">Confirm Password</legend>
+            <input
+              type="password"
+              class="input w-full"
+              placeholder="Type here"
+            />
+            <p class="label">Require</p>
+          </fieldset>
           <div class="flex w-full justify-end">
-            <button class="flex flex-row py-2 px-5 text-white rounded-xl bg-[#EB5523] mt-4 hover:opacity-40 hover:text-black">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <button
+              class="flex flex-row py-2 px-5 text-white rounded-xl bg-[#EB5523] mt-4 hover:opacity-40 hover:text-black"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <path
                   fill-rule="evenodd"
                   clip-rule="evenodd"

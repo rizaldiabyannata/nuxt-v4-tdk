@@ -20,34 +20,34 @@
           <p>Create Articles</p>
         </button>
         <div class="flex flex-row items-center space-x-3">
-          <FloatLabel variant="on">
-            <InputText :class="$style.myinput" id="on_label" v-model="value" />
-            <label for="on_label" class="flex felx-row items-center space-x-2">
-              <svg width="16" height="16" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M4.61043 9.20962C3.36411 9.20962 2.30943 8.77787 1.44638 7.91437C0.583333 7.05086 0.151581 5.99618 0.151123 4.75032C0.150666 3.50446 0.582418 2.44978 1.44638 1.58627C2.31034 0.722768 3.36502 0.291016 4.61043 0.291016C5.85583 0.291016 6.91074 0.722768 7.77516 1.58627C8.63958 2.44978 9.0711 3.50446 9.06973 4.75032C9.06973 5.25342 8.98969 5.72793 8.82961 6.17386C8.66953 6.61979 8.45229 7.01427 8.17787 7.3573L12.0197 11.1992C12.1455 11.3249 12.2084 11.485 12.2084 11.6794C12.2084 11.8738 12.1455 12.0338 12.0197 12.1596C11.894 12.2854 11.7339 12.3483 11.5395 12.3483C11.3451 12.3483 11.185 12.2854 11.0593 12.1596L7.2174 8.31776C6.87438 8.59218 6.4799 8.80943 6.03397 8.9695C5.58804 9.12958 5.11353 9.20962 4.61043 9.20962ZM4.61043 7.83753C5.46798 7.83753 6.19702 7.5375 6.79754 6.93743C7.39806 6.33737 7.69809 5.60833 7.69764 4.75032C7.69718 3.8923 7.39715 3.16349 6.79754 2.56389C6.19794 1.96428 5.4689 1.66402 4.61043 1.66311C3.75195 1.66219 3.02314 1.96245 2.424 2.56389C1.82485 3.16532 1.52459 3.89413 1.52322 4.75032C1.52184 5.6065 1.8221 6.33554 2.424 6.93743C3.02589 7.53933 3.7547 7.83936 4.61043 7.83753Z"
-                  fill="black"
-                />
-              </svg>
-              <p>Search</p>
-            </label>
-          </FloatLabel>
+          <label class="input">
+            <svg
+              class="h-[1em] opacity-50"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <g
+                stroke-linejoin="round"
+                stroke-linecap="round"
+                stroke-width="2.5"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </g>
+            </svg>
+            <input type="search" class="grow" placeholder="Search" />
+          </label>
 
-          <div class="dropdown dropdown-hover dropdown-end w-full">
-            <div tabindex="0" role="button" class="btn m-1 bg-white text-black rounded-4xl shadow-none flex flex-row space-x-2 w-fit">
-              <p>Sort By</p>
-              <svg width="15" height="9" viewBox="0 0 15 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M7.33334 6.12106L12.6417 0.812728C12.8222 0.632173 13.036 0.544784 13.283 0.550562C13.53 0.556339 13.7435 0.649747 13.9236 0.830784C14.1037 1.01182 14.194 1.2256 14.1945 1.47212C14.1949 1.71864 14.1047 1.93217 13.9236 2.11273L8.36251 7.65578C8.21807 7.80023 8.05557 7.90856 7.87501 7.98078C7.69446 8.053 7.5139 8.08912 7.33334 8.08912C7.15279 8.08912 6.97223 8.053 6.79168 7.98078C6.61112 7.90856 6.44862 7.80023 6.30418 7.65578L0.743068 2.09467C0.562512 1.91412 0.475122 1.70347 0.480901 1.46273C0.486678 1.22199 0.580086 1.01134 0.761124 0.830783C0.942161 0.650228 1.15594 0.55995 1.40246 0.55995C1.64898 0.55995 1.86251 0.650228 2.04307 0.830783L7.33334 6.12106Z"
-                  fill="black"
-                />
-              </svg>
-            </div>
-            <ul tabindex="0" class="dropdown-content menu bg-white text-black border border-black rounded-box z-1 w-52 p-2">
-              <li><a>Item 1</a></li>
-              <li><a>Item 2</a></li>
-            </ul>
-          </div>
+          <label class="select">
+            <span class="label">Filter</span>
+            <select>
+              <option>All</option>
+              <option>Unarchive</option>
+              <option>Archive</option>
+            </select>
+          </label>
         </div>
       </div>
 

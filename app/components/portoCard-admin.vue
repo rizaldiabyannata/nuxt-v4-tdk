@@ -1,12 +1,37 @@
 <template>
-  <div class="card bg-base-100 w-full shadow-lg rounded-2xl overflow-hidden aspect-[3/4]">
-    <div class="card-body bg-white rounded-t-2xl p-4 sm:p-6 h-[60%]">
-      <h2 id="title" class="card-title text-black text-xl sm:text-2xl">{{ title }}</h2>
-      <p id="shortDescription" class="text-black text-sm sm:text-base mt-1">{{ shortDescription }}</p>
-      <div class="card-actions justify-start mt-4 flex flex-row space-x-1">
+  <div
+    class="card bg-base-100 w-full shadow-lg rounded-2xl overflow-hidden flex flex-col aspect-[3/4] min-h-[320px]"
+  >
+    <div
+      class="card-body bg-white rounded-t-2xl p-4 sm:p-6 flex flex-col justify-between h-[60%]"
+    >
+      <div>
+        <h2
+          id="title"
+          class="card-title text-black text-xl font-semibold mb-2 truncate"
+        >
+          {{ title }}
+        </h2>
+        <p
+          id="shortDescription"
+          class="text-black text-sm sm:text-base mb-2 line-clamp-2"
+        >
+          {{ shortDescription.substring(0, 50) }}...
+        </p>
+      </div>
+      <div class="card-actions flex flex-row gap-2 mt-2">
         <!-- edit -->
-        <button @click="edit" class="bg-blue-700 p-1 rounded-lg cursor-pointer hover:opacity-50">
-          <svg width="20" height="20" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <button
+          @click="edit"
+          class="bg-blue-700 p-2 rounded-lg cursor-pointer hover:opacity-80 transition"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 10 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               fill-rule="evenodd"
               clip-rule="evenodd"
@@ -19,8 +44,17 @@
             />
           </svg>
         </button>
-        <button @click="callDeleteFunc" class="bg-[#F43232] p-1 rounded-lg cursor-pointer hover:opacity-50">
-          <svg width="20" height="20" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <button
+          @click="callDeleteFunc"
+          class="bg-[#F43232] p-2 rounded-lg cursor-pointer hover:opacity-80 transition"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 10 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M7.29974 3.72976L6.99495 6.77687C6.94887 7.23876 6.92601 7.46953 6.82079 7.64405C6.7285 7.79768 6.59278 7.92053 6.43074 7.99709C6.24678 8.08381 6.01529 8.08381 5.55086 8.08381H4.69456C4.23049 8.08381 3.99864 8.08381 3.81468 7.99673C3.65251 7.92023 3.51665 7.79737 3.42427 7.64369C3.31977 7.46953 3.29655 7.23876 3.25011 6.77687L2.94568 3.72976M5.66697 6.08821V4.27402M4.57845 6.08821V4.27402M2.40143 2.82267H4.07592M4.07592 2.82267L4.21598 1.85316C4.25662 1.67682 4.4032 1.55273 4.57156 1.55273H5.67386C5.84222 1.55273 5.98844 1.67682 6.02944 1.85316L6.1695 2.82267M4.07592 2.82267H6.1695M6.1695 2.82267H7.84399"
               stroke="white"
@@ -30,8 +64,16 @@
             />
           </svg>
         </button>
-        <button class="bg-[#797979] p-1 rounded-lg cursor-pointer hover:opacity-50">
-          <svg width="20" height="19" viewBox="0 0 10 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <button
+          class="bg-[#797979] p-2 rounded-lg cursor-pointer hover:opacity-80 transition"
+        >
+          <svg
+            width="20"
+            height="19"
+            viewBox="0 0 10 9"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <g clip-path="url(#clip0_383_536)">
               <path
                 d="M8.22856 2.82293L7.86572 7.03185C7.86572 7.51442 7.47748 7.90266 6.99491 7.90266H2.93113C2.44855 7.90266 2.06031 7.51442 2.06031 7.03185L1.69748 2.82293M6.41437 2.82293V3.62118C6.41437 3.69816 6.38379 3.77199 6.32935 3.82643C6.27491 3.88086 6.20108 3.91145 6.1241 3.91145H3.80194C3.72495 3.91145 3.65112 3.88086 3.59668 3.82643C3.54225 3.77199 3.51167 3.69816 3.51167 3.62118V2.82293M1.55234 1.37158H8.37369C8.52766 1.37158 8.67532 1.43275 8.78419 1.54162C8.89307 1.65049 8.95423 1.79815 8.95423 1.95212V2.24239C8.95423 2.31863 8.93922 2.39412 8.91004 2.46456C8.88087 2.53499 8.8381 2.59899 8.78419 2.6529C8.73029 2.7068 8.66629 2.74957 8.59585 2.77874C8.52542 2.80792 8.44993 2.82293 8.37369 2.82293H1.55234C1.39837 2.82293 1.25071 2.76177 1.14184 2.6529C1.03297 2.54402 0.971802 2.39636 0.971802 2.24239V1.95212C0.971802 1.87588 0.986818 1.80039 1.01599 1.72996C1.04517 1.65952 1.08793 1.59553 1.14184 1.54162C1.25071 1.43275 1.39837 1.37158 1.55234 1.37158Z"
@@ -44,13 +86,27 @@
             </g>
             <defs>
               <clipPath id="clip0_383_536">
-                <rect width="8.70811" height="8.70811" fill="white" transform="translate(0.609009 0.283203)" />
+                <rect
+                  width="8.70811"
+                  height="8.70811"
+                  fill="white"
+                  transform="translate(0.609009 0.283203)"
+                />
               </clipPath>
             </defs>
           </svg>
         </button>
-        <button   @click="highlightThis" class="bg-[#FFCC00] p-1 rounded-lg cursor-pointer hover:opacity-50 items-center aspect-square">
-          <svg width="19" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <button
+          @click="highlightThis"
+          class="bg-[#FFCC00] p-2 rounded-lg cursor-pointer hover:opacity-80 transition items-center aspect-square"
+        >
+          <svg
+            width="19"
+            height="17"
+            viewBox="0 0 18 17"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M8.99984 14.275L4.84984 16.775C4.66651 16.8917 4.47484 16.9417 4.27484 16.925C4.07484 16.9083 3.89984 16.8417 3.74984 16.725C3.59984 16.6083 3.48317 16.4627 3.39984 16.288C3.31651 16.1133 3.29984 15.9173 3.34984 15.7L4.44984 10.975L0.774841 7.8C0.608174 7.65 0.504174 7.479 0.462841 7.287C0.421507 7.095 0.433841 6.90767 0.499841 6.725C0.565841 6.54233 0.665841 6.39233 0.799841 6.275C0.933841 6.15767 1.11717 6.08267 1.34984 6.05L6.19984 5.625L8.07484 1.175C8.15817 0.975 8.28751 0.825 8.46284 0.725C8.63817 0.625 8.81717 0.575 8.99984 0.575C9.18251 0.575 9.36151 0.625 9.53684 0.725C9.71217 0.825 9.84151 0.975 9.92484 1.175L11.7998 5.625L16.6498 6.05C16.8832 6.08333 17.0665 6.15833 17.1998 6.275C17.3332 6.39167 17.4332 6.54167 17.4998 6.725C17.5665 6.90833 17.5792 7.096 17.5378 7.288C17.4965 7.48 17.3922 7.65067 17.2248 7.8L13.5498 10.975L14.6498 15.7C14.6998 15.9167 14.6832 16.1127 14.5998 16.288C14.5165 16.4633 14.3998 16.609 14.2498 16.725C14.0998 16.841 13.9248 16.9077 13.7248 16.925C13.5248 16.9423 13.3332 16.8923 13.1498 16.775L8.99984 14.275Z"
               fill="white"
@@ -59,8 +115,16 @@
         </button>
       </div>
     </div>
-    <figure class="h-[40%]">
-      <img crossorigin="anonymous" id="image" :src="imageUrl" alt="Product Image" class="w-full h-auto object-cover" />
+    <figure
+      class="h-[40%] w-full flex items-center justify-center bg-gray-100 rounded-b-2xl overflow-hidden"
+    >
+      <img
+        crossorigin="anonymous"
+        id="image"
+        :src="imageUrl"
+        alt="Product Image"
+        class="w-full h-full object-cover"
+      />
     </figure>
   </div>
 </template>
@@ -107,22 +171,26 @@ export default {
     deleteHighlightPort() {
       console.log("✅ Debug: props.id =", this.id);
       if (!this.slug) {
-        console.error("❌ Portfolio Hightlight ID kosong, tidak mengirim ke parent");
+        console.error(
+          "❌ Portfolio Hightlight ID kosong, tidak mengirim ke parent"
+        );
         return;
       }
       this.$emit("deleteHighlight", this.id);
     },
-    edit(){
+    edit() {
       if (!this.slug) {
-        console.error("❌ Portfolio Hightlight ID kosong, tidak mengirim ke parent");
+        console.error(
+          "❌ Portfolio Hightlight ID kosong, tidak mengirim ke parent"
+        );
         return;
       }
-      this.$emit("edit", this.slug)
+      this.$emit("edit", this.slug);
     },
-    callDeleteFunc(){
+    callDeleteFunc() {
       this.deleteCard();
       this.deleteHighlightPort();
-    }
+    },
   },
 };
 </script>

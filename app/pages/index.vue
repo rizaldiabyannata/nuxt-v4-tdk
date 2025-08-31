@@ -1,19 +1,16 @@
 <template>
   <div class="relative min-h-dvh flex flex-col">
     <div class="absolute inset-0 bg-[url('/img/sample/sample-1.jpeg')] bg-cover bg-center brightness-50 -z-10"></div>
-
     <div class="flex flex-col flex-grow w-full justify-center items-center p-4 mt-[YOUR_NAVBAR_HEIGHT]">
       <div class="flex flex-col w-full max-w-xl sm:w-4/5 md:w-3/5 lg:w-2/5 justify-center items-center text-center">
         <h1 class="font-bold text-xl sm:text-2xl md:text-3xl text-white">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+          {{ highlightedPortfolios[0]?.title }}
         </h1>
         <p class="mt-2 text-sm sm:text-base text-white">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic eligendi esse accusamus omnis nobis eaque tempore
-          ipsam, odit culpa aut, similique eum dolores iure error
-          temporibus molestiae, voluptatum natus! Minus!
+          {{ highlightedPortfolios[0]?.shortDescription }}
         </p>
       </div>
-      <NuxtLink to="/about-us"
+      <NuxtLink :to="highlightedPortfolios[0]?.link || ('/portfolio/' + highlightedPortfolios[0]?.slug)"
         class="flex flex-row shadow-xl backdrop-blur-lg border border-white rounded-full px-4 py-2 mt-6 text-sm items-center space-x-2 hover:bg-white hover:text-black group transition-colors">
         <svg width="13" height="14" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -26,13 +23,10 @@
   </div>
 
   <div class="flex min-h-screen bg-white justify-center items-center p-4 sm:p-8">
-    <div
-      class="flex flex-col bg-[url(/img/grafisbg.png)] bg-cover bg-no-repeat w-full max-w-3xl lg:max-w-4xl aspect-video sm:aspect-auto sm:min-h-[400px] md:min-h-[500px] rounded-2xl lg:rounded-3xl text-white p-8 sm:p-10 md:p-12 space-y-3 sm:space-y-4 justify-center">
+    <div class="flex flex-col bg-[url(/img/grafisbg.png)] bg-cover bg-no-repeat w-full max-w-3xl lg:max-w-4xl aspect-video sm:aspect-auto sm:min-h-[400px] md:min-h-[500px] rounded-2xl lg:rounded-3xl text-white p-8 sm:p-10 md:p-12 space-y-3 sm:space-y-4 justify-center">
       <p class="font-bold text-2xl sm:text-3xl md:text-4xl">Visi Kami</p>
       <p class="pt-2 sm:pt-4 text-base sm:text-lg md:text-xl">
-        Menjadi pemimpin terpercaya dalam perencanaan dan supervisi proyek, menciptakan solusi berkelanjutan dan
-        inovatif yang berkontribusi pada pembangunan infrastruktur dan
-        kemajuan masyarakat.
+        Menjadi pemimpin terpercaya dalam perencanaan dan supervisi proyek, menciptakan solusi berkelanjutan dan inovatif yang berkontribusi pada pembangunan infrastruktur dan kemajuan masyarakat.
       </p>
       <NuxtLink to="about-us"
         class="flex flex-row items-center border-white border w-fit rounded-full px-4 py-2 space-x-2 mt-4 sm:mt-6 hover:bg-white/20 transition-colors">
@@ -72,50 +66,38 @@
         </div>
       </div>
       <div class="flex flex-col lg:flex-row w-full mt-5 gap-4">
-        <homepage-card class="w-full lg:w-1/2" />
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 w-full lg:w-1/2">
-          <homepage-card-small class="" />
-          <homepage-card-small class="" />
-          <homepage-card-small class="" />
-          <homepage-card-small class="" />
-        </div>
+        <homepage-card
+          v-for="portfolio in highlightedPortfolios"
+          :key="portfolio._id"
+          :title="portfolio.title"
+          :shortDescription="portfolio.shortDescription"
+          :imageUrl="portfolio.coverImage"
+          :slug="portfolio.slug"
+          class="w-full lg:w-1/2"
+        />
       </div>
     </div>
   </div>
 
   <div class="flex flex-col min-h-screen bg-white justify-center items-center py-12 sm:py-16 px-4">
     <div class="flex flex-col w-full max-w-7xl justify-center items-center">
-      <div
-        class="flex flex-col w-full justify-start items-start sm:items-center text-start sm:text-center mb-6 sm:mb-8">
+      <div class="flex flex-col w-full justify-start items-start sm:items-center text-start sm:text-center mb-6 sm:mb-8">
         <h1 class="text-black text-xl sm:text-2xl font-semibold">News & Report</h1>
         <p class="font-bold text-[#EB5523] text-3xl sm:text-4xl md:text-5xl">Popular News</p>
       </div>
-
-      <div
-        class="carousel carousel-center bg-transparent rounded-2xl lg:rounded-3xl w-full max-w-7xl space-x-4 sm:space-x-8 p-4">
-        <div class="carousel-item">
-          <carousel-card />
-        </div>
-        <div class="carousel-item">
-          <carousel-card />
-        </div>
-        <div class="carousel-item">
-          <carousel-card />
-        </div>
-        <div class="carousel-item">
-          <carousel-card />
-        </div>
-        <div class="carousel-item">
-          <carousel-card />
-        </div>
-        <div class="carousel-item">
-          <carousel-card />
-        </div>
-        <div class="carousel-item">
-          <carousel-card />
-        </div>
-        <div class="carousel-item">
-          <carousel-card />
+      <div class="carousel carousel-center bg-transparent rounded-2xl lg:rounded-3xl w-full max-w-7xl space-x-4 sm:space-x-8 p-4">
+        <div
+          v-for="blog in featuredBlogs"
+          :key="blog._id"
+          class="carousel-item"
+        >
+          <carousel-card
+            :title="blog.title"
+            :shortDescription="blog.summary"
+            :imageUrl="blog.coverImage"
+            :createdAt="blog.createdAt"
+            :slug="blog.slug"
+          />
         </div>
       </div>
     </div>
@@ -180,25 +162,25 @@
         </a>
       </form>
     </div>
-
-    <div
-      class="hidden md:flex h-auto md:h-full w-full md:w-2/5 lg:w-1/2 bg-[url(/img/form-pict.jpg)] bg-cover bg-center">
-    </div>
+    <div class="hidden md:flex h-auto md:h-full w-full md:w-2/5 lg:w-1/2 bg-[url(/img/form-pict.jpg)] bg-cover bg-center"></div>
   </div>
-
 </template>
+
+<script setup>
+import { GET_CONTENT_TRACKING_SUCCESS } from '../../constants/content_tracking'
+const highlightedPortfolios = GET_CONTENT_TRACKING_SUCCESS.data.highlightedPortfolios
+const featuredBlogs = GET_CONTENT_TRACKING_SUCCESS.data.featuredBlogs
+</script>
 
 <style>
   .animate-marquee {
     animation: marquee 25s linear infinite;
     /* Durasi bisa disesuaikan */
   }
-
   @keyframes marquee {
     0% {
       transform: translateX(0);
     }
-
     100% {
       transform: translateX(-100%);
     }
