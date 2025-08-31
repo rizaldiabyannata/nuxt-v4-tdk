@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import "tailwindcss";
+@plugin "daisyui";
+@theme {
+  --font-inter: "Inter", sans-serif;
+}
+
+.stroke {
+  font-family: sans-serif;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-fill-color: transparent;
+  color: #fff;
+}
+
+.color-signature {
+  color: #eb5523;
+}
