@@ -272,10 +272,10 @@
               >Cover Image</label
             >
 
-            <div v-if="imagePreviewUrl" class="mb-4">
+            <div v-if="existingImageUrl" class="mb-4">
               <p class="text-sm text-gray-600 mb-2">Gambar saat ini:</p>
               <img
-                :src="imagePreviewUrl"
+                :src="existingImageUrl"
                 alt="Pratinjau Gambar"
                 class="w-full max-w-xs h-auto rounded-lg object-cover border"
               />
@@ -325,12 +325,11 @@
               >Description</label
             >
             <client-only>
-              <tiptap-editor />
+              <TiptapEditor
+                v-model="portfolio.description"
+                class="mt-1 block w-full shadow-sm border border-gray-700 rounded-2xl bg-white overflow-hidden"
+              />
             </client-only>
-            <!-- <TiptapEditor
-              v-model="portfolio.description"
-              class="mt-1 block w-full shadow-sm border border-gray-700 rounded-2xl bg-white overflow-hidden"
-            /> -->
           </div>
 
           <div class="flex justify-end pt-4 space-x-3">
@@ -401,7 +400,7 @@ definePageMeta({
 export default {
   data() {
     return {
-      tampilanAktif: "edit",
+      tampilanAktif: "daftar",
       portfoliosList: [],
       portoHighlightList: [],
       portfolio: {
@@ -411,6 +410,7 @@ export default {
         coverImage: null,
         slug: "",
       },
+      existingImageUrl: null,
       value: "",
       searchTimeout: null,
     };
@@ -450,9 +450,10 @@ export default {
 
         const response = await this.$api.get(apiUrl);
         console.log("Data portfolio berhasil diambil:", response.data);
-        this.portfoliosList = response.data.data;
+        this.portfoliosList = response.data.data || [];
       } catch (error) {
         console.error("Gagal mengambil data portfolio:", error);
+        this.portfoliosList = []; // Default to empty array on error
       }
     },
 
@@ -493,26 +494,19 @@ export default {
 
     async handleEdit(slug) {
       try {
-        // 1. Panggil API untuk mendapatkan detail portfolio
         const response = await this.$api.get(`/api/portfolios/${slug}`);
-        console.log(`Ini adalah isi dari get by ${slug}`, response.data);
-        const dataToEdit = response.data;
-        console.log("data To Edit: ", dataToEdit);
+        const dataToEdit = response.data.data;
 
-        // 2. Isi object 'portfolio' dengan data yang didapat
         this.portfolio = {
-          // _id: dataToEdit._id,
-          slug: dataToEdit.data.slug,
-          title: dataToEdit.data.title,
-          shortDescription: dataToEdit.data.shortDescription,
-          description: dataToEdit.data.description,
-          coverImage: `http://localhost:5000${dataToEdit.data.coverImage}`, // Reset gambar, biarkan user upload baru jika ingin ganti
+          slug: dataToEdit.slug,
+          title: dataToEdit.title,
+          shortDescription: dataToEdit.shortDescription,
+          description: dataToEdit.description,
+          coverImage: null, // Reset file input
         };
-        console.log("data terkini: ", this.portfolio);
-        // 3. Ubah tampilan ke form edit
-        this.tampilanAktif = "edit";
+        this.existingImageUrl = `http://localhost:5000${dataToEdit.coverImage}`;
 
-        console.log("Siap untuk mengedit:", this.portfolio.shortDescription);
+        this.tampilanAktif = "edit";
       } catch (error) {
         console.error("Gagal mengambil data untuk diedit:", error);
       }
@@ -523,7 +517,9 @@ export default {
       formData.append("title", this.portfolio.title);
       formData.append("description", this.portfolio.description);
       formData.append("shortDescription", this.portfolio.shortDescription);
-      if (this.portfolio.coverImage) {
+
+      // Only append coverImage if a new file has been selected
+      if (this.portfolio.coverImage instanceof File) {
         formData.append("coverImage", this.portfolio.coverImage);
       }
 
@@ -586,9 +582,10 @@ export default {
           "Data highlited portfolio berhasil diambil:",
           response.data.highlightedPortfolios
         );
-        this.portoHighlightList = response.data.highlightedPortfolios;
+        this.portoHighlightList = response.data.highlightedPortfolios || [];
       } catch (error) {
         console.error("Gagal mengambil data highlited portfolio:", error);
+        this.portoHighlightList = []; // Default to empty array on error
       }
     },
     async deleteCard(portoSlug) {

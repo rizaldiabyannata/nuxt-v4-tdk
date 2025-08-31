@@ -16,7 +16,7 @@
           id="shortDescription"
           class="text-black text-sm sm:text-base mb-2 line-clamp-2"
         >
-          {{ shortDescription.substring(0, 50) }}...
+          {{ (shortDescription || "").substring(0, 50) }}...
         </p>
       </div>
       <div class="card-actions flex flex-row gap-2 mt-2">
