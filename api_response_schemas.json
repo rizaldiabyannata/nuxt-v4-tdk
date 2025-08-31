@@ -1,0 +1,683 @@
+{
+  "user_endpoints": {
+    "POST /user/login": {
+      "success_200": {
+        "message": "string",
+        "accessToken": "string",
+        "user": {
+          "name": "string",
+          "email": "string"
+        }
+      },
+      "error_401": {
+        "message": "string"
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "POST /user/refresh-token": {
+      "success_200": {
+        "accessToken": "string"
+      },
+      "error_401": {
+        "message": "string"
+      },
+      "error_403": {
+        "message": "string"
+      }
+    },
+    "POST /user/logout": {
+      "success_200": {
+        "message": "string"
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "GET /user/profile": {
+      "success_200": {
+        "user": {
+          "username": "string",
+          "email": "string"
+        }
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "PUT /user/update": {
+      "success_200": {
+        "message": "string",
+        "user": {
+          "email": "string",
+          "name": "string"
+        }
+      },
+      "error_400": {
+        "message": "string"
+      },
+      "error_404": {
+        "message": "string"
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "POST /user/request-password-reset": {
+      "success_200": {
+        "message": "string"
+      },
+      "error_400": {
+        "message": "string"
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "POST /user/reset-password": {
+      "success_200": {
+        "message": "string"
+      },
+      "error_400": {
+        "message": "string"
+      },
+      "error_404": {
+        "message": "string"
+      },
+      "error_500": {
+        "message": "string"
+      }
+    }
+  },
+  "blog_endpoints": {
+    "GET /blogs": {
+      "success_200": {
+        "data": [
+          {
+            "_id": "ObjectId",
+            "title": "string",
+            "slug": "string",
+            "content": "Mixed",
+            "coverImage": "string",
+            "summary": "Mixed",
+            "author": "string",
+            "isArchived": "boolean",
+            "views": {
+              "total": "number",
+              "unique": "number"
+            },
+            "viewHistory": [
+              {
+                "date": "Date",
+                "count": "number"
+              }
+            ],
+            "createdAt": "Date",
+            "updatedAt": "Date"
+          }
+        ],
+        "pagination": {
+          "currentPage": "number",
+          "totalPages": "number",
+          "totalBlogs": "number",
+          "limit": "number"
+        }
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "GET /blogs/archives": {
+      "success_200": [
+        {
+          "year": "number",
+          "months": [
+            {
+              "month": "number",
+              "count": "number"
+            }
+          ]
+        }
+      ],
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "GET /blogs/:slug": {
+      "success_200_not_auth": {
+        "message": "string",
+        "data": {
+          "slug": "string",
+          "title": "string",
+          "content": "Mixed",
+          "coverImage": "string",
+          "createdAt": "Date"
+        }
+      },
+      "success_200_auth": {
+        "message": "string",
+        "data": {
+          "_id": "ObjectId",
+          "title": "string",
+          "slug": "string",
+          "content": "Mixed",
+          "coverImage": "string",
+          "summary": "Mixed",
+          "author": "string",
+          "isArchived": "boolean",
+          "views": {
+            "total": "number",
+            "unique": "number"
+          },
+          "viewHistory": [
+            {
+              "date": "Date",
+              "count": "number"
+            }
+          ],
+          "createdAt": "Date",
+          "updatedAt": "Date"
+        }
+      },
+      "error_404": {
+        "message": "string"
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "POST /blogs": {
+      "success_201": {
+        "message": "string",
+        "data": {
+          "slug": "string",
+          "title": "string",
+          "content": "Mixed",
+          "coverImage": "string",
+          "createdAt": "Date"
+        }
+      },
+      "error_400": {
+        "message": "string"
+      }
+    },
+    "PUT /blogs/:slug": {
+      "success_200": {
+        "message": "string",
+        "data": {
+          "slug": "string",
+          "title": "string",
+          "content": "Mixed",
+          "coverImage": "string",
+          "createdAt": "Date",
+          "isArchived": "boolean"
+        }
+      },
+      "error_400": {
+        "message": "string"
+      },
+      "error_404": {
+        "message": "string"
+      }
+    },
+    "DELETE /blogs/:slug": {
+      "success_200": {
+        "message": "string"
+      },
+      "error_404": {
+        "message": "string"
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "PATCH /blogs/:slug/archive": {
+      "success_200": {
+        "message": "string",
+        "data": {
+          "slug": "string",
+          "title": "string",
+          "content": "Mixed",
+          "coverImage": "string",
+          "createdAt": "Date",
+          "isArchived": "boolean"
+        }
+      },
+      "error_404": {
+        "message": "string"
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "PATCH /blogs/:slug/unarchive": {
+      "success_200": {
+        "message": "string",
+        "data": {
+          "slug": "string",
+          "title": "string",
+          "content": "Mixed",
+          "coverImage": "string",
+          "createdAt": "Date",
+          "isArchived": "boolean"
+        }
+      },
+      "error_404": {
+        "message": "string"
+      },
+      "error_500": {
+        "message": "string"
+      }
+    }
+  },
+  "portfolio_endpoints": {
+    "GET /portfolios": {
+      "success_200": {
+        "data": [
+          {
+            "_id": "ObjectId",
+            "title": "string",
+            "description": "Mixed",
+            "shortDescription": "Mixed",
+            "coverImage": "string",
+            "link": "string",
+            "slug": "string",
+            "isArchived": "boolean",
+            "views": {
+              "total": "number",
+              "unique": "number"
+            },
+            "viewHistory": [
+              {
+                "date": "Date",
+                "count": "number"
+              }
+            ],
+            "createdAt": "Date",
+            "updatedAt": "Date"
+          }
+        ],
+        "pagination": {
+          "currentPage": "number",
+          "totalPages": "number",
+          "totalItems": "number",
+          "limit": "number"
+        }
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "GET /portfolios/archives": {
+      "success_200": [
+        {
+          "year": "number",
+          "months": [
+            {
+              "month": "number",
+              "count": "number"
+            }
+          ]
+        }
+      ],
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "GET /portfolios/:slug": {
+      "success_200_not_auth": {
+        "message": "string",
+        "data": {
+          "slug": "string",
+          "title": "string",
+          "description": "Mixed",
+          "shortDescription": "Mixed",
+          "link": "string",
+          "coverImage": "string",
+          "createdAt": "Date"
+        }
+      },
+      "success_200_auth": {
+        "message": "string",
+        "data": {
+          "_id": "ObjectId",
+          "title": "string",
+          "description": "Mixed",
+          "shortDescription": "Mixed",
+          "coverImage": "string",
+          "link": "string",
+          "slug": "string",
+          "isArchived": "boolean",
+          "views": {
+            "total": "number",
+            "unique": "number"
+          },
+          "viewHistory": [
+            {
+              "date": "Date",
+              "count": "number"
+            }
+          ],
+          "createdAt": "Date",
+          "updatedAt": "Date"
+        }
+      },
+      "error_404": {
+        "message": "string"
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "POST /portfolios": {
+      "success_201": {
+        "message": "string",
+        "data": {
+          "slug": "string",
+          "title": "string",
+          "description": "Mixed",
+          "shortDescription": "Mixed",
+          "link": "string",
+          "coverImage": "string",
+          "createdAt": "Date"
+        }
+      },
+      "error_400": {
+        "message": "string"
+      }
+    },
+    "PUT /portfolios/:slug": {
+      "success_200": {
+        "message": "string",
+        "data": {
+          "slug": "string",
+          "title": "string",
+          "description": "Mixed",
+          "shortDescription": "Mixed",
+          "link": "string",
+          "coverImage": "string",
+          "createdAt": "Date",
+          "isArchived": "boolean"
+        }
+      },
+      "error_400": {
+        "message": "string"
+      },
+      "error_404": {
+        "message": "string"
+      }
+    },
+    "DELETE /portfolios/:slug": {
+      "success_200": {
+        "message": "string"
+      },
+      "error_404": {
+        "message": "string"
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "PATCH /portfolios/:slug/archive": {
+      "success_200": {
+        "message": "string",
+        "data": {
+          "slug": "string",
+          "title": "string",
+          "description": "Mixed",
+          "shortDescription": "Mixed",
+          "link": "string",
+          "coverImage": "string",
+          "createdAt": "Date",
+          "isArchived": "boolean"
+        }
+      },
+      "error_404": {
+        "message": "string"
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "PATCH /portfolios/:slug/unarchive": {
+      "success_200": {
+        "message": "string",
+        "data": {
+          "slug": "string",
+          "title": "string",
+          "description": "Mixed",
+          "shortDescription": "Mixed",
+          "link": "string",
+          "coverImage": "string",
+          "createdAt": "Date",
+          "isArchived": "boolean"
+        }
+      },
+      "error_404": {
+        "message": "string"
+      },
+      "error_500": {
+        "message": "string"
+      }
+    }
+  },
+  "statistic_endpoints": {
+    "GET /statistic": {
+      "success_200": {
+        "success": "boolean",
+        "data": {
+          "summary": {
+            "totalViews": "number",
+            "uniqueViews": "number",
+            "portfolioViews": "number",
+            "blogViews": "number",
+            "portfolioUniqueViews": "number",
+            "blogUniqueViews": "number"
+          },
+          "topContent": {
+            "portfolios": [
+              {
+                "_id": "ObjectId",
+                "title": "string",
+                "slug": "string",
+                "views": {
+                  "total": "number",
+                  "unique": "number"
+                }
+              }
+            ],
+            "blogs": [
+              {
+                "_id": "ObjectId",
+                "title": "string",
+                "slug": "string",
+                "views": {
+                  "total": "number",
+                  "unique": "number"
+                }
+              }
+            ]
+          },
+          "dailyData": [
+            {
+              "date": "string",
+              "portfolioViews": "number",
+              "blogViews": "number",
+              "totalViews": "number"
+            }
+          ]
+        }
+      },
+      "error_500": {
+        "message": "string"
+      }
+    }
+  },
+  "content_tracking_endpoints": {
+    "GET /content-tracking": {
+      "success_200": {
+        "data": {
+          "highlightedPortfolios": [
+            {
+              "_id": "ObjectId",
+              "title": "string",
+              "slug": "string",
+              "coverImage": "string",
+              "shortDescription": "Mixed",
+              "link": "string"
+            }
+          ],
+          "featuredBlogs": [
+            {
+              "_id": "ObjectId",
+              "title": "string",
+              "slug": "string",
+              "summary": "Mixed",
+              "coverImage": "string",
+              "createdAt": "Date"
+            }
+          ],
+          "lastUpdated": "Date"
+        }
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "POST /content-tracking/reset": {
+      "success_200": {
+        "message": "string",
+        "data": {
+          "featuredBlogs": [],
+          "highlightedPortfolios": [],
+          "lastUpdated": "Date"
+        }
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "POST /content-tracking/featured-blogs": {
+      "success_200": {
+        "success": "boolean",
+        "message": "string",
+        "data": {
+          "featuredBlogs": [
+            "ObjectId"
+          ],
+          "highlightedPortfolios": [
+            "ObjectId"
+          ],
+          "lastUpdated": "Date"
+        }
+      },
+      "error_400": {
+        "message": "string"
+      },
+      "error_404": {
+        "message": "string"
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "DELETE /content-tracking/featured-blogs/:blogId": {
+      "success_200": {
+        "message": "string",
+        "data": {
+          "featuredBlogs": [
+            "ObjectId"
+          ],
+          "highlightedPortfolios": [
+            "ObjectId"
+          ],
+          "lastUpdated": "Date"
+        }
+      },
+      "error_400": {
+        "message": "string"
+      },
+      "error_404": {
+        "message": "string"
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "POST /content-tracking/highlighted-portfolios": {
+      "success_200": {
+        "message": "string",
+        "data": {
+          "featuredBlogs": [
+            "ObjectId"
+          ],
+          "highlightedPortfolios": [
+            "ObjectId"
+          ],
+          "lastUpdated": "Date"
+        }
+      },
+      "error_400": {
+        "message": "string"
+      },
+      "error_404": {
+        "message": "string"
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "DELETE /content-tracking/highlighted-portfolios/:portfolioId": {
+      "success_200": {
+        "success": "boolean",
+        "message": "string",
+        "data": {
+          "featuredBlogs": [
+            "ObjectId"
+          ],
+          "highlightedPortfolios": [
+            "ObjectId"
+          ],
+          "lastUpdated": "Date"
+        }
+      },
+      "error_400": {
+        "message": "string"
+      },
+      "error_404": {
+        "message": "string"
+      },
+      "error_500": {
+        "message": "string"
+      }
+    }
+  },
+  "contact_form_endpoints": {
+    "POST /contact-form": {
+      "success_201": {
+        "message": "string"
+      },
+      "error_400": {
+        "message": "string"
+      },
+      "error_500": {
+        "message": "string"
+      }
+    },
+    "GET /contact-form": {
+      "success_200": [
+        {
+          "_id": "ObjectId",
+          "name": "string",
+          "email": "string",
+          "message": "string",
+          "createdAt": "Date"
+        }
+      ],
+      "error_500": {
+        "message": "string"
+      }
+    }
+  }
+}
