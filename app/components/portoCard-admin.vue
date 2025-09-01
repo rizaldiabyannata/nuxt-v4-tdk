@@ -98,8 +98,14 @@
         <button
           @click="toggleHighlight"
           class="bg-[#FFCC00] p-2 rounded-lg cursor-pointer hover:opacity-80 transition items-center aspect-square"
+          :disabled="isHighlightLoading"
         >
+          <span
+            v-if="isHighlightLoading"
+            class="loading loading-spinner loading-sm"
+          ></span>
           <svg
+            v-else
             width="19"
             height="17"
             viewBox="0 0 18 17"
@@ -157,6 +163,15 @@ export default {
     isHighlighted: {
       type: Boolean,
       default: false,
+    },
+    loadingHighlight: {
+      type: String,
+      default: null,
+    },
+  },
+  computed: {
+    isHighlightLoading() {
+      return this.loadingHighlight === this.id;
     },
   },
   methods: {

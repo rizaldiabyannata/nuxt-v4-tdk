@@ -70,7 +70,8 @@
         <h1 class="text-2xl font-bold text-[#EB5523]">Highlight Portfolio</h1>
 
         <div
-          class="grid gap-4 w-full border border-black rounded-4xl p-4 space-x-2 items-center grid-cols-4"
+          v-if="portoHighlightList && portoHighlightList.length > 0"
+          class="grid gap-4 w-full bg-yellow-50 rounded-2xl shadow-lg p-6 items-center grid-cols-4"
         >
           <PortoCardAdmin
             v-for="portfolio in portoHighlightList"
@@ -81,12 +82,19 @@
             :shortDescription="portfolio.shortDescription"
             :status="portfolio.status"
             :isHighlighted="true"
+            :loading-highlight="loadingHighlights"
             :imageUrl="`http://localhost:5000${portfolio.coverImage}`"
             @unhighlight="deletePortHighlight"
             @edit="handleEdit"
             @archive="updatePortfolioStatus(portfolio.slug, 'archive')"
             @unarchive="updatePortfolioStatus(portfolio.slug, 'unarchive')"
           />
+        </div>
+        <div
+          v-else
+          class="flex items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-2xl"
+        >
+          <p class="text-gray-500">No highlighted portfolios.</p>
         </div>
       </div>
 
@@ -100,6 +108,7 @@
           :shortDescription="portfolio.shortDescription"
           :status="portfolio.status"
           :isHighlighted="false"
+          :loading-highlight="loadingHighlights"
           :imageUrl="`http://localhost:5000${portfolio.coverImage}`"
           @highlight="sendHighlight"
           @delete="deleteCard"
@@ -400,9 +409,7 @@
         </p>
         <div class="modal-action">
           <button @click="closeDeleteModal" class="btn">Cancel</button>
-          <button @click="confirmDelete" class="btn btn-error">
-            Delete
-          </button>
+          <button @click="confirmDelete" class="btn btn-error">Delete</button>
         </div>
       </div>
     </div>
@@ -442,6 +449,7 @@ export default {
       },
       isDeleteModalVisible: false,
       slugToDelete: null,
+      loadingHighlights: null,
     };
   },
 
@@ -647,6 +655,7 @@ export default {
         );
         await this.fetchPortfolios();
         await this.fetchHighlighted();
+        window.location.reload();
       } catch (error) {
         console.error(`Gagal mengupdate status portfolio ${slug}:`, error);
         this.$toast?.error?.("Failed to update portfolio status.");
@@ -654,33 +663,27 @@ export default {
     },
 
     async sendHighlight(portfolioId) {
-      // Debugging sebelum kirim
-      console.log("Debug: portfolioId =", portfolioId);
-
       if (!portfolioId) {
         console.error("Error: portfolioId kosong atau undefined");
         this.$toast?.error?.("ID portfolio tidak ditemukan");
         return;
       }
-
+      this.loadingHighlights = portfolioId;
       try {
-        const res = await this.$api.post(
-          "/content-tracking/highlighted-portfolios",
-          { portfolioId: portfolioId }, // pastikan format sesuai API
-          {
-            headers: {
-              "Content-Type": "application/json", // ubah kalau memang JSON
-            },
-          }
+        await this.$api.post(
+          "/api/content-tracking/highlighted-portfolios",
+          { portfolioId: portfolioId },
+          { headers: { "Content-Type": "application/json" } }
         );
-
-        console.log("Highlight berhasil:", res.data);
         this.$toast?.success?.("Portfolio berhasil di-highlight");
         await this.fetchPortfolios();
         await this.fetchHighlighted();
+        window.location.reload();
       } catch (err) {
         console.error("Gagal mengirim highlight:", err.response?.data || err);
         this.$toast?.error?.("Gagal highlight portfolio");
+      } finally {
+        this.loadingHighlights = null;
       }
     },
 
@@ -712,6 +715,7 @@ export default {
         this.$toast?.success?.("Portfolio deleted successfully.");
         await this.fetchPortfolios();
         await this.fetchHighlighted();
+        window.location.reload();
       } catch (error) {
         console.error("Gagal menghapus card:", error);
         this.$toast?.error?.("Failed to delete portfolio.");
@@ -726,19 +730,25 @@ export default {
     },
 
     async deletePortHighlight(portoId) {
+      if (!portoId) {
+        console.error("Error: portoId kosong atau undefined");
+        this.$toast?.error?.("ID portfolio tidak ditemukan");
+        return;
+      }
+      this.loadingHighlights = portoId;
       try {
-        let apiUrl = `/api/content-tracking/highlighted-portfolios/${portoId}`;
-        console.log(`slug berisi = ${portoId}`);
-        const response = await this.$api.delete(apiUrl);
-        console.log(
-          `Highlighted Portfolio dengan id ${portoId} berhasil dihapus`
+        await this.$api.delete(
+          `/api/content-tracking/highlighted-portfolios/${portoId}`
         );
         this.$toast?.success?.("Portfolio highlight removed.");
         await this.fetchPortfolios();
         await this.fetchHighlighted();
+        window.location.reload();
       } catch (error) {
         console.error("Gagal menghapus card:", error);
         this.$toast?.error?.("Failed to remove portfolio highlight.");
+      } finally {
+        this.loadingHighlights = null;
       }
     },
     togglePreview() {
