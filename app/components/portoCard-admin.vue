@@ -43,7 +43,7 @@
           </svg>
         </button>
         <button
-          @click="callDeleteFunc"
+          @click="deleteCard"
           class="bg-[#F43232] p-2 rounded-lg cursor-pointer hover:opacity-80 transition"
         >
           <svg
@@ -63,6 +63,7 @@
           </svg>
         </button>
         <button
+          @click="toggleArchive"
           class="bg-[#797979] p-2 rounded-lg cursor-pointer hover:opacity-80 transition"
         >
           <svg
@@ -95,7 +96,7 @@
           </svg>
         </button>
         <button
-          @click="highlightThis"
+          @click="toggleHighlight"
           class="bg-[#FFCC00] p-2 rounded-lg cursor-pointer hover:opacity-80 transition items-center aspect-square"
         >
           <svg
@@ -148,15 +149,27 @@ export default {
       default:
         "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
     },
+    status: {
+      type: String,
+      required: false,
+      default: "unarchive",
+    },
+    isHighlighted: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
-    highlightThis() {
-      console.log("✅ Debug: props.id =", this.id);
+    toggleHighlight() {
       if (!this.id) {
         console.error("❌ Portfolio ID kosong, tidak mengirim ke parent");
         return;
       }
-      this.$emit("highlight", this.id);
+      if (this.isHighlighted) {
+        this.$emit("unhighlight", this.id);
+      } else {
+        this.$emit("highlight", this.id);
+      }
     },
     deleteCard() {
       console.log("✅ Debug: props.slug =", this.slug);
@@ -165,16 +178,6 @@ export default {
         return;
       }
       this.$emit("delete", this.slug);
-    },
-    deleteHighlightPort() {
-      console.log("✅ Debug: props.id =", this.id);
-      if (!this.slug) {
-        console.error(
-          "❌ Portfolio Hightlight ID kosong, tidak mengirim ke parent"
-        );
-        return;
-      }
-      this.$emit("deleteHighlight", this.id);
     },
     edit() {
       if (!this.slug) {
@@ -185,9 +188,18 @@ export default {
       }
       this.$emit("edit", this.slug);
     },
-    callDeleteFunc() {
-      this.deleteCard();
-      this.deleteHighlightPort();
+    toggleArchive() {
+      if (!this.slug) {
+        console.error(
+          "❌ Portfolio SLUG kosong, tidak dapat mengubah status arsip"
+        );
+        return;
+      }
+      if (this.status === "archive") {
+        this.$emit("unarchive", this.slug);
+      } else {
+        this.$emit("archive", this.slug);
+      }
     },
   },
 };

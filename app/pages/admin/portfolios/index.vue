@@ -72,16 +72,6 @@
         <div
           class="grid gap-4 w-full border border-black rounded-4xl p-4 space-x-2 items-center grid-cols-4"
         >
-          <!-- dummy -->
-
-          <PortoCardAdmin />
-
-          <PortoCardAdmin />
-
-          <PortoCardAdmin />
-
-          <PortoCardAdmin />
-
           <PortoCardAdmin
             v-for="portfolio in portoHighlightList"
             :key="portfolio._id"
@@ -89,10 +79,13 @@
             :slug="portfolio.slug"
             :title="portfolio.title"
             :shortDescription="portfolio.shortDescription"
+            :status="portfolio.status"
+            :isHighlighted="true"
             :imageUrl="`http://localhost:5000${portfolio.coverImage}`"
-            @highlight="sendHighlight"
-            @deleteHighlight="deletePortHighlight"
+            @unhighlight="deletePortHighlight"
             @edit="handleEdit"
+            @archive="updatePortfolioStatus(portfolio.slug, 'archive')"
+            @unarchive="updatePortfolioStatus(portfolio.slug, 'unarchive')"
           />
         </div>
       </div>
@@ -105,10 +98,14 @@
           :slug="portfolio.slug"
           :title="portfolio.title"
           :shortDescription="portfolio.shortDescription"
+          :status="portfolio.status"
+          :isHighlighted="false"
           :imageUrl="`http://localhost:5000${portfolio.coverImage}`"
           @highlight="sendHighlight"
           @delete="deleteCard"
           @edit="handleEdit"
+          @archive="updatePortfolioStatus(portfolio.slug, 'archive')"
+          @unarchive="updatePortfolioStatus(portfolio.slug, 'unarchive')"
         />
       </div>
     </div>
@@ -390,6 +387,25 @@
         </form>
       </div>
     </div>
+    <!-- Delete Confirmation Modal -->
+    <div
+      :class="{ 'modal-open': isDeleteModalVisible }"
+      class="modal modal-bottom sm:modal-middle"
+    >
+      <div class="modal-box">
+        <h3 class="font-bold text-lg">Confirm Deletion</h3>
+        <p class="py-4">
+          Are you sure you want to delete this portfolio? This action cannot be
+          undone.
+        </p>
+        <div class="modal-action">
+          <button @click="closeDeleteModal" class="btn">Cancel</button>
+          <button @click="confirmDelete" class="btn btn-error">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -424,6 +440,8 @@ export default {
         status: "all",
         search: "",
       },
+      isDeleteModalVisible: false,
+      slugToDelete: null,
     };
   },
 
@@ -550,14 +568,15 @@ export default {
         });
 
         console.log("Portfolio berhasil dibuat:", response.data);
+        this.$toast?.success?.("Portfolio created successfully.");
         this.tampilanAktif = "daftar";
 
         // Memuat ulang daftar setelah berhasil membuat
         await this.fetchPortfolios();
-        // await navigateTo("/admin/portfolio");
-        window.location.reload(true);
+        await this.fetchHighlighted();
       } catch (error) {
         console.error("Gagal membuat portfolio:", error);
+        this.$toast?.error?.("Failed to create portfolio.");
       }
     },
 
@@ -617,6 +636,23 @@ export default {
       }
     },
 
+    async updatePortfolioStatus(slug, status) {
+      try {
+        await this.$api.put(`/api/portfolios/${slug}`, { status: status });
+        console.log(`Portfolio ${slug} status updated to ${status}`);
+        this.$toast?.success?.(
+          `Portfolio successfully ${
+            status === "archive" ? "archived" : "unarchived"
+          }.`
+        );
+        await this.fetchPortfolios();
+        await this.fetchHighlighted();
+      } catch (error) {
+        console.error(`Gagal mengupdate status portfolio ${slug}:`, error);
+        this.$toast?.error?.("Failed to update portfolio status.");
+      }
+    },
+
     async sendHighlight(portfolioId) {
       // Debugging sebelum kirim
       console.log("Debug: portfolioId =", portfolioId);
@@ -640,7 +676,8 @@ export default {
 
         console.log("Highlight berhasil:", res.data);
         this.$toast?.success?.("Portfolio berhasil di-highlight");
-        window.location.reload(true);
+        await this.fetchPortfolios();
+        await this.fetchHighlighted();
       } catch (err) {
         console.error("Gagal mengirim highlight:", err.response?.data || err);
         this.$toast?.error?.("Gagal highlight portfolio");
@@ -661,16 +698,33 @@ export default {
         this.portoHighlightList = []; // Default to empty array on error
       }
     },
-    async deleteCard(portoSlug) {
+    deleteCard(portoSlug) {
+      this.slugToDelete = portoSlug;
+      this.isDeleteModalVisible = true;
+    },
+
+    async confirmDelete() {
+      if (!this.slugToDelete) return;
       try {
-        let apiUrl = `/api/portfolios/${portoSlug}`;
-        console.log(`slug berisi = ${portoSlug}`);
-        const response = await this.$api.delete(apiUrl);
-        console.log(`Card dengan slug ${portoSlug} berhasil dihapus`);
+        let apiUrl = `/api/portfolios/${this.slugToDelete}`;
+        await this.$api.delete(apiUrl);
+        console.log(`Card dengan slug ${this.slugToDelete} berhasil dihapus`);
+        this.$toast?.success?.("Portfolio deleted successfully.");
+        await this.fetchPortfolios();
+        await this.fetchHighlighted();
       } catch (error) {
         console.error("Gagal menghapus card:", error);
+        this.$toast?.error?.("Failed to delete portfolio.");
+      } finally {
+        this.closeDeleteModal();
       }
     },
+
+    closeDeleteModal() {
+      this.isDeleteModalVisible = false;
+      this.slugToDelete = null;
+    },
+
     async deletePortHighlight(portoId) {
       try {
         let apiUrl = `/api/content-tracking/highlighted-portfolios/${portoId}`;
@@ -679,8 +733,12 @@ export default {
         console.log(
           `Highlighted Portfolio dengan id ${portoId} berhasil dihapus`
         );
+        this.$toast?.success?.("Portfolio highlight removed.");
+        await this.fetchPortfolios();
+        await this.fetchHighlighted();
       } catch (error) {
         console.error("Gagal menghapus card:", error);
+        this.$toast?.error?.("Failed to remove portfolio highlight.");
       }
     },
     togglePreview() {
