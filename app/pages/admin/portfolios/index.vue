@@ -51,7 +51,6 @@
               class="grow"
               placeholder="Search"
               v-model="filter.search"
-              @input="onFilterChange"
             />
           </label>
 
@@ -80,7 +79,7 @@
             :slug="portfolio.slug"
             :title="portfolio.title"
             :shortDescription="portfolio.shortDescription"
-            :status="portfolio.status"
+            :isArchived="portfolio.isArchived"
             :isHighlighted="true"
             :loading-highlight="loadingHighlights"
             :imageUrl="`http://localhost:5000${portfolio.coverImage}`"
@@ -106,7 +105,7 @@
           :slug="portfolio.slug"
           :title="portfolio.title"
           :shortDescription="portfolio.shortDescription"
-          :status="portfolio.status"
+          :isArchived="portfolio.isArchived"
           :isHighlighted="false"
           :loading-highlight="loadingHighlights"
           :imageUrl="`http://localhost:5000${portfolio.coverImage}`"
@@ -440,7 +439,6 @@ export default {
         slug: "",
       },
       existingImageUrl: null,
-      value: "",
       searchTimeout: null,
       isPreviewing: false,
       filter: {
@@ -460,14 +458,14 @@ export default {
 
   // [NEW] Menambahkan watcher untuk fungsionalitas pencarian
   watch: {
-    // Fungsi ini akan berjalan setiap kali 'value' (teks di search bar) berubah
-    value(newSearchTerm) {
+    // Fungsi ini akan berjalan setiap kali 'filter.search' (teks di search bar) berubah
+    "filter.search"() {
       // Hapus timer sebelumnya untuk me-reset hitungan
       clearTimeout(this.searchTimeout);
 
       // Atur timer baru. Method fetchPortfolios akan dipanggil 500ms setelah pengguna berhenti mengetik
       this.searchTimeout = setTimeout(() => {
-        this.fetchPortfolios(newSearchTerm);
+        this.fetchPortfolios();
       }, 500);
     },
   },
@@ -481,6 +479,13 @@ export default {
       console.log(
         `Mencoba mengambil data portfolio. Term: "${searchTerm}", Status: "${status}"`
       );
+
+      if (status === "archive") {
+        status = "archived";
+      } else if (status === "unarchive") {
+        status = "active";
+      }
+
       try {
         // API URL dasar
         let apiUrl = `/api/portfolios?limit=10&page=1&status=${status}`;
@@ -648,7 +653,9 @@ export default {
 
     async updatePortfolioStatus(slug, status) {
       try {
-        await this.$api.put(`/api/portfolios/${slug}`, { status: status });
+        await this.$api.patch(`/api/portfolios/${slug}/archive`, {
+          status: status,
+        });
         console.log(`Portfolio ${slug} status updated to ${status}`);
         this.$toast?.success?.(
           `Portfolio successfully ${
@@ -715,6 +722,7 @@ export default {
         await this.$api.delete(apiUrl);
         console.log(`Card dengan slug ${this.slugToDelete} berhasil dihapus`);
         this.$toast?.success?.("Portfolio deleted successfully.");
+        // await this.deletePortHighlight(this.slugToDelete);
         await this.fetchPortfolios();
         await this.fetchHighlighted();
         window.location.reload();

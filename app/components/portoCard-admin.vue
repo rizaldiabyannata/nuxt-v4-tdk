@@ -3,7 +3,8 @@
     class="card bg-base-100 w-full shadow-lg rounded-2xl overflow-hidden flex flex-col aspect-[3/4] min-h-[320px]"
   >
     <div
-      class="card-body bg-white rounded-t-2xl p-4 sm:p-6 flex flex-col justify-between"
+      class="card-body rounded-t-2xl p-4 sm:p-6 flex flex-col justify-between"
+      :class="isArchived ? 'bg-gray-300' : 'bg-white'"
     >
       <h2
         id="title"
@@ -64,7 +65,8 @@
         </button>
         <button
           @click="toggleArchive"
-          class="bg-[#797979] p-2 rounded-lg cursor-pointer hover:opacity-80 transition"
+          class="p-2 rounded-lg cursor-pointer hover:opacity-80 transition"
+          :class="isArchived ? 'bg-green-500' : 'bg-[#797979]'"
         >
           <svg
             width="20"
@@ -155,10 +157,9 @@ export default {
       default:
         "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
     },
-    status: {
-      type: String,
-      required: false,
-      default: "unarchive",
+    isArchived: {
+      type: Boolean,
+      required: true,
     },
     isHighlighted: {
       type: Boolean,
@@ -210,7 +211,7 @@ export default {
         );
         return;
       }
-      if (this.status === "archive") {
+      if (this.isArchived) {
         this.$emit("unarchive", this.slug);
       } else {
         this.$emit("archive", this.slug);
