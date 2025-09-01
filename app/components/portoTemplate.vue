@@ -5,7 +5,7 @@
     </p>
     <img crossorigin="anonymous" :src="image" alt="" class="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl rounded-lg shadow-md object-cover" />
     <div class="w-full px-2 sm:px-4 md:px-8">
-      <div v-html="secondParagraph" class="prose prose-sm sm:prose lg:prose-lg max-w-none break-words"></div>
+      <div v-html="secondParagraph" class="prose prose-sm sm:prose lg:prose-lg max-w-none break-words tiptap-content-view"></div>
     </div>
   </div>
 </template>
