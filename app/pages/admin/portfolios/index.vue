@@ -46,15 +46,21 @@
                 <path d="m21 21-4.3-4.3"></path>
               </g>
             </svg>
-            <input type="search" class="grow" placeholder="Search" />
+            <input
+              type="search"
+              class="grow"
+              placeholder="Search"
+              v-model="filter.search"
+              @input="onFilterChange"
+            />
           </label>
 
           <label class="select">
             <span class="label">Filter</span>
-            <select>
-              <option>All</option>
-              <option>Unarchive</option>
-              <option>Archive</option>
+            <select v-model="filter.status" @change="onFilterChange">
+              <option value="all">All</option>
+              <option value="unarchive">Unarchive</option>
+              <option value="archive">Archive</option>
             </select>
           </label>
         </div>
@@ -184,11 +190,7 @@
               class="block text-2xl font-bold text-[#EB5523]"
               >Description</label
             >
-            <TiptapEditor
-              v-model="portfolio.description"
-              editorStyle="height: 320px"
-              class="mt-1 block w-full shadow-sm border border-gray-700 rounded-2xl bg-white overflow-hidden"
-            />
+            <TiptapEditor v-model="portfolio.description" class="mt-1" />
           </div>
           <div class="flex justify-end pt-4 space-x-3">
             <button
@@ -199,6 +201,7 @@
               Cancel
             </button>
             <button
+              @click="togglePreview"
               type="button"
               class="flex flex-row items-center space-x-2 px-4 py-2 bg-[#2949BE] text-white rounded-lg"
             >
@@ -325,10 +328,7 @@
               >Description</label
             >
             <client-only>
-              <TiptapEditor
-                v-model="portfolio.description"
-                class="mt-1 block w-full shadow-sm border border-gray-700 rounded-2xl bg-white overflow-hidden"
-              />
+              <TiptapEditor v-model="portfolio.description" class="mt-1" />
             </client-only>
           </div>
 
@@ -341,6 +341,7 @@
               Cancel
             </button>
             <button
+              @click="togglePreview"
               type="button"
               class="flex flex-row items-center space-x-2 px-4 py-2 bg-[#2949BE] text-white rounded-lg"
             >
@@ -393,11 +394,16 @@
 </template>
 
 <script>
+import TiptapEditor from "~/components/TiptapEditor.vue";
+
 definePageMeta({
   layout: "admin",
 });
 
 export default {
+  components: {
+    TiptapEditor,
+  },
   data() {
     return {
       tampilanAktif: "daftar",
@@ -413,6 +419,11 @@ export default {
       existingImageUrl: null,
       value: "",
       searchTimeout: null,
+      isPreviewing: false,
+      filter: {
+        status: "all",
+        search: "",
+      },
     };
   },
 
@@ -436,12 +447,17 @@ export default {
   },
 
   methods: {
-    // [FIX] Mengubah method untuk menerima parameter pencarian
-    async fetchPortfolios(searchTerm = "") {
-      console.log(`Mencoba mengambil data portfolio. Term: "${searchTerm}"`);
+    // [FIX] Mengubah method untuk menerima parameter pencarian dan filter
+    async fetchPortfolios(
+      searchTerm = this.filter.search,
+      status = this.filter.status
+    ) {
+      console.log(
+        `Mencoba mengambil data portfolio. Term: "${searchTerm}", Status: "${status}"`
+      );
       try {
         // API URL dasar
-        let apiUrl = "/api/portfolios?limit=10&page=1&status=all";
+        let apiUrl = `/api/portfolios?limit=10&page=1&status=${status}`;
 
         // Jika ada teks pencarian, tambahkan sebagai parameter '&search'
         if (searchTerm) {
@@ -455,6 +471,10 @@ export default {
         console.error("Gagal mengambil data portfolio:", error);
         this.portfoliosList = []; // Default to empty array on error
       }
+    },
+
+    onFilterChange() {
+      this.fetchPortfolios();
     },
 
     handleFileUpload(event) {
@@ -662,6 +682,18 @@ export default {
       } catch (error) {
         console.error("Gagal menghapus card:", error);
       }
+    },
+    togglePreview() {
+      navigateTo("/preview-" + this.portfolio.slug, {
+        query: {
+          title: this.portfolio.title,
+          shortDescription: this.portfolio.shortDescription,
+          description: this.portfolio.description,
+          coverImage: this.portfolio.coverImage
+            ? URL.createObjectURL(this.portfolio.coverImage)
+            : this.existingImageUrl || "",
+        },
+      });
     },
   },
 

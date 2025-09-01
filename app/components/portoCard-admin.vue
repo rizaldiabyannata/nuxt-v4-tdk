@@ -3,22 +3,20 @@
     class="card bg-base-100 w-full shadow-lg rounded-2xl overflow-hidden flex flex-col aspect-[3/4] min-h-[320px]"
   >
     <div
-      class="card-body bg-white rounded-t-2xl p-4 sm:p-6 flex flex-col justify-between h-[60%]"
+      class="card-body bg-white rounded-t-2xl p-4 sm:p-6 flex flex-col justify-between"
     >
-      <div>
-        <h2
-          id="title"
-          class="card-title text-black text-xl font-semibold mb-2 truncate"
-        >
-          {{ title }}
-        </h2>
-        <p
-          id="shortDescription"
-          class="text-black text-sm sm:text-base mb-2 line-clamp-2"
-        >
-          {{ (shortDescription || "").substring(0, 50) }}...
-        </p>
-      </div>
+      <h2
+        id="title"
+        class="card-title text-black text-xl font-semibold mb-2 w-full text-wrap"
+      >
+        {{ title }}
+      </h2>
+      <p
+        id="shortDescription"
+        class="text-black text-sm sm:text-base mb-2 line-clamp-2"
+      >
+        {{ (shortDescription || "").substring(0, 50) }}...
+      </p>
       <div class="card-actions flex flex-row gap-2 mt-2">
         <!-- edit -->
         <button

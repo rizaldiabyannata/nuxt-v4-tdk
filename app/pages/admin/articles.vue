@@ -8,8 +8,17 @@
 
     <div v-if="tampilanAktif === 'daftar'" class="px-6 mt-12">
       <div class="flex flex-row justify-between items-center w-full">
-        <button @click="tampilanAktif = 'buat'" class="btn shadow-none border-0 flex flex-row justify-center items-center space-x-2 px-4 py-3 rounded-xl bg-[#EB5523] text-white">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <button
+          @click="tampilanAktif = 'buat'"
+          class="btn shadow-none border-0 flex flex-row justify-center items-center space-x-2 px-4 py-3 rounded-xl bg-[#EB5523] text-white"
+        >
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 22 22"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               fill-rule="evenodd"
               clip-rule="evenodd"
@@ -53,18 +62,36 @@
 
       <div class="flex flex-col w-full mt-6 space-y-4">
         <h1 class="text-2xl font-bold text-[#EB5523]">Highlight Articles</h1>
-        <div class="flex flex-row w-full border border-black rounded-4xl p-4 space-x-8 items-center">
+        <div
+          class="flex flex-row w-full border border-black rounded-4xl p-4 space-x-8 items-center"
+        >
           <carousel-admin /><carousel-admin /><carousel-admin /><carousel-admin />
           <button class="p-4 bg-[#F43232] h-fit rounded-xl ml-6">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="white" xmlns="http://www.w3.org/2000/svg">
-              <path d="M13.202 15.2891H6.48682V13.0507H13.202V6.33545H15.4404V13.0507H22.1557V15.2891H15.4404V22.0043H13.202V15.2891Z" fill="#FEF7FF" />
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 28 28"
+              fill="white"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13.202 15.2891H6.48682V13.0507H13.202V6.33545H15.4404V13.0507H22.1557V15.2891H15.4404V22.0043H13.202V15.2891Z"
+                fill="#FEF7FF"
+              />
             </svg>
           </button>
         </div>
       </div>
 
       <div class="grid grid-cols-4 gap-16 w-full pt-6">
-        <carousel-admin v-for="article in articleList" :key="article.slug" :title="article.title" :content="article.content" :imageUrl="`http://localhost:5000${article.coverImage}`" :author="article.author"/>
+        <carousel-admin
+          v-for="article in articleList"
+          :key="article.slug"
+          :title="article.title"
+          :content="article.content"
+          :imageUrl="`http://localhost:5000${article.coverImage}`"
+          :author="article.author"
+        />
       </div>
     </div>
 
@@ -72,39 +99,84 @@
       <div class="bg-gray-50 p-8 rounded-lg border">
         <form @submit.prevent="submitArticles" class="space-y-4">
           <div>
-            <label for="title" class="block text-2xl font-bold text-[#EB5523]">Portfolio Title</label>
-            <input v-model="article.title" type="text" id="title" class="mt-1 block w-full shadow-sm p-2 text-black border border-gray-700 rounded-2xl" />
+            <label for="title" class="block text-2xl font-bold text-[#EB5523]"
+              >Portfolio Title</label
+            >
+            <input
+              v-model="article.title"
+              type="text"
+              id="title"
+              class="mt-1 block w-full shadow-sm p-2 text-black border border-gray-700 rounded-2xl"
+            />
           </div>
           <div>
-            <label for="cover-image-upload" class="block text-2xl font-bold text-[#EB5523] mb-2">Cover Image</label>
+            <label
+              for="cover-image-upload"
+              class="block text-2xl font-bold text-[#EB5523] mb-2"
+              >Cover Image</label
+            >
             <label
               for="cover-image-upload"
               class="relative flex flex-col items-center justify-center w-full h-32 border-2 border-gray-400 border-dashed rounded-2xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors"
             >
-              <div class="flex items-center justify-center bg-[#EB5523] text-white p-2 rounded-box">
-                <span v-if="article.coverImage">{{ article.coverImage.name }}</span>
-                <svg v-else class="w-10 h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 5.75V14.25M5.75 10H14.25" />
+              <div
+                class="flex items-center justify-center bg-[#EB5523] text-white p-2 rounded-box"
+              >
+                <span v-if="article.coverImage">{{
+                  article.coverImage.name
+                }}</span>
+                <svg
+                  v-else
+                  class="w-10 h-10"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 5.75V14.25M5.75 10H14.25"
+                  />
                 </svg>
               </div>
-              <input @change="handleFileUpload" id="cover-image-upload" type="file" class="hidden" accept="image/*" />
+              <input
+                @change="handleFileUpload"
+                id="cover-image-upload"
+                type="file"
+                class="hidden"
+                accept="image/*"
+              />
             </label>
           </div>
           <div>
-            <label for="content" class="block text-2xl font-bold text-[#EB5523]">Content</label>
-            <Editor
-              v-model="article.content"
-              editorStyle="height: 320px"
-              :pt="{
-                toolbar: { style: { backgroundColor: 'white', borderColor: '#D1D5DB' } },
-              }"
-              class="mt-1 block w-full shadow-sm border border-gray-700 rounded-2xl bg-white overflow-hidden"
-            />
+            <label for="content" class="block text-2xl font-bold text-[#EB5523]"
+              >Content</label
+            >
+            <TiptapEditor v-model="article.content" class="mt-1" />
           </div>
           <div class="flex justify-end pt-4 space-x-3">
-             <button @click="tampilanAktif = 'daftar'" type="button" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">Cancel</button>
-            <button type="button" class="flex flex-row items-center space-x-2 px-4 py-2 bg-[#2949BE] text-white rounded-lg">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <button
+              @click="tampilanAktif = 'daftar'"
+              type="button"
+              class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
+            >
+              Cancel
+            </button>
+            <button
+              @click="togglePreview"
+              type="button"
+              class="flex flex-row items-center space-x-2 px-4 py-2 bg-[#2949BE] text-white rounded-lg"
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 22 22"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <path
                   d="M19 20H5C4.46957 20 3.96086 19.7893 3.58579 19.4142C3.21071 19.0391 3 18.5304 3 18V6C3 5.46957 3.21071 4.96086 3.58579 4.58579C3.96086 4.21071 4.46957 4 5 4H15C15.5304 4 16.0391 4.21071 16.4142 4.58579C16.7893 4.96086 17 5.46957 17 6V7M19 20C18.4696 20 17.9609 19.7893 17.5858 19.4142C17.2107 19.0391 17 18.5304 17 18V7M19 20C19.5304 20 20.0391 19.7893 20.4142 19.4142C20.7893 19.0391 21 18.5304 21 18V9C21 8.46957 20.7893 7.96086 20.4142 7.58579C20.0391 7.21071 19.5304 7 19 7H17M13 4H9M7 16H13M7 8H13V12H7V8Z"
                   stroke="white"
@@ -115,8 +187,17 @@
               </svg>
               <p>Preview</p>
             </button>
-            <button type="submit" class="flex flex-row items-center space-x-2 px-4 py-2 bg-[#EB5523] text-white rounded-lg hover:bg-orange-600 cursor-pointer">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <button
+              type="submit"
+              class="flex flex-row items-center space-x-2 px-4 py-2 bg-[#EB5523] text-white rounded-lg hover:bg-orange-600 cursor-pointer"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <path
                   fill-rule="evenodd"
                   clip-rule="evenodd"
@@ -133,7 +214,38 @@
           </div>
         </form>
       </div>
-      <div class="flex justify-between items-center mb-6">
+      <div class="flex justify-between items-center mb-6"></div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div
+      v-if="isPreviewing"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    >
+      <div
+        class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col"
+      >
+        <div class="flex justify-between items-center p-4 border-b">
+          <h2 class="text-2xl font-bold text-[#EB5523]">Article Preview</h2>
+          <button
+            @click="togglePreview"
+            class="text-gray-500 hover:text-gray-800 text-3xl leading-none"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="p-6 overflow-y-auto">
+          <h1 class="text-3xl font-bold mb-4">{{ article.title }}</h1>
+          <div class="prose max-w-none" v-html="article.content"></div>
+        </div>
+        <div class="p-4 border-t flex justify-end">
+          <button
+            @click="togglePreview"
+            class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -141,6 +253,7 @@
 
 <script>
 import CarouselAdmin from "../../components/carousel-admin.vue";
+import TiptapEditor from "../../components/TiptapEditor.vue";
 
 definePageMeta({
   layout: "admin",
@@ -149,6 +262,7 @@ definePageMeta({
 export default {
   components: {
     CarouselAdmin,
+    TiptapEditor,
   },
   data() {
     return {
@@ -161,6 +275,7 @@ export default {
       },
       value: "",
       searchTimeout: null,
+      isPreviewing: false,
     };
   },
   created() {
@@ -178,8 +293,8 @@ export default {
     async fetchArticles(searchTerm = "") {
       console.log(`FETCH_ARTICLES: Mencari dengan term: "${searchTerm}"`);
       try {
-        let apiUrl = "/blogs?limit=10&page=1";
-        
+        let apiUrl = "/api/blogs?limit=10&page=1";
+
         // [FIX] Menggunakan '&' untuk parameter tambahan, bukan '?'
         if (searchTerm) {
           apiUrl += `&search=${encodeURIComponent(searchTerm)}`;
@@ -189,7 +304,10 @@ export default {
         console.log("FETCH_ARTICLES: Response dari API:", response.data);
 
         this.articleList = response.data.data;
-        console.log("FETCH_ARTICLES: Isi `this.articleList` setelah di-set:", this.articleList);
+        console.log(
+          "FETCH_ARTICLES: Isi `this.articleList` setelah di-set:",
+          this.articleList
+        );
       } catch (error) {
         console.error("FETCH_ARTICLES: Gagal mengambil data article:", error);
       }
@@ -209,7 +327,7 @@ export default {
       }
 
       try {
-        const response = await this.$api.post("/blogs/", formData, {
+        const response = await this.$api.post("/api/blogs/", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -220,6 +338,9 @@ export default {
       } catch (error) {
         console.error("Gagal membuat article:", error);
       }
+    },
+    togglePreview() {
+      this.isPreviewing = !this.isPreviewing;
     },
   },
   computed: {
@@ -241,4 +362,3 @@ export default {
   width: 300px;
 }
 </style>
-```

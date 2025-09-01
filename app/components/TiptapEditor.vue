@@ -33,7 +33,7 @@
             @click="toggleHeaderDropdown"
             class="toolbar-button"
           >
-            <span class="w-16">{{ getActiveHeaderText() }}</span>
+            <span class="w-24">{{ getActiveHeaderText() }}</span>
             <Icon name="mdi:chevron-down" class="icon" />
           </button>
           <div v-if="showHeaderDropdown" class="dropdown-menu">
@@ -112,6 +112,85 @@
           title="Strikethrough"
         >
           <Icon name="mdi:format-strikethrough" class="icon" />
+        </button>
+      </div>
+
+      <!-- Font Family -->
+      <div class="toolbar-group">
+        <div class="relative" ref="fontFamilyDropdown">
+          <button
+            type="button"
+            @click="toggleFontFamilyDropdown"
+            class="toolbar-button"
+            style="width: 8rem"
+          >
+            <span class="truncate w-24 text-left">{{
+              getActiveFontFamily()
+            }}</span>
+            <Icon name="mdi:chevron-down" class="icon ml-1" />
+          </button>
+          <div v-if="showFontFamilyDropdown" class="dropdown-menu">
+            <button
+              type="button"
+              @click="unsetFontFamily()"
+              class="dropdown-item"
+            >
+              Default
+            </button>
+            <button
+              type="button"
+              @click="setFontFamily('Inter')"
+              class="dropdown-item"
+              style="font-family: 'Inter'"
+            >
+              Inter
+            </button>
+            <button
+              type="button"
+              @click="setFontFamily('Arial')"
+              class="dropdown-item"
+              style="font-family: 'Arial'"
+            >
+              Arial
+            </button>
+            <button
+              type="button"
+              @click="setFontFamily('Georgia')"
+              class="dropdown-item"
+              style="font-family: 'Georgia'"
+            >
+              Georgia
+            </button>
+            <button
+              type="button"
+              @click="setFontFamily('Courier New')"
+              class="dropdown-item"
+              style="font-family: 'Courier New'"
+            >
+              Courier New
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Font Size -->
+      <div class="toolbar-group">
+        <input
+          type="number"
+          min="1"
+          @change="setFontSize"
+          :value="getActiveFontSize().replace('px', '')"
+          class="toolbar-input"
+          placeholder="Size"
+          title="Font Size (px)"
+        />
+        <button
+          type="button"
+          @click="unsetFontSize()"
+          class="toolbar-button"
+          title="Default Size"
+        >
+          <Icon name="mdi:format-font-size-decrease" class="icon" />
         </button>
       </div>
 
@@ -215,6 +294,9 @@ import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
 import Image from "@tiptap/extension-image";
 import ImageResize from "tiptap-extension-resize-image";
+import { TextStyleKit } from "@tiptap/extension-text-style";
+import FontFamily from "@tiptap/extension-font-family";
+import FontSize from "@tiptap/extension-font-size";
 
 export default {
   name: "TiptapEditor",
@@ -236,6 +318,7 @@ export default {
     return {
       editor: null,
       showHeaderDropdown: false,
+      showFontFamilyDropdown: false,
     };
   },
   watch: {
@@ -274,6 +357,11 @@ export default {
         ImageResize.configure({
           inline: true,
         }),
+        TextStyleKit,
+        FontFamily,
+        FontSize.configure({
+          types: ["textStyle"],
+        }),
       ],
       content: this.modelValue,
       onUpdate: () => {
@@ -308,10 +396,46 @@ export default {
       return "Normal";
     },
     handleClickOutside(event) {
-      const dropdown = this.$refs.headerDropdown;
-      if (dropdown && !dropdown.contains(event.target)) {
+      const headerDropdown = this.$refs.headerDropdown;
+      if (headerDropdown && !headerDropdown.contains(event.target)) {
         this.showHeaderDropdown = false;
       }
+      const fontFamilyDropdown = this.$refs.fontFamilyDropdown;
+      if (fontFamilyDropdown && !fontFamilyDropdown.contains(event.target)) {
+        this.showFontFamilyDropdown = false;
+      }
+    },
+    toggleFontFamilyDropdown() {
+      this.showFontFamilyDropdown = !this.showFontFamilyDropdown;
+    },
+    setFontFamily(font) {
+      this.editor.chain().focus().setFontFamily(font).run();
+      this.showFontFamilyDropdown = false;
+    },
+    unsetFontFamily() {
+      this.editor.chain().focus().unsetAllMarks().setFontFamily(null).run();
+      this.showFontFamilyDropdown = false;
+    },
+    getActiveFontFamily() {
+      return this.editor.getAttributes("textStyle").fontFamily || "Default";
+    },
+    setFontSize(event) {
+      const size = event.target.value;
+      if (!size) {
+        this.unsetFontSize();
+        return;
+      }
+      this.editor
+        .chain()
+        .focus()
+        .setFontSize(size + "px")
+        .run();
+    },
+    unsetFontSize() {
+      this.editor.chain().focus().unsetFontSize().run();
+    },
+    getActiveFontSize() {
+      return this.editor.getAttributes("textStyle").fontSize || "";
     },
     triggerImageUpload() {
       this.$refs.imageUpload.click();
@@ -373,7 +497,6 @@ export default {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.25rem;
   height: 2.25rem;
   border-radius: 0.375rem;
   background-color: transparent;
@@ -381,7 +504,11 @@ export default {
   cursor: pointer;
   color: #4b5563;
   transition: all 0.2s ease-in-out;
+  width: 100%;
+  padding-left: 0.2rem;
+  padding-right: 0.2rem;
 }
+
 .toolbar-button:hover {
   background-color: #e5e7eb;
   color: #111827;
@@ -448,6 +575,21 @@ export default {
 .dropdown-item.heading-3 {
   font-size: 1.125rem;
   font-weight: bold;
+}
+
+.toolbar-input {
+  width: 5rem;
+  height: 2.25rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  padding: 0 0.5rem;
+  font-size: 0.875rem;
+  background-color: #ffffff;
+  margin: 0 0.25rem;
+}
+.toolbar-input:focus {
+  outline: 2px solid #3b82f6;
+  border-color: #3b82f6;
 }
 
 /* Editor Content Area */
