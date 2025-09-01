@@ -2,8 +2,9 @@
   <div v-if="portfolio">
     <div class="relative min-h-[300px] h-[50vh] flex flex-col">
       <div
+        crossorigin="anonymous"
         class="absolute inset-0 bg-cover bg-center brightness-50 -z-10"
-        :style="`background-image: url('${portfolio.coverImage}')`"
+        :style="{ backgroundImage: `url(${portfolio.coverImage})` }"
       ></div>
       <div
         class="relative space-y-2 w-full lg:w-1/2 flex flex-col h-full justify-center p-4 sm:p-6 md:p-8"

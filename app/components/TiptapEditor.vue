@@ -383,9 +383,7 @@ export default {
             "data-local-image": null,
           },
         }),
-        ImageResize.configure({
-          inline: true,
-        }),
+        ImageResize,
         TextStyleKit,
         FontFamily,
         FontSize.configure({
