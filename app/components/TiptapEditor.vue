@@ -230,8 +230,12 @@
       <div class="toolbar-group">
         <button
           type="button"
-          @click="editor.chain().focus().setTextAlign('left').run()"
-          :class="{ 'is-active': editor.isActive({ textAlign: 'left' }) }"
+          @click="setAlignment('left')"
+          :class="{
+            'is-active':
+              editor.isActive({ textAlign: 'left' }) ||
+              editor.isActive('image', { 'data-align': 'left' }),
+          }"
           class="toolbar-button"
           title="Align Left"
         >
@@ -239,8 +243,12 @@
         </button>
         <button
           type="button"
-          @click="editor.chain().focus().setTextAlign('center').run()"
-          :class="{ 'is-active': editor.isActive({ textAlign: 'center' }) }"
+          @click="setAlignment('center')"
+          :class="{
+            'is-active':
+              editor.isActive({ textAlign: 'center' }) ||
+              editor.isActive('image', { 'data-align': 'center' }),
+          }"
           class="toolbar-button"
           title="Align Center"
         >
@@ -248,8 +256,12 @@
         </button>
         <button
           type="button"
-          @click="editor.chain().focus().setTextAlign('right').run()"
-          :class="{ 'is-active': editor.isActive({ textAlign: 'right' }) }"
+          @click="setAlignment('right')"
+          :class="{
+            'is-active':
+              editor.isActive({ textAlign: 'right' }) ||
+              editor.isActive('image', { 'data-align': 'right' }),
+          }"
           class="toolbar-button"
           title="Align Right"
         >
@@ -297,6 +309,23 @@ import ImageResize from "tiptap-extension-resize-image";
 import { TextStyleKit } from "@tiptap/extension-text-style";
 import FontFamily from "@tiptap/extension-font-family";
 import FontSize from "@tiptap/extension-font-size";
+
+const CustomImage = Image.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      "data-align": {
+        default: null,
+        renderHTML: (attributes) => {
+          if (!attributes["data-align"]) {
+            return {};
+          }
+          return { "data-align": attributes["data-align"] };
+        },
+      },
+    };
+  },
+});
 
 export default {
   name: "TiptapEditor",
@@ -349,14 +378,12 @@ export default {
         Placeholder.configure({
           placeholder: this.placeholder,
         }),
-        Image.configure({
+        CustomImage.configure({
           HTMLAttributes: {
             "data-local-image": null,
           },
         }),
-        ImageResize.configure({
-          inline: true,
-        }),
+        ImageResize,
         TextStyleKit,
         FontFamily,
         FontSize.configure({
@@ -378,6 +405,17 @@ export default {
     document.removeEventListener("click", this.handleClickOutside, true);
   },
   methods: {
+    setAlignment(align) {
+      if (this.editor.isActive("image")) {
+        this.editor
+          .chain()
+          .focus()
+          .updateAttributes("image", { "data-align": align })
+          .run();
+      } else {
+        this.editor.chain().focus().setTextAlign(align).run();
+      }
+    },
     toggleHeaderDropdown() {
       this.showHeaderDropdown = !this.showHeaderDropdown;
     },

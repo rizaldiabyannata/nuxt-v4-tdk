@@ -26,16 +26,27 @@
       />
     </div>
   </div>
-  <div v-else>
-    <p>portfolio tidak ditemukan.</p>
+  <div v-else class="text-center p-8">
+    <p class="text-lg text-gray-600">Loading portfolio preview...</p>
   </div>
 </template>
 
-<script>
-defineProps({
-  portfolio: {
-    type: Object,
-    required: true,
-  },
+<script setup>
+import { useRoute } from "vue-router";
+import { ref, watchEffect } from "vue";
+
+const route = useRoute();
+const portfolio = ref(null);
+
+watchEffect(() => {
+  if (route.query) {
+    portfolio.value = {
+      title: route.query.title || "Untitled",
+      summary: route.query.shortDescription || "",
+      description: route.query.description || "",
+      coverImage: route.query.coverImage || "/img/placeholder.png",
+      author: "PT. Total Desain Konsultan",
+    };
+  }
 });
 </script>

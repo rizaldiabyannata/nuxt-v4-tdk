@@ -684,14 +684,21 @@ export default {
       }
     },
     togglePreview() {
-      navigateTo("/preview-" + this.portfolio.slug, {
+      const slug = this.portfolio.slug || "new";
+      const path = `/admin/portfolios/preview-${slug}`;
+
+      const coverImageUrl =
+        this.portfolio.coverImage instanceof File
+          ? URL.createObjectURL(this.portfolio.coverImage)
+          : this.existingImageUrl || "";
+
+      navigateTo({
+        path: path,
         query: {
           title: this.portfolio.title,
           shortDescription: this.portfolio.shortDescription,
           description: this.portfolio.description,
-          coverImage: this.portfolio.coverImage
-            ? URL.createObjectURL(this.portfolio.coverImage)
-            : this.existingImageUrl || "",
+          coverImage: coverImageUrl,
         },
       });
     },
