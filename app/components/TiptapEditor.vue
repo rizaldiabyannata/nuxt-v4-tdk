@@ -26,14 +26,14 @@
       </div>
 
       <!-- Heading -->
-      <div class="toolbar-group w-24">
-        <div class="relative w-full" ref="headerDropdown">
+      <div class="toolbar-group">
+        <div class="relative" ref="headerDropdown">
           <button
             type="button"
             @click="toggleHeaderDropdown"
             class="toolbar-button"
           >
-            <span class="w-full">{{ getActiveHeaderText() }}</span>
+            <span class="w-16">{{ getActiveHeaderText() }}</span>
             <Icon name="mdi:chevron-down" class="icon" />
           </button>
           <div v-if="showHeaderDropdown" class="dropdown-menu">
@@ -266,7 +266,11 @@ export default {
         Placeholder.configure({
           placeholder: this.placeholder,
         }),
-        Image,
+        Image.configure({
+          HTMLAttributes: {
+            "data-local-image": null,
+          },
+        }),
         ImageResize.configure({
           inline: true,
         }),
@@ -319,7 +323,11 @@ export default {
       const reader = new FileReader();
       reader.onload = (e) => {
         const src = e.target.result;
-        this.editor.chain().focus().setImage({ src }).run();
+        this.editor
+          .chain()
+          .focus()
+          .setImage({ src, "data-local-image": "true" })
+          .run();
       };
       reader.readAsDataURL(file);
 
@@ -365,6 +373,7 @@ export default {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 2.25rem;
   height: 2.25rem;
   border-radius: 0.375rem;
   background-color: transparent;
@@ -372,9 +381,6 @@ export default {
   cursor: pointer;
   color: #4b5563;
   transition: all 0.2s ease-in-out;
-  width: 100%;
-  padding-left: 0.2rem;
-  padding-right: 0.2rem;
 }
 .toolbar-button:hover {
   background-color: #e5e7eb;

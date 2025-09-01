@@ -464,10 +464,59 @@ export default {
       }
     },
 
+    async processEditorImages(htmlContent) {
+      if (!htmlContent) return "";
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlContent, "text/html");
+      const images = doc.querySelectorAll('img[data-local-image="true"]');
+
+      for (const img of images) {
+        const base64Src = img.getAttribute("src");
+        const file = this.dataURLtoFile(base64Src, `image-${Date.now()}.png`);
+
+        const formData = new FormData();
+        formData.append("image", file);
+
+        try {
+          const response = await this.$api.post(
+            "/api/images/upload",
+            formData,
+            {
+              headers: { "Content-Type": "multipart/form-data" },
+            }
+          );
+          const newUrl = response.data.url;
+          img.setAttribute("src", newUrl);
+          img.removeAttribute("data-local-image");
+        } catch (error) {
+          console.error("Gagal mengunggah gambar dari editor:", error);
+          // Optionally, leave the base64 image or remove it
+        }
+      }
+      return doc.body.innerHTML;
+    },
+
+    dataURLtoFile(dataurl, filename) {
+      let arr = dataurl.split(","),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]),
+        n = bstr.length,
+        u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], filename, { type: mime });
+    },
+
     async submitPortfolio() {
+      // First, process images in the description
+      const processedDescription = await this.processEditorImages(
+        this.portfolio.description
+      );
+
       const formData = new FormData();
       formData.append("title", this.portfolio.title);
-      formData.append("description", this.portfolio.description);
+      formData.append("description", processedDescription);
       formData.append("shortDescription", this.portfolio.shortDescription);
       if (this.portfolio.coverImage) {
         formData.append("coverImage", this.portfolio.coverImage);
@@ -513,9 +562,13 @@ export default {
     },
 
     async updatePortfolio() {
+      const processedDescription = await this.processEditorImages(
+        this.portfolio.description
+      );
+
       const formData = new FormData();
       formData.append("title", this.portfolio.title);
-      formData.append("description", this.portfolio.description);
+      formData.append("description", processedDescription);
       formData.append("shortDescription", this.portfolio.shortDescription);
 
       // Only append coverImage if a new file has been selected
