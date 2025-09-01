@@ -582,6 +582,7 @@ export default {
         // Memuat ulang daftar setelah berhasil membuat
         await this.fetchPortfolios();
         await this.fetchHighlighted();
+        window.location.reload();
       } catch (error) {
         console.error("Gagal membuat portfolio:", error);
         this.$toast?.error?.("Failed to create portfolio.");
@@ -639,6 +640,7 @@ export default {
         // ✨ REFRESH DATA TANPA RELOAD HALAMAN (Best Practice)
         await this.fetchPortfolios();
         await this.fetchHighlighted();
+        window.location.reload();
       } catch (error) {
         console.error("Gagal mengupdate portfolio:", error);
       }
