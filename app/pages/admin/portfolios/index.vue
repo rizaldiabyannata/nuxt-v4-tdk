@@ -27,7 +27,7 @@
                 <path d="m21 21-4.3-4.3"></path>
               </g>
             </svg>
-            <input type="search" class="grow" placeholder="Search" v-model="filter.search" @input="onFilterChange" />
+            <input type="search" class="grow" placeholder="Search" v-model="filter.search" />
           </label>
 
           <label class="select">
@@ -44,17 +44,7 @@
       <div class="flex flex-col w-full mt-6 space-y-4">
         <h1 class="text-2xl font-bold text-[#EB5523]">Highlight Portfolio</h1>
 
-        <div class="grid gap-4 w-full border border-black rounded-4xl p-4 space-x-2 items-center grid-cols-4">
-          <!-- dummy -->
-
-          <PortoCardAdmin />
-
-          <PortoCardAdmin />
-
-          <PortoCardAdmin />
-
-          <PortoCardAdmin />
-
+        <div v-if="portoHighlightList && portoHighlightList.length > 0" class="grid gap-4 w-full bg-yellow-50 rounded-2xl shadow-lg p-6 items-center grid-cols-4">
           <PortoCardAdmin
             v-for="portfolio in portoHighlightList"
             :key="portfolio._id"
@@ -72,10 +62,7 @@
             @unarchive="updatePortfolioStatus(portfolio.slug, 'unarchive')"
           />
         </div>
-        <div
-          v-else
-          class="flex items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-2xl"
-        >
+        <div v-else class="flex items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-2xl">
           <p class="text-gray-500">No highlighted portfolios.</p>
         </div>
       </div>
@@ -102,7 +89,7 @@
     </div>
 
     <div v-else-if="tampilanAktif === 'buat'" class="px-6">
-      <div class="bg-gray-50 p-8 rounded-lg">
+      <div class="bg-gray-50 p-8 rounded-lg border">
         <form @submit.prevent="submitPortfolio" class="space-y-4">
           <div>
             <label for="title" class="block text-2xl font-bold text-[#EB5523]">Portfolio Title</label>
@@ -184,7 +171,7 @@
 
             <div v-if="existingImageUrl" class="mb-4">
               <p class="text-sm text-gray-600 mb-2">Gambar saat ini:</p>
-              <img crossorigin="anonymous" :src="existingImageUrl" alt="Pratinjau Gambar" class="w-full max-w-xs h-auto rounded-lg object-cover border" />
+              <img :src="existingImageUrl" alt="Pratinjau Gambar" class="w-full max-w-xs h-auto rounded-lg object-cover border" />
             </div>
 
             <label
@@ -245,16 +232,10 @@
       </div>
     </div>
     <!-- Delete Confirmation Modal -->
-    <div
-      :class="{ 'modal-open': isDeleteModalVisible }"
-      class="modal modal-bottom sm:modal-middle"
-    >
+    <div :class="{ 'modal-open': isDeleteModalVisible }" class="modal modal-bottom sm:modal-middle">
       <div class="modal-box">
         <h3 class="font-bold text-lg">Confirm Deletion</h3>
-        <p class="py-4">
-          Are you sure you want to delete this portfolio? This action cannot be
-          undone.
-        </p>
+        <p class="py-4">Are you sure you want to delete this portfolio? This action cannot be undone.</p>
         <div class="modal-action">
           <button @click="closeDeleteModal" class="btn">Cancel</button>
           <button @click="confirmDelete" class="btn btn-error">Delete</button>
@@ -323,6 +304,13 @@ export default {
     // [FIX] Mengubah method untuk menerima parameter pencarian dan filter
     async fetchPortfolios(searchTerm = this.filter.search, status = this.filter.status) {
       console.log(`Mencoba mengambil data portfolio. Term: "${searchTerm}", Status: "${status}"`);
+
+      if (status === "archive") {
+        status = "archived";
+      } else if (status === "unarchive") {
+        status = "active";
+      }
+
       try {
         // API URL dasar
         let apiUrl = `/api/portfolios?limit=10&page=1&status=${status}`;
@@ -482,11 +470,7 @@ export default {
           status: status,
         });
         console.log(`Portfolio ${slug} status updated to ${status}`);
-        this.$toast?.success?.(
-          `Portfolio successfully ${
-            status === "archive" ? "archived" : "unarchived"
-          }.`
-        );
+        this.$toast?.success?.(`Portfolio successfully ${status === "archive" ? "archived" : "unarchived"}.`);
         await this.fetchPortfolios();
         await this.fetchHighlighted();
         window.location.reload();
@@ -504,11 +488,7 @@ export default {
       }
       this.loadingHighlights = portfolioId;
       try {
-        await this.$api.post(
-          "/api/content-tracking/highlighted-portfolios",
-          { portfolioId: portfolioId },
-          { headers: { "Content-Type": "application/json" } }
-        );
+        await this.$api.post("/api/content-tracking/highlighted-portfolios", { portfolioId: portfolioId }, { headers: { "Content-Type": "application/json" } });
         this.$toast?.success?.("Portfolio berhasil di-highlight");
         await this.fetchPortfolios();
         await this.fetchHighlighted();
@@ -562,11 +542,18 @@ export default {
     },
 
     async deletePortHighlight(portoId) {
+      if (!portoId) {
+        console.error("Error: portoId kosong atau undefined");
+        this.$toast?.error?.("ID portfolio tidak ditemukan");
+        return;
+      }
+      this.loadingHighlights = portoId;
       try {
-        let apiUrl = `/api/content-tracking/highlighted-portfolios/${portoId}`;
-        console.log(`slug berisi = ${portoId}`);
-        const response = await this.$api.delete(apiUrl);
-        console.log(`Highlighted Portfolio dengan id ${portoId} berhasil dihapus`);
+        await this.$api.delete(`/api/content-tracking/highlighted-portfolios/${portoId}`);
+        this.$toast?.success?.("Portfolio highlight removed.");
+        await this.fetchPortfolios();
+        await this.fetchHighlighted();
+        window.location.reload();
       } catch (error) {
         console.error("Gagal menghapus card:", error);
         this.$toast?.error?.("Failed to remove portfolio highlight.");

@@ -43,7 +43,7 @@
 
       <div class="flex flex-col w-full mt-6 space-y-4">
         <h1 class="text-2xl font-bold text-[#EB5523]">Highlight Articles</h1>
-        <div class="flex flex-row w-full border border-black rounded-4xl p-4 space-x-8 items-center">
+        <div v-if="articleHighlightList && articleHighlightList.length > 0" class="grid gap-4 w-full bg-yellow-50 rounded-2xl shadow-lg p-6 items-center grid-cols-4">
           <carousel-admin
             v-for="article in articleHighlightList"
             :key="article.slug"
@@ -51,13 +51,17 @@
             :slug="article.slug"
             :title="article.title"
             :content="article.content"
+            :isHighlighted="true"
+            :loading-highlight="loadingHighlights"
             :imageUrl="`http://localhost:5000${article.coverImage}`"
-            :author="article.author"
+            @unhighlight="deleteArticleHighlight"
             @highlight="sendHighlight"
-            @deleteHighlight="deleteArticleHighlight"
             @delete="deleteCard"
             @edit="handleEdit"
           />
+        </div>
+        <div v-else class="flex items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-2xl">
+          <p class="text-gray-500">No highlighted articles.</p>
         </div>
       </div>
 
@@ -69,10 +73,12 @@
           :slug="article.slug"
           :title="article.title"
           :content="article.content"
+          :isHighlighted="false"
+          :loading-highlight="loadingHighlights"
           :imageUrl="`http://localhost:5000${article.coverImage}`"
           :author="article.author"
           @highlight="sendHighlight"
-          @deleteHighlight="deleteArticleHighlight"
+          @unhighlight="deleteArticleHighlight"
           @delete="deleteCard"
           @edit="handleEdit"
         />
@@ -413,7 +419,7 @@ export default {
         let apiUrl = "/api/content-tracking/";
         const response = await this.$api.get(apiUrl);
         console.log("Data highlited article berhasil diambil:", response.data.featuredBlogs);
-        this.articleHighlightList = response.data.featuredBlogs || [];;
+        this.articleHighlightList = response.data.featuredBlogs || [];
       } catch (error) {
         console.error("Gagal mengambil data highlited article:", error);
         this.articleHighlightList = []; // Default to empty array on error

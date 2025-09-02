@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col md:flex-row xl:flex-col rounded-4xl p-8 bg-white justify-center items-center space-y-4 md:space-x-5">
+  <div class="flex flex-col md:flex-row xl:flex-col rounded-4xl p-8 bg-white justify-center items-center space-y-4 md:space-x-5 border border-gray-300 hover:shadow-lg transition-shadow h-full">
     <div class="flex flex-col h-full w-full items-center justify-center">
       <img :src="image" alt="" class="border border-black aspect-[5/3] object-cover" />
       <p class="font-extrabold text-black text-xl lg:text-2xl">{{ title }}</p>
