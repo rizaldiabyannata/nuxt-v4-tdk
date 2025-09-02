@@ -24,19 +24,60 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   // Interceptor untuk request TIDAK DIPERLUKAN lagi karena browser menangani cookie.
 
-  // Opsional: Interceptor untuk response bisa dipertahankan untuk menangani error global.
+  let isRefreshing = false;
+  let failedQueue = [];
+
+  const processQueue = (error, token = null) => {
+    failedQueue.forEach(prom => {
+      if (error) {
+        prom.reject(error);
+      } else {
+        prom.resolve(token);
+      }
+    });
+    failedQueue = [];
+  };
+
+  // Interceptor untuk response, menangani refresh token
   api.interceptors.response.use(
     (response) => {
-      // Langsung kembalikan response jika berhasil
       return response;
     },
-    (error) => {
-      // Menangani error global, misalnya jika session habis (401 Unauthorized)
-      console.error("API Error:", error.response?.data || error.message);
-      if (error.response?.status === 401) {
-        // Anda bisa menambahkan logika di sini, misalnya redirect ke halaman login
-        console.log("Akses tidak diizinkan (401). Mungkin perlu login ulang.");
+    async (error) => {
+      const originalRequest = error.config;
+
+      if (error.response?.status === 401 && !originalRequest._retry && originalRequest.url !== '/api/refresh/') {
+        if (isRefreshing) {
+          return new Promise(function(resolve, reject) {
+            failedQueue.push({ resolve, reject });
+          }).then(() => {
+            return api(originalRequest);
+          }).catch(err => {
+            return Promise.reject(err);
+          });
+        }
+
+        originalRequest._retry = true;
+        isRefreshing = true;
+
+        try {
+          await api.post('/api/auth/refresh/');
+          processQueue(null);
+          return api(originalRequest);
+        } catch (refreshError) {
+          processQueue(refreshError);
+          // Jika refresh token gagal, redirect ke halaman login
+          // Ini perlu dijalankan di sisi client
+          if (process.client) {
+            console.log("Sesi berakhir. Mengarahkan ke halaman login.");
+            // window.location = '/login';
+          }
+          return Promise.reject(refreshError);
+        } finally {
+          isRefreshing = false;
+        }
       }
+
       return Promise.reject(error);
     }
   );
