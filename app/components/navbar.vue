@@ -36,7 +36,7 @@
         <NuxtLink to="/article" class="text-lg" @click="closeMobileMenu">
           <p class="font-extrabold text-5xl">Article</p>
         </NuxtLink>
-        <NuxtLink to="/portfolios" class="text-lg" @click="closeMobileMenu">
+        <NuxtLink to="/portfolio" class="text-lg" @click="closeMobileMenu">
           <p class="font-extrabold text-5xl">Our Portfolio</p>
         </NuxtLink>
         <NuxtLink to="/our-services" class="text-lg" @click="closeMobileMenu">

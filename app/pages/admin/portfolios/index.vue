@@ -8,17 +8,8 @@
 
     <div v-if="tampilanAktif === 'daftar'" class="px-6 mt-12">
       <div class="flex flex-row justify-between items-center w-full">
-        <button
-          @click="tampilanAktif = 'buat'"
-          class="btn shadow-none border-0 flex flex-row justify-center items-center space-x-2 px-4 py-3 rounded-xl bg-[#EB5523] text-white"
-        >
-          <svg
-            width="22"
-            height="22"
-            viewBox="0 0 22 22"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+        <button @click="tampilanAktif = 'buat'" class="btn shadow-none border-0 flex flex-row justify-center items-center space-x-2 px-4 py-3 rounded-xl bg-[#EB5523] text-white">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               fill-rule="evenodd"
               clip-rule="evenodd"
@@ -30,28 +21,13 @@
         </button>
         <div class="flex flex-row items-center space-x-3">
           <label class="input">
-            <svg
-              class="h-[1em] opacity-50"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
-              <g
-                stroke-linejoin="round"
-                stroke-linecap="round"
-                stroke-width="2.5"
-                fill="none"
-                stroke="currentColor"
-              >
+            <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
                 <circle cx="11" cy="11" r="8"></circle>
                 <path d="m21 21-4.3-4.3"></path>
               </g>
             </svg>
-            <input
-              type="search"
-              class="grow"
-              placeholder="Search"
-              v-model="filter.search"
-            />
+            <input type="search" class="grow" placeholder="Search" v-model="filter.search" />
           </label>
 
           <label class="select">
@@ -68,10 +44,7 @@
       <div class="flex flex-col w-full mt-6 space-y-4">
         <h1 class="text-2xl font-bold text-[#EB5523]">Highlight Portfolio</h1>
 
-        <div
-          v-if="portoHighlightList && portoHighlightList.length > 0"
-          class="grid gap-4 w-full bg-yellow-50 rounded-2xl shadow-lg p-6 items-center grid-cols-4"
-        >
+        <div v-if="portoHighlightList && portoHighlightList.length > 0" class="grid gap-4 w-full bg-yellow-50 rounded-2xl shadow-lg p-6 items-center grid-cols-4">
           <PortoCardAdmin
             v-for="portfolio in portoHighlightList"
             :key="portfolio._id"
@@ -89,10 +62,7 @@
             @unarchive="updatePortfolioStatus(portfolio.slug, 'unarchive')"
           />
         </div>
-        <div
-          v-else
-          class="flex items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-2xl"
-        >
+        <div v-else class="flex items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-2xl">
           <p class="text-gray-500">No highlighted portfolios.</p>
         </div>
       </div>
@@ -122,65 +92,26 @@
       <div class="bg-gray-50 p-8 rounded-lg border">
         <form @submit.prevent="submitPortfolio" class="space-y-4">
           <div>
-            <label for="title" class="block text-2xl font-bold text-[#EB5523]"
-              >Portfolio Title</label
-            >
-            <input
-              v-model="portfolio.title"
-              type="text"
-              id="title"
-              class="mt-1 block w-full shadow-sm p-2 text-black border border-gray-700 rounded-2xl"
-              required
-            />
+            <label for="title" class="block text-2xl font-bold text-[#EB5523]">Portfolio Title</label>
+            <input v-model="portfolio.title" type="text" id="title" class="mt-1 block w-full shadow-sm p-2 text-black border border-gray-700 rounded-2xl" required />
           </div>
           <div>
-            <label
-              for="cover-image-upload"
-              class="block text-2xl font-bold text-[#EB5523] mb-2"
-              >Cover Image</label
-            >
+            <label for="cover-image-upload" class="block text-2xl font-bold text-[#EB5523] mb-2">Cover Image</label>
             <label
               for="cover-image-upload"
               class="relative flex flex-col items-center justify-center w-full h-32 border-2 border-gray-400 border-dashed rounded-2xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors"
             >
-              <div
-                class="flex items-center justify-center bg-[#EB5523] text-white p-2 rounded-box"
-              >
-                <span v-if="portfolio.coverImage">{{
-                  portfolio.coverImage.name
-                }}</span>
-                <svg
-                  v-else
-                  class="w-10 h-10"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M10 5.75V14.25M5.75 10H14.25"
-                  />
+              <div class="flex items-center justify-center bg-[#EB5523] text-white p-2 rounded-box">
+                <span v-if="portfolio.coverImage">{{ portfolio.coverImage.name }}</span>
+                <svg v-else class="w-10 h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 5.75V14.25M5.75 10H14.25" />
                 </svg>
               </div>
-              <input
-                @change="handleFileUpload"
-                id="cover-image-upload"
-                type="file"
-                class="hidden"
-                accept="image/*"
-              />
+              <input @change="handleFileUpload" id="cover-image-upload" type="file" class="hidden" accept="image/*" />
             </label>
           </div>
           <div>
-            <label
-              for="shortDescription"
-              class="block text-2xl font-bold text-[#EB5523]"
-              >Short Description</label
-            >
+            <label for="shortDescription" class="block text-2xl font-bold text-[#EB5523]">Short Description</label>
             <textarea
               v-model="portfolio.shortDescription"
               id="shortDescription"
@@ -190,33 +121,13 @@
             ></textarea>
           </div>
           <div>
-            <label
-              for="description"
-              class="block text-2xl font-bold text-[#EB5523]"
-              >Description</label
-            >
+            <label for="description" class="block text-2xl font-bold text-[#EB5523]">Description</label>
             <TiptapEditor v-model="portfolio.description" class="mt-1" />
           </div>
           <div class="flex justify-end pt-4 space-x-3">
-            <button
-              @click="tampilanAktif = 'daftar'"
-              type="button"
-              class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
-            >
-              Cancel
-            </button>
-            <button
-              @click="togglePreview"
-              type="button"
-              class="flex flex-row items-center space-x-2 px-4 py-2 bg-[#2949BE] text-white rounded-lg"
-            >
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 22 22"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+            <button @click="tampilanAktif = 'daftar'" type="button" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">Cancel</button>
+            <button @click="togglePreview" type="button" class="flex flex-row items-center space-x-2 px-4 py-2 bg-[#2949BE] text-white rounded-lg">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M19 20H5C4.46957 20 3.96086 19.7893 3.58579 19.4142C3.21071 19.0391 3 18.5304 3 18V6C3 5.46957 3.21071 4.96086 3.58579 4.58579C3.96086 4.21071 4.46957 4 5 4H15C15.5304 4 16.0391 4.21071 16.4142 4.58579C16.7893 4.96086 17 5.46957 17 6V7M19 20C18.4696 20 17.9609 19.7893 17.5858 19.4142C17.2107 19.0391 17 18.5304 17 18V7M19 20C19.5304 20 20.0391 19.7893 20.4142 19.4142C20.7893 19.0391 21 18.5304 21 18V9C21 8.46957 20.7893 7.96086 20.4142 7.58579C20.0391 7.21071 19.5304 7 19 7H17M13 4H9M7 16H13M7 8H13V12H7V8Z"
                   stroke="white"
@@ -227,17 +138,8 @@
               </svg>
               <p>Preview</p>
             </button>
-            <button
-              type="submit"
-              class="flex flex-row items-center space-x-2 px-4 py-2 bg-[#EB5523] text-white rounded-lg hover:bg-orange-600"
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+            <button type="submit" class="flex flex-row items-center space-x-2 px-4 py-2 bg-[#EB5523] text-white rounded-lg hover:bg-orange-600">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   fill-rule="evenodd"
                   clip-rule="evenodd"
@@ -260,103 +162,46 @@
       <div class="p-8">
         <form @submit.prevent="updatePortfolio" class="space-y-4">
           <div>
-            <label
-              for="title"
-              class="block text-2xl font-bold text-[#EB5523] mb-1"
-              >Portfolio Title</label
-            >
-            <textarea
-              class="textarea w-full"
-              v-model="portfolio.title"
-              type="text"
-              id="title"
-              required
-              placeholder="Bio"
-            ></textarea>
+            <label for="title" class="block text-2xl font-bold text-[#EB5523] mb-1">Portfolio Title</label>
+            <textarea class="textarea w-full" v-model="portfolio.title" type="text" id="title" required placeholder="Bio"></textarea>
           </div>
 
           <div>
-            <label class="block text-2xl font-bold text-[#EB5523] mb-2"
-              >Cover Image</label
-            >
+            <label class="block text-2xl font-bold text-[#EB5523] mb-2">Cover Image</label>
 
             <div v-if="existingImageUrl" class="mb-4">
               <p class="text-sm text-gray-600 mb-2">Gambar saat ini:</p>
-              <img
-                :src="existingImageUrl"
-                alt="Pratinjau Gambar"
-                class="w-full max-w-xs h-auto rounded-lg object-cover border"
-              />
+              <img :src="existingImageUrl" alt="Pratinjau Gambar" class="w-full max-w-xs h-auto rounded-lg object-cover border" />
             </div>
 
             <label
               for="cover-image-upload"
               class="relative flex flex-col items-center justify-center w-full h-32 border-2 border-gray-400 border-dashed rounded-2xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors"
             >
-              <div
-                class="flex items-center justify-center bg-[#EB5523] text-white p-2 rounded-box text-center"
-              >
-                <span v-if="portfolio.coverImage">{{
-                  portfolio.coverImage.name
-                }}</span>
+              <div class="flex items-center justify-center bg-[#EB5523] text-white p-2 rounded-box text-center">
+                <span v-if="portfolio.coverImage">{{ portfolio.coverImage.name }}</span>
                 <span v-else>Pilih gambar baru (jika ingin mengganti)</span>
               </div>
-              <input
-                @change="handleFileUpload"
-                id="cover-image-upload"
-                type="file"
-                class="hidden"
-                accept="image/*"
-              />
+              <input @change="handleFileUpload" id="cover-image-upload" type="file" class="hidden" accept="image/*" />
             </label>
           </div>
 
           <div>
-            <label
-              for="shortDescription"
-              class="block text-2xl font-bold text-[#EB5523] mb-1"
-              >Short Description</label
-            >
-            <textarea
-              v-model="portfolio.shortDescription"
-              id="shortDescription"
-              rows="4"
-              class="textarea w-full"
-              required
-            ></textarea>
+            <label for="shortDescription" class="block text-2xl font-bold text-[#EB5523] mb-1">Short Description</label>
+            <textarea v-model="portfolio.shortDescription" id="shortDescription" rows="4" class="textarea w-full" required></textarea>
           </div>
 
           <div>
-            <label
-              for="description"
-              class="block text-2xl font-bold text-[#EB5523]"
-              >Description</label
-            >
+            <label for="description" class="block text-2xl font-bold text-[#EB5523]">Description</label>
             <client-only>
               <TiptapEditor v-model="portfolio.description" class="mt-1" />
             </client-only>
           </div>
 
           <div class="flex justify-end pt-4 space-x-3">
-            <button
-              @click="tampilanAktif = 'daftar'"
-              type="button"
-              class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
-            >
-              Cancel
-            </button>
-            <button
-              @click="togglePreview"
-              type="button"
-              class="flex flex-row items-center space-x-2 px-4 py-2 bg-[#2949BE] text-white rounded-lg"
-            >
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 22 22"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+            <button @click="tampilanAktif = 'daftar'" type="button" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">Cancel</button>
+            <button @click="togglePreview" type="button" class="flex flex-row items-center space-x-2 px-4 py-2 bg-[#2949BE] text-white rounded-lg">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M19 20H5C4.46957 20 3.96086 19.7893 3.58579 19.4142C3.21071 19.0391 3 18.5304 3 18V6C3 5.46957 3.21071 4.96086 3.58579 4.58579C3.96086 4.21071 4.46957 4 5 4H15C15.5304 4 16.0391 4.21071 16.4142 4.58579C16.7893 4.96086 17 5.46957 17 6V7M19 20C18.4696 20 17.9609 19.7893 17.5858 19.4142C17.2107 19.0391 17 18.5304 17 18V7M19 20C19.5304 20 20.0391 19.7893 20.4142 19.4142C20.7893 19.0391 21 18.5304 21 18V9C21 8.46957 20.7893 7.96086 20.4142 7.58579C20.0391 7.21071 19.5304 7 19 7H17M13 4H9M7 16H13M7 8H13V12H7V8Z"
                   stroke="white"
@@ -367,17 +212,8 @@
               </svg>
               <p>Preview</p>
             </button>
-            <button
-              type="submit"
-              class="flex flex-row items-center space-x-2 px-4 py-2 bg-[#EB5523] text-white rounded-lg hover:bg-orange-600"
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+            <button type="submit" class="flex flex-row items-center space-x-2 px-4 py-2 bg-[#EB5523] text-white rounded-lg hover:bg-orange-600">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   fill-rule="evenodd"
                   clip-rule="evenodd"
@@ -396,16 +232,10 @@
       </div>
     </div>
     <!-- Delete Confirmation Modal -->
-    <div
-      :class="{ 'modal-open': isDeleteModalVisible }"
-      class="modal modal-bottom sm:modal-middle"
-    >
+    <div :class="{ 'modal-open': isDeleteModalVisible }" class="modal modal-bottom sm:modal-middle">
       <div class="modal-box">
         <h3 class="font-bold text-lg">Confirm Deletion</h3>
-        <p class="py-4">
-          Are you sure you want to delete this portfolio? This action cannot be
-          undone.
-        </p>
+        <p class="py-4">Are you sure you want to delete this portfolio? This action cannot be undone.</p>
         <div class="modal-action">
           <button @click="closeDeleteModal" class="btn">Cancel</button>
           <button @click="confirmDelete" class="btn btn-error">Delete</button>
@@ -472,13 +302,8 @@ export default {
 
   methods: {
     // [FIX] Mengubah method untuk menerima parameter pencarian dan filter
-    async fetchPortfolios(
-      searchTerm = this.filter.search,
-      status = this.filter.status
-    ) {
-      console.log(
-        `Mencoba mengambil data portfolio. Term: "${searchTerm}", Status: "${status}"`
-      );
+    async fetchPortfolios(searchTerm = this.filter.search, status = this.filter.status) {
+      console.log(`Mencoba mengambil data portfolio. Term: "${searchTerm}", Status: "${status}"`);
 
       if (status === "archive") {
         status = "archived";
@@ -529,13 +354,9 @@ export default {
         formData.append("image", file);
 
         try {
-          const response = await this.$api.post(
-            "/api/images/upload",
-            formData,
-            {
-              headers: { "Content-Type": "multipart/form-data" },
-            }
-          );
+          const response = await this.$api.post("/api/images/upload", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+          });
           const newUrl = response.data.url;
           img.setAttribute("src", newUrl);
           img.removeAttribute("data-local-image");
@@ -561,9 +382,7 @@ export default {
 
     async submitPortfolio() {
       // First, process images in the description
-      const processedDescription = await this.processEditorImages(
-        this.portfolio.description
-      );
+      const processedDescription = await this.processEditorImages(this.portfolio.description);
 
       const formData = new FormData();
       formData.append("title", this.portfolio.title);
@@ -615,9 +434,7 @@ export default {
     },
 
     async updatePortfolio() {
-      const processedDescription = await this.processEditorImages(
-        this.portfolio.description
-      );
+      const processedDescription = await this.processEditorImages(this.portfolio.description);
 
       const formData = new FormData();
       formData.append("title", this.portfolio.title);
@@ -631,13 +448,9 @@ export default {
 
       try {
         // Gunakan method PUT/PATCH dan kirim ke endpoint yang sesuai dengan slug/id
-        const response = await this.$api.put(
-          `/api/portfolios/${this.portfolio.slug}`,
-          formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          }
-        );
+        const response = await this.$api.put(`/api/portfolios/${this.portfolio.slug}`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
 
         console.log("Portfolio berhasil diupdate:", response.data);
         this.tampilanAktif = "daftar"; // Kembali ke daftar
@@ -655,11 +468,7 @@ export default {
       try {
         const changeStatus = status === "unarchive" ? "unarchive" : "archive";
         await this.$api.patch(`/api/portfolios/${slug}/${changeStatus}`);
-        this.$toast?.success?.(
-          `Portfolio successfully ${
-            changeStatus === "archive" ? "archived" : "unarchived"
-          }.`
-        );
+        this.$toast?.success?.(`Portfolio successfully ${changeStatus === "archive" ? "archived" : "unarchived"}.`);
         await Promise.all([this.fetchPortfolios(), this.fetchHighlighted()]);
       } catch (error) {
         console.error(`Failed to update portfolio status ${slug}:`, error);
@@ -675,11 +484,7 @@ export default {
       }
       this.loadingHighlights = portfolioId;
       try {
-        await this.$api.post(
-          "/api/content-tracking/highlighted-portfolios",
-          { portfolioId: portfolioId },
-          { headers: { "Content-Type": "application/json" } }
-        );
+        await this.$api.post("/api/content-tracking/highlighted-portfolios", { portfolioId: portfolioId }, { headers: { "Content-Type": "application/json" } });
         this.$toast?.success?.("Portfolio berhasil di-highlight");
         await this.fetchPortfolios();
         await this.fetchHighlighted();
@@ -696,10 +501,7 @@ export default {
       try {
         let apiUrl = "/api/content-tracking/";
         const response = await this.$api.get(apiUrl);
-        console.log(
-          "Data highlited portfolio berhasil diambil:",
-          response.data.highlightedPortfolios
-        );
+        console.log("Data highlited portfolio berhasil diambil:", response.data.highlightedPortfolios);
         this.portoHighlightList = response.data.highlightedPortfolios || [];
       } catch (error) {
         console.error("Gagal mengambil data highlited portfolio:", error);
@@ -743,9 +545,7 @@ export default {
       }
       this.loadingHighlights = portoId;
       try {
-        await this.$api.delete(
-          `/api/content-tracking/highlighted-portfolios/${portoId}`
-        );
+        await this.$api.delete(`/api/content-tracking/highlighted-portfolios/${portoId}`);
         this.$toast?.success?.("Portfolio highlight removed.");
         await this.fetchPortfolios();
         await this.fetchHighlighted();
@@ -761,10 +561,7 @@ export default {
       const slug = this.portfolio.slug || "new";
       const path = `/admin/portfolios/preview-${slug}`;
 
-      const coverImageUrl =
-        this.portfolio.coverImage instanceof File
-          ? URL.createObjectURL(this.portfolio.coverImage)
-          : this.existingImageUrl || "";
+      const coverImageUrl = this.portfolio.coverImage instanceof File ? URL.createObjectURL(this.portfolio.coverImage) : this.existingImageUrl || "";
 
       navigateTo({
         path: path,

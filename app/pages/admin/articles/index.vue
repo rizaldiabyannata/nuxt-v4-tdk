@@ -241,7 +241,7 @@
 
 <script>
 // import CarouselAdmin from "../../components/carousel-admin.vue";
-import TiptapEditor from "../../components/TiptapEditor.vue";
+// import TiptapEditor from "../../components/TiptapEditor.vue";
 
 definePageMeta({
   layout: "admin",
@@ -250,7 +250,7 @@ definePageMeta({
 export default {
   components: {
     // CarouselAdmin,
-    TiptapEditor,
+    // TiptapEditor,
   },
   data() {
     return {
@@ -328,7 +328,19 @@ export default {
       }
     },
     togglePreview() {
-      this.isPreviewing = !this.isPreviewing;
+      const slug = this.article.slug || "new";
+      const path = `/admin/articles/preview-${slug}`;
+
+      const coverImageUrl = this.article.coverImage instanceof File ? URL.createObjectURL(this.article.coverImage) : this.existingImageUrl || "";
+
+      navigateTo({
+        path: path,
+        query: {
+          title: this.article.title,
+          content: this.article.content,
+          coverImage: coverImageUrl,
+        },
+      });
     },
 
     async handleEdit(slug) {
@@ -345,9 +357,9 @@ export default {
           slug: dataToEdit.data.slug,
           title: dataToEdit.data.title,
           content: dataToEdit.data.content,
-          coverImage: `http://localhost:5000${dataToEdit.data.coverImage}`, // Reset gambar, biarkan user upload baru jika ingin ganti
+          coverImage: null // Reset gambar, biarkan user upload baru jika ingin ganti
         };
-        this.existingImageUrl = `http://localhost:5000${dataToEdit.coverImage}`;
+        this.existingImageUrl = `http://localhost:5000${dataToEdit.data.coverImage}`;
         console.log("image to edit: ", this.article.coverImage);
         console.log("data terkini: ", this.article);
         // 3. Ubah tampilan ke form edit
@@ -485,3 +497,7 @@ export default {
   width: 300px;
 }
 </style>
+
+
+
+<!-- Test -->
