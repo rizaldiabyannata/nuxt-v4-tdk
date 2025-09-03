@@ -21,7 +21,11 @@
             </tr>
           </tbody>
           <tbody v-else>
-            <tr class="border-b border-gray-200" v-for="(message, index) in messages" :key="index">
+            <tr
+              class="border-b border-gray-200"
+              v-for="(message, index) in messages"
+              :key="index"
+            >
               <td class="text-center">{{ message.name }}</td>
               <td class="text-center">{{ message.email }}</td>
               <td class="text-center">{{ message.message }}</td>
@@ -49,7 +53,7 @@ export default {
     async fetchMessages() {
       try {
         // API URL dasar
-        let apiUrl = "/contact-form/";
+        let apiUrl = "/api/contact-form/";
         const response = await this.$api.get(apiUrl);
         console.log("Data message berhasil diambil:", response.data);
         this.messages = response.data;

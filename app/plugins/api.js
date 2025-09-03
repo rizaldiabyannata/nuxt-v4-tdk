@@ -46,7 +46,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     async (error) => {
       const originalRequest = error.config;
 
-      if (error.response?.status === 401 && !originalRequest._retry && originalRequest.url !== '/api/refresh/') {
+      if (error.response?.status === 401 && !originalRequest._retry && originalRequest.url !== '/api/user/refresh-tokend/') {
         if (isRefreshing) {
           return new Promise(function(resolve, reject) {
             failedQueue.push({ resolve, reject });
@@ -61,10 +61,11 @@ export default defineNuxtPlugin((nuxtApp) => {
         isRefreshing = true;
 
         try {
-          await api.post('/api/auth/refresh/');
+          const response = await api.post('/api/auth/refresh/');
+          console.log("Token refreshed:", response.data);
           processQueue(null);
           return api(originalRequest);
-          
+
         } catch (refreshError) {
           processQueue(refreshError);
           // Jika refresh token gagal, redirect ke halaman login
