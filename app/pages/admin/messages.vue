@@ -49,7 +49,7 @@ export default {
     async fetchMessages() {
       try {
         // API URL dasar
-        let apiUrl = "/contact-form/";
+        let apiUrl = "/api/contact-form/";
         const response = await this.$api.get(apiUrl);
         console.log("Data message berhasil diambil:", response.data);
         this.messages = response.data;

@@ -81,7 +81,7 @@ export default {
   methods: {
     async submitMessage() {
       try {
-        const response = await this.$api.post("/contact-form/", {
+        const response = await this.$api.post("/api/contact-form/", {
           name: this.message.name,
           email: this.message.email,
           message: this.message.message,
@@ -89,6 +89,8 @@ export default {
 
         console.log("Pesan berhasil dikirim", response.data);
         this.tampilanAktif = "daftar";
+        this.$toast?.success?.("Pesan berhasil dikirim!");
+        window.location.reload(true);
       } catch (error) {
         console.error("Gagal mengirim pesan:", error);
       }

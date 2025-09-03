@@ -6,16 +6,16 @@
         :style="`background-image: url('${blog.coverImage}')`"
       ></div>
       <div class="relative space-y-2 w-full lg:w-1/2 flex flex-col h-full justify-center p-4 sm:p-6 md:p-8">
-        <h1 class="font-extrabold text-xl sm:text-2xl md:text-3xl lg:text-5xl text-white">
+        <h1 class="font-extrabold text-xl sm:text-2xl md:text-3xl lg:text-5xl ">
           {{ blog.title }}
         </h1>
-        <p class="text-white text-sm sm:text-base md:text-lg">
+        <p class=" text-sm sm:text-base md:text-lg">
           By {{ blog.author || 'PT. Total Desain Konsultan' }}
         </p>
       </div>
     </div>
     <div class="w-full flex flex-col lg:flex-row bg-white p-4 sm:p-6 md:p-8">
-      <PortoTemplate
+      <articleTemplate
         :firstParagraph="blog.summary"
         :image="blog.coverImage"
         :secondParagraph="blog.description"
