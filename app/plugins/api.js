@@ -46,7 +46,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     async (error) => {
       const originalRequest = error.config;
 
-      if (error.response?.status === 401 && !originalRequest._retry && originalRequest.url !== '/api/user/refresh-tokend/') {
+      if (error.response?.status === 401 && !originalRequest._retry && originalRequest.url !== '/api/user/refresh-token/') {
         if (isRefreshing) {
           return new Promise(function(resolve, reject) {
             failedQueue.push({ resolve, reject });
@@ -61,7 +61,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         isRefreshing = true;
 
         try {
-          const response = await api.post('/api/auth/refresh/');
+          const response = await api.post('/api/user/refresh-token/');
           console.log("Token refreshed:", response.data);
           processQueue(null);
           return api(originalRequest);
