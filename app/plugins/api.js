@@ -64,6 +64,7 @@ export default defineNuxtPlugin((nuxtApp) => {
           await api.post('/api/auth/refresh/');
           processQueue(null);
           return api(originalRequest);
+          
         } catch (refreshError) {
           processQueue(refreshError);
           // Jika refresh token gagal, redirect ke halaman login
