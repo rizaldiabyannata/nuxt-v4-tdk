@@ -1,20 +1,20 @@
 <template>
-  <div
-    class="card bg-base-100 w-full shadow-lg rounded-2xl overflow-hidden flex flex-col"
-  >
-    <div class="card-body bg-white rounded-t-2xl p-4 sm:p-6">
-      <h2 id="title" class="card-title text-black text-xl sm:text-3xl">
+  <div class="card bg-base-100 w-full shadow-lg rounded-2xl overflow-hidden">
+    <div class="card-body bg-white rounded-t-2xl p-4 sm:p-6 h-[60%]">
+      <h2
+        id="title"
+        class="card-title text-black text-xl sm:text-2xl font-bold"
+      >
         {{ title }}
       </h2>
       <!-- <p id="shortDescription" class="text-black text-sm sm:text-base mt-1">{{ shortDescription }}</p> -->
-      <p id="shortDescription" class="text-black text-sm sm:text-xl mt-1">
+      <p id="shortDescription" class="text-black text-sm sm:text-base mt-1">
         {{
           shortDescription.length > 100
             ? shortDescription.substring(0, 100) + "..."
             : shortDescription
         }}
       </p>
-
       <div class="card-actions justify-start my-2">
         <NuxtLink
           :to="`/portfolio/${slug}`"
@@ -25,13 +25,13 @@
       </div>
     </div>
 
-    <figure class="flex-grow">
+    <figure class="h-[40%] mt-2">
       <img
         crossorigin="anonymous"
         id="image"
         :src="imageUrl"
         alt="Product Image"
-        class="w-full h-full object-cover"
+        class="w-full h-auto object-cover"
       />
     </figure>
   </div>
