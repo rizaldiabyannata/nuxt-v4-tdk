@@ -1,5 +1,4 @@
 <template>
-<template>
   <div class="space-y-8">
     <!-- Header -->
     <div class="flex flex-row w-full justify-between items-center">
