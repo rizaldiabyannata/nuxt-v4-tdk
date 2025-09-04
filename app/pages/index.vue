@@ -9,10 +9,10 @@
       <div
         class="flex flex-col w-full max-w-xl sm:w-4/5 md:w-3/5 lg:w-2/5 justify-center items-center text-center"
       >
-        <h1 class="font-bold text-xl sm:text-2xl md:text-3xl text-white">
+        <h1 class="font-bold text-3xl md:text-4xl lg:text-5xl text-white">
           {{ highlightedPortfolios[0]?.title }}
         </h1>
-        <p class="mt-2 text-sm sm:text-base text-white">
+        <p class="mt-2 text-base lg:text-lg text-white">
           {{ highlightedPortfolios[0]?.shortDescription }}
         </p>
       </div>
@@ -43,20 +43,20 @@
   </div>
 
   <div
-    class="flex min-h-screen bg-white justify-center items-center p-4 sm:p-8"
+    class="flex min-h-screen bg-white justify-center items-center px-4 py-16 sm:px-8 sm:py-24"
   >
     <div
-      class="flex flex-col bg-[url(/img/grafisbg.png)] bg-cover bg-no-repeat w-full max-w-3xl lg:max-w-4xl aspect-video sm:aspect-auto sm:min-h-[400px] md:min-h-[500px] rounded-2xl lg:rounded-3xl text-white p-8 sm:p-10 md:p-12 space-y-3 sm:space-y-4 justify-center"
+      class="flex flex-col bg-[url(/img/grafisbg.png)] bg-cover bg-no-repeat w-full max-w-3xl lg:max-w-4xl aspect-video sm:aspect-auto sm:min-h-[400px] md:min-h-[500px] rounded-2xl lg:rounded-3xl text-white p-8 sm:p-12 space-y-3 sm:space-y-4 justify-center"
     >
-      <p class="font-bold text-2xl sm:text-3xl md:text-4xl">Visi Kami</p>
-      <p class="pt-2 sm:pt-4 text-base sm:text-lg md:text-xl">
+      <p class="font-bold text-3xl md:text-4xl">Visi Kami</p>
+      <p class="mt-4 text-lg md:text-xl">
         Menjadi pemimpin terpercaya dalam perencanaan dan supervisi proyek,
         menciptakan solusi berkelanjutan dan inovatif yang berkontribusi pada
         pembangunan infrastruktur dan kemajuan masyarakat.
       </p>
       <NuxtLink
         to="about-us"
-        class="flex flex-row items-center border-white border w-fit rounded-full px-4 py-2 space-x-2 mt-4 sm:mt-6 hover:bg-white/20 transition-colors"
+        class="flex flex-row items-center border-white border w-fit rounded-full px-4 py-2 space-x-2 mt-8 hover:bg-white/20 transition-colors"
       >
         <svg
           width="14"
@@ -76,16 +76,16 @@
   </div>
 
   <div
-    class="flex flex-col min-h-screen bg-[#DDDDDD] justify-center items-center py-12 sm:py-16 px-4 sm:px-8 md:px-16"
+    class="flex flex-col min-h-screen bg-[#DDDDDD] justify-center items-center px-4 py-16 sm:px-8 sm:py-24"
   >
     <div class="flex flex-col w-full max-w-6xl justify-center items-center">
       <div class="flex flex-col w-full items-start">
         <div>
-          <h1 class="text-black text-xl sm:text-2xl font-semibold">
+          <h1 class="text-black text-2xl md:text-3xl font-semibold">
             Our Portfolio
           </h1>
           <p
-            class="w-full font-bold text-[#EB5523] text-3xl sm:text-4xl md:text-5xl mt-1"
+            class="w-full font-bold text-[#EB5523] text-4xl md:text-5xl mt-2"
           >
             Lorem Ipsum
           </p>
@@ -93,7 +93,7 @@
         <div class="flex w-full items-end justify-end">
           <NuxtLink
             to="/portfolio"
-            class="flex flex-row text-black items-center mt-4 sm:mt-0 hover:text-opacity-75 hover:text-orange-400"
+            class="flex flex-row text-black items-center mt-4 hover:text-opacity-75 hover:text-orange-400"
           >
             <p class="font-semibold mr-1">More</p>
             <svg
@@ -131,7 +131,7 @@
           class="w-full lg:w-1/2"
         />
       </div> -->
-      <div v-if="highlightedPortfolios.length > 0" class="w-full mt-5">
+      <div v-if="highlightedPortfolios.length > 0" class="w-full mt-12">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div
             class="lg:col-span-2 lg:row-span-2"
@@ -163,16 +163,16 @@
   </div>
 
   <div
-    class="flex flex-col min-h-screen bg-white justify-center items-center py-12 sm:py-16 px-4"
+    class="flex flex-col min-h-screen bg-white justify-center items-center px-4 py-16 sm:px-8 sm:py-24"
   >
     <div class="flex flex-col w-full max-w-7xl justify-center items-center">
       <div
-        class="flex flex-col w-full justify-start items-start sm:items-center text-start sm:text-center mb-6 sm:mb-8"
+        class="flex flex-col w-full justify-start items-start sm:items-center text-start sm:text-center mb-12"
       >
-        <h1 class="text-black text-xl sm:text-2xl font-semibold">
+        <h1 class="text-black text-2xl md:text-3xl font-semibold">
           News & Report
         </h1>
-        <p class="font-bold text-[#EB5523] text-3xl sm:text-4xl md:text-5xl">
+        <p class="font-bold text-[#EB5523] text-4xl md:text-5xl">
           Popular News
         </p>
       </div>
@@ -284,14 +284,14 @@
     class="flex flex-col md:flex-row min-h-screen bg-[#DDDDDD] justify-center items-stretch"
   >
     <div
-      class="flex flex-col w-full md:w-3/5 lg:w-1/2 justify-center p-6 sm:p-8 md:p-12 lg:p-16"
+      class="flex flex-col w-full md:w-3/5 lg:w-1/2 justify-center p-8 md:p-16"
     >
-      <h1 class="text-3xl sm:text-4xl font-bold text-black">Contact Us</h1>
-      <p class="text-black text-base sm:text-lg md:text-xl pt-4 sm:pt-4">
+      <h1 class="text-4xl font-bold text-black">Contact Us</h1>
+      <p class="text-black mt-4 text-lg">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
         perferendis eos necessitatibus, totam earum quasi a.
       </p>
-      <form class="mt-6 sm:mt-8 space-y-4 sm:space-y-6">
+      <form class="mt-8 space-y-6">
         <div>
           <label for="name" class="block text-sm font-medium text-gray-900"
             >Name</label

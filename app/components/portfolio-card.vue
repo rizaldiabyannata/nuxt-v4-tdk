@@ -1,24 +1,24 @@
 <template>
   <div class="card bg-base-100 w-full shadow-lg rounded-2xl overflow-hidden">
-    <div class="card-body bg-white rounded-t-2xl p-4 sm:p-6 h-[60%]">
+    <div class="card-body bg-white rounded-t-2xl p-6 h-[60%] flex flex-col">
       <h2
         id="title"
-        class="card-title text-black text-xl sm:text-2xl font-bold"
+        class="card-title text-black text-xl font-bold"
       >
         {{ title }}
       </h2>
       <!-- <p id="shortDescription" class="text-black text-sm sm:text-base mt-1">{{ shortDescription }}</p> -->
-      <p id="shortDescription" class="text-black text-sm sm:text-base mt-1">
+      <p id="shortDescription" class="text-base mt-2">
         {{
           shortDescription.length > 100
             ? shortDescription.substring(0, 100) + "..."
             : shortDescription
         }}
       </p>
-      <div class="card-actions justify-start my-2">
+      <div class="card-actions justify-start mt-auto pt-4">
         <NuxtLink
           :to="`/portfolio/${slug}`"
-          class="btn btn-sm sm:btn-md rounded-full bg-gray-200 hover:bg-gray-300 text-black transition-colors"
+          class="btn btn-md rounded-full bg-gray-200 hover:bg-gray-300 text-black transition-colors"
         >
           More Details
         </NuxtLink>
