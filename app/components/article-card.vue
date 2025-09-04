@@ -1,9 +1,9 @@
 <template>
   <div class="w-full md:aspect-[4/4] xl:aspect-[3/4] bg-[#F5EE9E] shadow-lg rounded-2xl flex flex-col p-6">
-    <h1 class="text-black text-lg md:text-2xl font-semibold leading-tight break-words">{{ title }}</h1>
-    <p class="text-black text-sm sm:text-base pt-4 sm:pt-6">{{author}}</p>
-    <div class="flex items-center mt-6 sm:mt-8">
-      <a href="#" class="text-black font-semibold hover:text-[#EB5523] transition-colors duration-200">
+    <h2 class="text-black text-xl font-semibold leading-tight break-words">{{ title }}</h2>
+    <p class="text-black text-sm pt-4">{{author}}</p>
+    <div class="flex items-center mt-auto pt-4">
+      <a href="#" class="text-black font-semibold underline hover:text-[#EB5523] transition-colors duration-200">
         Read More
       </a>
       <svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="ml-2">

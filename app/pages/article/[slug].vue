@@ -1,20 +1,20 @@
 <template>
   <div v-if="blog">
-    <div class="relative min-h-[300px] h-[50vh] flex flex-col">
+    <div class="relative min-h-[300px] h-[50vh] flex flex-col justify-center text-white px-4 py-16 sm:px-8 sm:py-24">
       <div
         class="absolute inset-0 bg-cover bg-center brightness-50 -z-10"
         :style="`background-image: url('${blog.coverImage}')`"
       ></div>
-      <div class="relative space-y-2 w-full lg:w-1/2 flex flex-col h-full justify-center p-4 sm:p-6 md:p-8">
-        <h1 class="font-extrabold text-xl sm:text-2xl md:text-3xl lg:text-5xl ">
+      <div class="relative space-y-2 w-full lg:w-2/3">
+        <h1 class="font-extrabold text-3xl md:text-4xl lg:text-5xl">
           {{ blog.title }}
         </h1>
-        <p class=" text-sm sm:text-base md:text-lg">
+        <p class="text-base lg:text-lg text-gray-200 mt-4">
           By {{ blog.author || 'PT. Total Desain Konsultan' }}
         </p>
       </div>
     </div>
-    <div class="w-full flex flex-col lg:flex-row bg-white p-4 sm:p-6 md:p-8">
+    <div class="w-full flex flex-col lg:flex-row bg-white px-4 py-16 sm:px-8 sm:py-24">
       <articleTemplate
         :firstParagraph="blog.summary"
         :image="blog.coverImage"
