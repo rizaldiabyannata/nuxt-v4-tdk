@@ -1,20 +1,20 @@
 <template>
   <div v-if="portfolio">
-    <div class="relative min-h-[300px] h-[50vh] flex flex-col">
+    <div class="relative min-h-[300px] h-[50vh] flex flex-col justify-center text-white px-4 py-16 sm:px-8 sm:py-24">
       <div
         class="absolute inset-0 bg-cover bg-center brightness-50 -z-10"
         :style="`background-image: url('${portfolio.coverImage}')`"
       ></div>
-      <div class="relative space-y-2 w-full lg:w-1/2 flex flex-col h-full justify-center p-4 sm:p-6 md:p-8">
-        <h1 class="font-extrabold text-xl sm:text-2xl md:text-3xl lg:text-5xl text-white">
+      <div class="relative space-y-2 w-full lg:w-2/3">
+        <h1 class="font-extrabold text-3xl md:text-4xl lg:text-5xl">
           {{ portfolio.title }}
         </h1>
-        <p class="text-white text-sm sm:text-base md:text-lg">
+        <p class="text-base lg:text-lg text-gray-200 mt-4">
           By {{ portfolio.author || 'PT. Total Desain Konsultan' }}
         </p>
       </div>
     </div>
-    <div class="w-full flex flex-col lg:flex-row bg-white p-4 sm:p-6 md:p-8">
+    <div class="w-full flex flex-col lg:flex-row bg-white px-4 py-16 sm:px-8 sm:py-24">
       <PortoTemplate
         :firstParagraph="portfolio.shortDescription"
         :image="portfolio.coverImage"

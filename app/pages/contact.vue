@@ -1,17 +1,17 @@
 <template>
   <div class="flex flex-col max-w-screen">
-    <div class="flex flex-col md:flex-row w-full h-screen">
-      <img src="/img/placeholder.png" alt="" class="h-1/2 w-full md:h-full md:w-1/2" />
-      <div class="flex flex-col bg-white text-black h-1/2 w-full md:h-full md:w-1/2 items-center justify-center px-4">
-        <h1 class="text-2xl font-bold">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Veritatis, velit?</p>
+    <div class="flex flex-col md:flex-row w-full min-h-[50vh] md:h-screen">
+      <img src="/img/placeholder.png" alt="" class="h-1/2 w-full md:h-full md:w-1/2 object-cover" />
+      <div class="flex flex-col bg-white text-black h-1/2 w-full md:h-full md:w-1/2 items-center justify-center text-center p-8">
+        <h1 class="text-3xl md:text-4xl font-bold">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
+        <p class="mt-4 text-lg">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Veritatis, velit?</p>
       </div>
     </div>
-    <div class="flex flex-col md:flex-row w-full h-screen justify-center items-center bg-white">
-      <div class="flex flex-col w-full md:w-1/2 py-4 space-y-1 px-4 md:space-y-4">
-        <h1 class="text-3xl font-bold text-[#EB5523]">Contact Us</h1>
-        <p class="text-black text-base sm:text-lg md:text-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse perferendis eos necessitatibus, totam earum quasi a.</p>
-        <form @submit.prevent="submitMessage" class="space-y-2 w-full">
+    <div class="flex flex-col md:flex-row w-full min-h-screen justify-center items-center bg-white">
+      <div class="flex flex-col w-full md:w-1/2 p-8 md:p-16 space-y-4">
+        <h1 class="text-4xl font-bold text-[#EB5523]">Contact Us</h1>
+        <p class="text-black text-lg">Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse perferendis eos necessitatibus, totam earum quasi a.</p>
+        <form @submit.prevent="submitMessage" class="space-y-6 w-full pt-4">
           <div>
             <label for="name" class="block text-sm font-medium text-gray-900">Name</label>
             <div class="mt-2">
@@ -61,7 +61,7 @@
           </button>
         </form>
       </div>
-      <img src="/img/placeholder.png" alt="" class="h-1/2 w-full md:h-full md:w-1/2" />
+      <img src="/img/placeholder.png" alt="" class="h-1/2 w-full md:h-full md:w-1/2 object-cover" />
     </div>
   </div>
 </template>

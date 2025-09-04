@@ -1,8 +1,6 @@
 <template>
-  <div
-    class="w-full flex flex-col px-4 sm:px-8 text-justify py-6 sm:py-10 md:py-12 space-y-10 text-black text-base sm:text-lg md:text-xl lg:text-2xl items-center"
-  >
-    <p>
+  <div class="w-full max-w-4xl mx-auto flex flex-col items-center space-y-8">
+    <p class="text-lg text-gray-600 text-center">
       {{ firstParagraph }}
     </p>
     <img
@@ -11,8 +9,8 @@
       alt=""
       class="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl rounded-lg shadow-md object-cover"
     />
-    <div class="w-full px-2 sm:px-4 md:px-8">
-      <div v-html="secondParagraph" class="prose prose-sm sm:prose lg:prose-lg max-w-none break-words tiptap-content-view"></div>
+    <div class="w-full">
+      <div v-html="secondParagraph" class="prose lg:prose-xl max-w-none break-words tiptap-content-view"></div>
     </div>
   </div>
 </template>
