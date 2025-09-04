@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col max-w-screen">
     <div class="flex flex-col md:flex-row w-full min-h-[50vh] md:h-screen">
-      <img src="/img/placeholder.png" alt="" class="h-1/2 w-full md:h-full md:w-1/2 object-cover" />
+      <img src="/img/contact-2.png" alt="" class="h-1/2 w-full md:h-full md:w-1/2 object-cover" />
       <div class="flex flex-col bg-white text-black h-1/2 w-full md:h-full md:w-1/2 items-center justify-center text-center p-8">
         <h1 class="text-3xl md:text-4xl font-bold">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
         <p class="mt-4 text-lg">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Veritatis, velit?</p>
@@ -61,7 +61,7 @@
           </button>
         </form>
       </div>
-      <img src="/img/placeholder.png" alt="" class="h-1/2 w-full md:h-full md:w-1/2 object-cover" />
+      <img src="/img/contact.png" crossorigin="anonymous" alt="" class="h-1/2 w-full md:h-full md:w-1/2 object-cover" />
     </div>
   </div>
 </template>

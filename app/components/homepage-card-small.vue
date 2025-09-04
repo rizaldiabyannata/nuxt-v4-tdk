@@ -1,7 +1,7 @@
 <template>
-  <div class="card bg-base-100 image-full w-full shadow-xl rounded-2xl">
+  <div class="card bg-base-100 image-full w-full shadow-xl rounded-2xl ratio-square">
     <figure>
-      <img :src="imageUrl" crossorigin="anonymous" alt="Shoes" class="object-cover w-full h-full" />
+      <img :src="imageUrl" crossorigin="anonymous" alt="Shoes" class="object-cover aspect-square" />
     </figure>
     <div class="card-body px-4 sm:px-6 gap-1 sm:gap-2">
       <h2 class="card-title text-lg sm:text-xl md:text-2xl">{{ title }}</h2>

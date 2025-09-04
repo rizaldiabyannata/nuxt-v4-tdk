@@ -13,7 +13,10 @@
           {{ highlightedPortfolios[0]?.title }}
         </h1>
         <p class="mt-2 text-base lg:text-lg text-white">
-          {{ highlightedPortfolios[0]?.shortDescription }}
+          {{ highlightedPortfolios[0]?.shortDescription.length > 100 
+          ? highlightedPortfolios[0]?.shortDescription.substring(0, 200) + "..."
+            : highlightedPortfolios[0]?.shortDescription
+          }}
         </p>
       </div>
       <NuxtLink
@@ -36,7 +39,7 @@
           />
         </svg>
         <p class="font-semibold text-white group-hover:text-black">
-          More Of Our Team
+          Learn More
         </p>
       </NuxtLink>
     </div>

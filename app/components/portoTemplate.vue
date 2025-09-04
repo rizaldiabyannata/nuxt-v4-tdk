@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full max-w-4xl mx-auto flex flex-col items-center space-y-8">
-    <p class="text-lg text-gray-600 text-center">
+  <div class="w-full max-w-4xl mx-auto flex flex-col items-center space-y-8 text-justify">
+    <p class="text-lg text-gray-600 ">
       {{ firstParagraph }}
     </p>
     <img

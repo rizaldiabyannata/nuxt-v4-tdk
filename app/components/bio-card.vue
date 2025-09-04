@@ -3,7 +3,7 @@
         <div class="w-44 h-44 rounded-md">
           <img src="/img/Alireza.jpg" class="w-full h-full object-cover rounded-md" alt="" />
         </div>
-        <div class="flex flex-col justify-center w-full h-full pl-4">
+        <div class="flex flex-col justify-center w-full h-full pl-4 text-white">
           <h1 class="text-[#EB5523] font-semibold text-2xl">William George</h1>
           <p>Chief Administrator</p>
           <hr class="text-white w-24 mt-2" />
