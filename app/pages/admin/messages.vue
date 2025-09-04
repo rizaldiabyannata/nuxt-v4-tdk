@@ -1,34 +1,36 @@
 <template>
-  <div class="flex flex-col min-h-screen bg-white py-4">
-    <div class="flex flex-row w-full justify-between px-6 items-center">
-      <h1 class="text-3xl font-bold text-[#EB5523]">Messages</h1>
+  <div class="space-y-8">
+    <!-- Header -->
+    <div class="flex flex-row w-full justify-between items-center">
+      <h1 class="text-3xl font-bold text-gray-800">Messages</h1>
       <logout-component />
     </div>
-    <hr class="border-0.5 border-black mt-4" />
-    <div class="flex flex-col w-full h-full p-12">
-      <div class="rounded-box border border-gray-300 text-black">
-        <table class="table">
+    <hr class="border-gray-200" />
+
+    <!-- Table Container -->
+    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="table w-full">
           <thead>
-            <tr class="text-center text-black border-b border-black">
-              <th>From</th>
-              <th>Email</th>
-              <th>Message</th>
+            <tr class="border-b border-gray-200 bg-gray-50">
+              <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">From</th>
+              <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Email</th>
+              <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Message</th>
             </tr>
           </thead>
-          <tbody v-if="!messages">
-            <tr class="text-center">
-              <td colspan="3">Loading data...</td>
+          <tbody v-if="!messages" class="bg-white">
+            <tr>
+              <td colspan="3" class="p-4 text-center text-gray-500">Loading data...</td>
             </tr>
           </tbody>
-          <tbody v-else>
-            <tr
-              class="border-b border-gray-200"
-              v-for="(message, index) in messages"
-              :key="index"
-            >
-              <td class="text-center">{{ message.name }}</td>
-              <td class="text-center">{{ message.email }}</td>
-              <td class="text-center">{{ message.message }}</td>
+          <tbody v-else class="bg-white divide-y divide-gray-200">
+            <tr v-if="messages.length === 0">
+              <td colspan="3" class="p-4 text-center text-gray-500">No messages found.</td>
+            </tr>
+            <tr v-for="(message, index) in messages" :key="index" class="hover:bg-gray-50">
+              <td class="p-4 whitespace-nowrap">{{ message.name }}</td>
+              <td class="p-4 whitespace-nowrap">{{ message.email }}</td>
+              <td class="p-4 text-gray-700">{{ message.message }}</td>
             </tr>
           </tbody>
         </table>
@@ -44,21 +46,17 @@ export default {
       messages: null,
     };
   },
-
   created() {
     this.fetchMessages();
   },
-
   methods: {
     async fetchMessages() {
       try {
-        // API URL dasar
-        let apiUrl = "/api/contact-form/";
-        const response = await this.$api.get(apiUrl);
-        console.log("Data message berhasil diambil:", response.data);
+        const response = await this.$api.get("/api/contact-form/");
         this.messages = response.data;
       } catch (error) {
         console.error("Gagal mengambil data message:", error);
+        this.messages = []; // Set to empty array on error
       }
     },
   },
