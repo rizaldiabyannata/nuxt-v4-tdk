@@ -18,6 +18,13 @@ export default defineNuxtConfig({
     plugins: [
       tailwindcss(),
     ],
+    build: {
+      terserOptions: {
+        compress: {
+          drop_console: true,
+        },
+      },
+    },
   },
   modules: ["@nuxt/eslint", "@nuxt/image", "@nuxt/icon"],
 });
