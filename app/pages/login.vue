@@ -29,7 +29,9 @@
           <!-- Input Fields -->
           <div class="flex flex-col gap-y-4">
             <div>
-              <label for="name" class="block mb-2 text-sm font-medium text-gray-300"
+              <label
+                for="name"
+                class="block mb-2 text-sm font-medium text-gray-300"
                 >Name</label
               >
               <input
@@ -113,10 +115,14 @@ export default {
 
         const form = loginBox.querySelector("form");
         if (form) {
-          gsap.from(form.children, {
+          const formChildren = Array.from(form.children);
+          // Set semua children ke kondisi awal
+          gsap.set(formChildren, { autoAlpha: 0, x: -30 });
+          // Animasi ke kondisi akhir
+          gsap.to(formChildren, {
             duration: 0.8,
-            autoAlpha: 0,
-            x: -30,
+            autoAlpha: 1,
+            x: 0,
             stagger: 0.15,
             ease: "power3.out",
             delay: 0.5,

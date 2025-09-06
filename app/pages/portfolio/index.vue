@@ -28,10 +28,7 @@
         Highlights
       </h1>
     </div>
-    <div
-      v-if="highlightedPortfolios.length > 0"
-      class="w-full max-w-6xl mt-12"
-    >
+    <div v-if="highlightedPortfolios.length > 0" class="w-full max-w-6xl mt-12">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <div
           class="lg:col-span-2 lg:row-span-2"
@@ -224,12 +221,13 @@ export default {
       this.$nextTick(() => {
         const portfolioGrid = this.$refs.portfolioGrid;
         if (portfolioGrid) {
-          const portfolioCards =
-            portfolioGrid.querySelectorAll(".h-5\\/6");
-          gsap.from(portfolioCards, {
+          const portfolioCards = portfolioGrid.querySelectorAll(".h-5\\/6");
+          // Set all cards to initial state before animating
+          gsap.set(portfolioCards, { autoAlpha: 0, y: 50 });
+          gsap.to(portfolioCards, {
             duration: 0.5,
-            autoAlpha: 0,
-            y: 50,
+            autoAlpha: 1,
+            y: 0,
             ease: "power3.out",
             stagger: 0.1,
           });

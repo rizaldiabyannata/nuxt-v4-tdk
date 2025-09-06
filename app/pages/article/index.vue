@@ -42,7 +42,10 @@
         <carousel-card
           v-for="article in articleList"
           :key="article._id"
-          :title="article.title"
+          :title="
+            article.title.substring(0, 35) +
+            (article.title.length > 35 ? '...' : '')
+          "
           :summary="article.summary"
           :imageUrl="article.coverImage"
           :slug="article.slug"
@@ -162,7 +165,7 @@ export default {
         animateOnScroll(articlesSection.querySelector("p"));
         animateOnScroll(articlesSection.querySelector("h1"), { delay: 0.1 });
       }
-      this.animateArticleCards();
+      // Jangan panggil animasi kartu di sini
     },
 
     animateArticleCards() {
@@ -170,11 +173,15 @@ export default {
       this.$nextTick(() => {
         const articlesGrid = this.$refs.articlesGrid;
         if (articlesGrid) {
-          const articleCards = articlesGrid.querySelectorAll(".transition-transform");
-          gsap.from(articleCards, {
+          const articleCards = articlesGrid.querySelectorAll(
+            ".transition-transform"
+          );
+          // Set all cards to initial state before animating
+          gsap.set(articleCards, { autoAlpha: 0, y: 50 });
+          gsap.to(articleCards, {
             duration: 0.5,
-            autoAlpha: 0,
-            y: 50,
+            autoAlpha: 1,
+            y: 0,
             ease: "power3.out",
             stagger: 0.1,
           });
@@ -192,7 +199,9 @@ export default {
           coverImage: baseUrl + article.coverImage,
         }));
         this.totalPages = response.data.pagination.totalPages;
-        this.animateArticleCards();
+        this.$nextTick(() => {
+          this.animateArticleCards();
+        });
       } catch (error) {
         console.error("Gagal mengambil data artikel:", error);
       }

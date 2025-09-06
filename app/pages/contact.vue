@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col max-w-screen">
+  <div class="flex flex-col max-w-screen overflow-hidden">
     <div
       ref="heroSection"
       class="flex flex-col md:flex-row w-full min-h-[50vh] md:h-screen"
