@@ -13,9 +13,11 @@
           {{ highlightedPortfolios[0]?.title }}
         </h1>
         <p class="mt-2 text-base lg:text-lg text-white">
-          {{ highlightedPortfolios[0]?.shortDescription.length > 100 
-          ? highlightedPortfolios[0]?.shortDescription.substring(0, 200) + "..."
-            : highlightedPortfolios[0]?.shortDescription
+          {{
+            highlightedPortfolios[0]?.shortDescription.length > 100
+              ? highlightedPortfolios[0]?.shortDescription.substring(0, 200) +
+                "..."
+              : highlightedPortfolios[0]?.shortDescription
           }}
         </p>
       </div>
@@ -87,9 +89,7 @@
           <h1 class="text-black text-2xl md:text-3xl font-semibold">
             Our Portfolio
           </h1>
-          <p
-            class="w-full font-bold text-[#EB5523] text-4xl md:text-5xl mt-2"
-          >
+          <p class="w-full font-bold text-[#EB5523] text-4xl md:text-5xl mt-2">
             Lorem Ipsum
           </p>
         </div>
@@ -360,7 +360,6 @@
 </template>
 
 <script>
-// skdlksaldk
 export default {
   data() {
     return {
