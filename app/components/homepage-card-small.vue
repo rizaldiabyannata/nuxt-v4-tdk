@@ -1,7 +1,15 @@
 <template>
-  <div class="card bg-base-100 image-full w-full shadow-xl rounded-2xl ratio-square">
+  <div
+    ref="card"
+    class="card bg-base-100 image-full w-full shadow-xl rounded-2xl ratio-square transition-all duration-300"
+  >
     <figure>
-      <img :src="imageUrl" crossorigin="anonymous" alt="Shoes" class="object-cover aspect-square" />
+      <img
+        :src="imageUrl"
+        crossorigin="anonymous"
+        alt="Shoes"
+        class="object-cover aspect-square"
+      />
     </figure>
     <div class="card-body px-4 sm:px-6 gap-1 sm:gap-2">
       <h2 class="card-title text-lg sm:text-xl md:text-2xl">{{ title }}</h2>
@@ -42,6 +50,22 @@ export default {
       type: String,
       default: "#",
     },
+  },
+  mounted() {
+    const gsap = this.$gsap;
+    const card = this.$refs.card;
+    if (card) {
+      const tl = gsap.timeline({ paused: true });
+      tl.to(card, {
+        scale: 1.05,
+        boxShadow: "0px 10px 20px rgba(0,0,0,0.1)",
+        duration: 0.3,
+        ease: "power2.out",
+      });
+
+      card.addEventListener("mouseenter", () => tl.play());
+      card.addEventListener("mouseleave", () => tl.reverse());
+    }
   },
 };
 </script>

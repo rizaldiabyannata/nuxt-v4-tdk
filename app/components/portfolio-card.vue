@@ -1,10 +1,10 @@
 <template>
-  <div class="card bg-base-100 w-full shadow-lg rounded-2xl overflow-hidden aspect-3/4">
+  <div
+    ref="card"
+    class="card bg-base-100 w-full shadow-lg rounded-2xl overflow-hidden aspect-3/4 transition-all duration-300"
+  >
     <div class="card-body bg-white rounded-t-2xl p-6 h-[60%] flex flex-col">
-      <h2
-        id="title"
-        class="card-title text-black text-xl font-bold"
-      >
+      <h2 id="title" class="card-title text-black text-xl font-bold">
         {{ title }}
       </h2>
       <!-- <p id="shortDescription" class="text-black text-sm sm:text-base mt-1">{{ shortDescription }}</p> -->
@@ -57,6 +57,22 @@ export default {
     slug: {
       type: String,
     },
+  },
+  mounted() {
+    const gsap = this.$gsap;
+    const card = this.$refs.card;
+    if (card) {
+      const tl = gsap.timeline({ paused: true });
+      tl.to(card, {
+        scale: 1.05,
+        boxShadow: "0px 10px 20px rgba(0,0,0,0.1)",
+        duration: 0.3,
+        ease: "power2.out",
+      });
+
+      card.addEventListener("mouseenter", () => tl.play());
+      card.addEventListener("mouseleave", () => tl.reverse());
+    }
   },
 };
 </script>

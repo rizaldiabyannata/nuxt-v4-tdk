@@ -7,6 +7,7 @@
       class="flex flex-col flex-grow w-full justify-center items-center p-4 mt-[YOUR_NAVBAR_HEIGHT]"
     >
       <div
+        ref="heroContent"
         class="flex flex-col w-full max-w-xl sm:w-4/5 md:w-3/5 lg:w-2/5 justify-center items-center text-center"
       >
         <h1 class="font-bold text-3xl md:text-4xl lg:text-5xl text-white">
@@ -22,6 +23,7 @@
         </p>
       </div>
       <NuxtLink
+        ref="heroButton"
         :to="
           highlightedPortfolios[0]?.link ||
           '/portfolio/' + highlightedPortfolios[0]?.slug
@@ -180,6 +182,7 @@
         </p>
       </div>
       <div
+        ref="newsCarousel"
         class="carousel carousel-center bg-transparent rounded-2xl lg:rounded-3xl w-full max-w-7xl space-x-4 sm:space-x-8 p-4"
       >
         <div
@@ -369,13 +372,15 @@ export default {
   },
   async mounted() {
     await this.fetchContentManagement();
+    this.$nextTick(() => {
+      this.initAnimations();
+    });
   },
   methods: {
     async fetchContentManagement() {
       const baseUrl = useRuntimeConfig().public.apiBaseUrl;
       try {
         const response = await this.$api.get(`/api/content-tracking/`);
-        console.log(response.data);
         this.highlightedPortfolios = response.data.highlightedPortfolios.map(
           (portfolio) => ({
             ...portfolio,
@@ -391,6 +396,78 @@ export default {
           "Gagal mengambil data portfolio yang di-highlight:",
           error
         );
+      }
+    },
+    initAnimations() {
+      const gsap = this.$gsap;
+
+      const animateOnScroll = (elem, vars) => {
+        if (!elem) return;
+        gsap.from(elem, {
+          scrollTrigger: {
+            trigger: elem,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+          duration: 0.8,
+          autoAlpha: 0,
+          y: 50,
+          ease: "power3.out",
+          ...vars,
+        });
+      };
+
+      // Hero section
+      gsap.from(this.$refs.heroContent.children, {
+        duration: 1,
+        autoAlpha: 0,
+        y: 30,
+        ease: "power3.out",
+        stagger: 0.2,
+        delay: 0.2,
+      });
+      gsap.from(this.$refs.heroButton, {
+        duration: 1,
+        autoAlpha: 0,
+        y: 30,
+        ease: "power3.out",
+        delay: 0.4,
+      });
+
+      // 2. "Visi Kami" section
+      if (this.$refs.visiSection) {
+        animateOnScroll(this.$refs.visiSection.children[0]);
+      }
+
+      // 3. "Our Portfolio" section
+      if (this.$refs.portfolioSection) {
+        animateOnScroll(this.$refs.portfolioSection.querySelector("h1"));
+        animateOnScroll(this.$refs.portfolioSection.querySelector("p"));
+        if (this.$refs.portfolioGrid) {
+          const portfolioCards =
+            this.$refs.portfolioGrid.querySelectorAll(".h-full");
+          portfolioCards.forEach((card, index) => {
+            animateOnScroll(card, { delay: index * 0.1 });
+          });
+        }
+      }
+
+      // 4. "News & Report" section
+      if (this.$refs.newsSection) {
+        animateOnScroll(this.$refs.newsSection.querySelector("h1"));
+        animateOnScroll(this.$refs.newsSection.querySelector("p"));
+        if (this.$refs.newsCarousel) {
+          const carouselItems =
+            this.$refs.newsCarousel.querySelectorAll(".carousel-item");
+          carouselItems.forEach((item, index) => {
+            animateOnScroll(item, { delay: index * 0.1 });
+          });
+        }
+      }
+
+      // 5. "Contact Us" section
+      if (this.$refs.contactSection) {
+        animateOnScroll(this.$refs.contactSection.children[0]);
       }
     },
   },

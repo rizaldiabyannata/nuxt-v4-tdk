@@ -33,6 +33,7 @@
     "chart.js": "^4.5.0",
     "daisyui": "^5.0.54",
     "eslint": "^9.34.0",
+    "gsap": "^3.13.0",
     "nuxt": "^4.0.3",
     "nuxt-tiptap-editor": "^2.3.1",
     "primeflex": "^4.0.0",
