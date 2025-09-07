@@ -26,9 +26,6 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "@nuxt/image",
     "@nuxt/icon",
-    // "nuxt-tiptap-editor",
+    'nuxt-toast'
   ],
-  // tiptap: {
-  //   prefix: 'Tiptap',
-  // },
 });

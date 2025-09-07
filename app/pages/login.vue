@@ -56,7 +56,7 @@
                 name="password"
                 id="password"
                 class="p-3 w-full bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500 transition"
-                placeholder="••••••••"
+                placeholder="••••••••••••••••"
                 required
               />
             </div>
@@ -143,7 +143,11 @@ export default {
           const authToken = useCookie("accessToken");
           authToken.value = token;
         }
-        await navigateTo("/admin");
+        if (!response.data.email) {
+          await navigateTo("/admin/profile");
+        } else {
+          await navigateTo("/admin");
+        }
       } catch (error) {
         navigateTo("/login");
         console.error("Login failed:", error);
