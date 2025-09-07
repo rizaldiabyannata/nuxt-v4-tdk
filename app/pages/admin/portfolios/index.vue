@@ -248,6 +248,7 @@
 <script>
 definePageMeta({
   layout: "admin",
+  middleware: "auth",
 });
 
 export default {

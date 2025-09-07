@@ -255,18 +255,12 @@
 </template>
 
 <script>
-// import CarouselAdmin from "../../components/carousel-admin.vue";
-// import TiptapEditor from "../../components/TiptapEditor.vue";
-
 definePageMeta({
   layout: "admin",
+  middleware: "auth",
 });
 
 export default {
-  components: {
-    // CarouselAdmin,
-    // TiptapEditor,
-  },
   data() {
     return {
       tampilanAktif: "daftar",

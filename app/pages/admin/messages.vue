@@ -8,26 +8,48 @@
     <hr class="border-gray-200" />
 
     <!-- Table Container -->
-    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+    <div
+      class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden"
+    >
       <div class="overflow-x-auto">
         <table class="table w-full">
           <thead>
             <tr class="border-b border-gray-200 bg-gray-50">
-              <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">From</th>
-              <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Email</th>
-              <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Message</th>
+              <th
+                class="p-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider"
+              >
+                From
+              </th>
+              <th
+                class="p-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider"
+              >
+                Email
+              </th>
+              <th
+                class="p-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider"
+              >
+                Message
+              </th>
             </tr>
           </thead>
           <tbody v-if="!messages" class="bg-white">
             <tr>
-              <td colspan="3" class="p-4 text-center text-gray-500">Loading data...</td>
+              <td colspan="3" class="p-4 text-center text-gray-500">
+                Loading data...
+              </td>
             </tr>
           </tbody>
           <tbody v-else class="bg-white divide-y divide-gray-200">
             <tr v-if="messages.length === 0">
-              <td colspan="3" class="p-4 text-center text-gray-500">No messages found.</td>
+              <td colspan="3" class="p-4 text-center text-gray-500">
+                No messages found.
+              </td>
             </tr>
-            <tr v-for="(message, index) in messages" :key="index" class="hover:bg-gray-50">
+            <tr
+              v-for="(message, index) in messages"
+              :key="index"
+              class="hover:bg-gray-50"
+            >
               <td class="p-4 whitespace-nowrap">{{ message.name }}</td>
               <td class="p-4 whitespace-nowrap">{{ message.email }}</td>
               <td class="p-4 text-gray-700">{{ message.message }}</td>
@@ -64,5 +86,6 @@ export default {
 
 definePageMeta({
   layout: "admin",
+  middleware: "auth",
 });
 </script>
