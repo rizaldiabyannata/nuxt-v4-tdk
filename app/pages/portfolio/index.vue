@@ -19,6 +19,7 @@
   </div>
 
   <div
+    v-if="highlightedPortfolios.length > 0 || highlightedPending"
     ref="featuredSection"
     class="max-w-screen flex flex-col justify-center items-center px-4 py-16 sm:px-8 sm:py-24"
   >
