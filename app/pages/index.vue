@@ -83,7 +83,7 @@
   </div>
 
   <div
-    class="flex flex-col min-h-screen bg-[#DDDDDD] justify-center items-center px-4 py-16 sm:px-8 sm:py-24"
+    class="flex flex-col min-h-screen bg-[#DDDDDD] justify-start items-center px-4 py-16 sm:px-8 sm:py-24"
   >
     <div class="flex flex-col w-full max-w-6xl justify-center items-center">
       <div class="flex flex-col w-full items-start">
@@ -158,13 +158,13 @@
         </div>
       </div>
       <div v-else class="text-center py-16">
-        <p class="text-gray-500 text-lg">No highlighted portfolios to show.</p>
+        <p class="text-gray-500 text-lg">No portfolios to show.</p>
       </div>
     </div>
   </div>
 
   <div
-    class="flex flex-col min-h-screen bg-white justify-center items-center px-4 py-16 sm:px-8 sm:py-24"
+    class="flex flex-col min-h-screen bg-white justify-start items-center px-4 py-16 sm:px-8 sm:py-24"
   >
     <div class="flex flex-col w-full max-w-7xl justify-center items-center">
       <div
@@ -186,7 +186,7 @@
         </div>
       </div>
       <div
-        v-else
+        v-else-if="featuredBlogs.length > 0"
         ref="newsCarousel"
         class="carousel carousel-center bg-transparent rounded-2xl lg:rounded-3xl w-full max-w-7xl space-x-4 sm:space-x-8 p-4"
       >
@@ -203,6 +203,9 @@
             :slug="blog.slug"
           />
         </div>
+      </div>
+      <div v-else class="text-center py-16">
+        <p class="text-gray-500 text-lg">No article to show.</p>
       </div>
     </div>
   </div>
