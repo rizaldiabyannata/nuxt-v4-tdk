@@ -4,11 +4,13 @@
     class="card bg-base-100 image-full w-full shadow-xl rounded-2xl ratio-square transition-all duration-300"
   >
     <figure>
-      <img
+      <NuxtImg
         :src="imageUrl"
         crossorigin="anonymous"
         alt="Shoes"
         class="object-cover aspect-square"
+        loading="lazy"
+        placeholder
       />
     </figure>
     <div class="card-body px-4 sm:px-6 gap-1 sm:gap-2">

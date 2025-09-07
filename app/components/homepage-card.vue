@@ -27,12 +27,14 @@
     </div>
 
     <figure class="h-1/2">
-      <img
+      <NuxtImg
         crossorigin="anonymous"
         id="image"
         :src="imageUrl"
         alt="Product Image"
         class="w-full h-full object-cover"
+        loading="lazy"
+        placeholder
       />
     </figure>
   </div>

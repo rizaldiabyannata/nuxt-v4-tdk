@@ -1,10 +1,12 @@
 <template>
   <div class="w-full max-w-4xl mx-auto flex flex-col items-center space-y-8">
-    <img
+    <NuxtImg
       crossorigin="anonymous"
       :src="image"
       alt=""
       class="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl rounded-lg shadow-md object-cover"
+      loading="lazy"
+      placeholder
     />
     <div class="w-full">
       <div

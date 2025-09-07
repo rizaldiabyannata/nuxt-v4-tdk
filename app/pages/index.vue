@@ -125,33 +125,40 @@
           </NuxtLink>
         </div>
       </div>
-      <div v-if="highlightedPortfolios.length > 0" class="w-full mt-12">
+      <div v-if="pending" class="w-full mt-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="lg:col-span-2 lg:row-span-2">
+            <SkeletonHomepageCardSkeleton />
+          </div>
+          <SkeletonHomepageCardSmallSkeleton />
+          <SkeletonHomepageCardSmallSkeleton />
+          <SkeletonHomepageCardSmallSkeleton />
+          <SkeletonHomepageCardSmallSkeleton />
+        </div>
+      </div>
+      <div v-else-if="highlightedPortfolios.length > 0" class="w-full mt-12">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div
-            class="lg:col-span-2 lg:row-span-2"
-            v-if="highlightedPortfolios[0]"
+            v-for="(portfolio, index) in highlightedPortfolios.slice(0, 5)"
+            :key="portfolio._id"
+            :class="{
+              'lg:col-span-2 lg:row-span-2': index === 0,
+            }"
           >
-            <homepage-card
-              :title="highlightedPortfolios[0].title"
-              :shortDescription="highlightedPortfolios[0].shortDescription"
-              :imageUrl="highlightedPortfolios[0].coverImage"
-              :slug="highlightedPortfolios[0].slug"
-              class="h-full"
-            />
-          </div>
-          <template
-            v-for="(portfolio, index) in highlightedPortfolios.slice(1, 5)"
-            :key="index"
-          >
-            <homepage-card-small
+            <component
+              :is="index === 0 ? 'HomepageCard' : 'HomepageCardSmall'"
               :title="portfolio.title"
               :shortDescription="portfolio.shortDescription"
               :imageUrl="portfolio.coverImage"
+              :slug="portfolio.slug"
               :navigateTO="`/portfolio/${portfolio.slug}`"
               class="h-full"
             />
-          </template>
+          </div>
         </div>
+      </div>
+      <div v-else class="text-center py-16">
+        <p class="text-gray-500 text-lg">No highlighted portfolios to show.</p>
       </div>
     </div>
   </div>
@@ -170,7 +177,13 @@
           Popular News
         </p>
       </div>
+      <div v-if="pending" class="carousel carousel-center bg-transparent rounded-2xl lg:rounded-3xl w-full max-w-7xl space-x-4 sm:space-x-8 p-4">
+        <div class="carousel-item" v-for="i in 3" :key="i">
+          <SkeletonCarouselCardSkeleton />
+        </div>
+      </div>
       <div
+        v-else
         ref="newsCarousel"
         class="carousel carousel-center bg-transparent rounded-2xl lg:rounded-3xl w-full max-w-7xl space-x-4 sm:space-x-8 p-4"
       >
@@ -197,80 +210,94 @@
     <div
       class="animate-marquee group-hover:[animation-play-state:paused] inline-block w-max"
     >
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/tesla.png"
         alt="Tesla"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/porsche.png"
         alt="Porsche"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/aston-martin.png"
         alt="Aston Martin"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/nike.png"
         alt="Nike"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/jordan.png"
         alt="Jordan"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/adidas.png"
         alt="Adidas"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/bmw.png"
         alt="BMW"
+        loading="lazy"
       />
     </div>
     <div
       class="animate-marquee group-hover:[animation-play-state:paused] inline-block w-max"
       aria-hidden="true"
     >
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/tesla.png"
         alt="Tesla"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/porsche.png"
         alt="Porsche"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/aston-martin.png"
         alt="Aston Martin"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/nike.png"
         alt="Nike"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/jordan.png"
         alt="Jordan"
+        loading="lazy"
       />
-      <img
+      <Nuxt_img
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/adidas.png"
         alt="Adidas"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/bmw.png"
         alt="BMW"
+        loading="lazy"
       />
     </div>
   </div>
@@ -351,116 +378,107 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      highlightedPortfolios: [],
-      featuredBlogs: [],
-    };
-  },
-  async mounted() {
-    await this.fetchContentManagement();
-    this.$nextTick(() => {
-      this.initAnimations();
+<script setup>
+import { ref, onMounted } from "vue";
+import SkeletonHomepageCardSkeleton from "~/components/skeleton/HomepageCardSkeleton.vue";
+import SkeletonHomepageCardSmallSkeleton from "~/components/skeleton/HomepageCardSmallSkeleton.vue";
+import SkeletonCarouselCardSkeleton from "~/components/skeleton/CarouselCardSkeleton.vue";
+import HomepageCard from "~/components/homepage-card.vue";
+import HomepageCardSmall from "~/components/homepage-card-small.vue";
+
+const { $api, $gsap } = useNuxtApp();
+const config = useRuntimeConfig();
+const baseUrl = config.public.apiBaseUrl;
+
+const highlightedPortfolios = ref([]);
+const featuredBlogs = ref([]);
+const heroContent = ref(null);
+const heroButton = ref(null);
+const newsCarousel = ref(null);
+
+const { pending, data: contentData } = useAsyncData(
+  "content-tracking",
+  async () => {
+    try {
+      const response = await $api.get(`/api/content-tracking/`);
+      return response.data;
+    } catch (error) {
+      console.error("Gagal mengambil data:", error);
+      return { highlightedPortfolios: [], featuredBlogs: [] };
+    }
+  }
+);
+
+watch(contentData, (newData) => {
+  if (newData) {
+    highlightedPortfolios.value = newData.highlightedPortfolios.map(
+      (portfolio) => ({
+        ...portfolio,
+        coverImage: baseUrl + portfolio.coverImage,
+      })
+    );
+    featuredBlogs.value = newData.featuredBlogs.map((blog) => ({
+      ...blog,
+      coverImage: baseUrl + blog.coverImage,
+    }));
+    nextTick(() => {
+      initAnimations();
     });
-  },
-  methods: {
-    async fetchContentManagement() {
-      const baseUrl = useRuntimeConfig().public.apiBaseUrl;
-      try {
-        const response = await this.$api.get(`/api/content-tracking/`);
-        this.highlightedPortfolios = response.data.highlightedPortfolios.map(
-          (portfolio) => ({
-            ...portfolio,
-            coverImage: baseUrl + portfolio.coverImage,
-          })
-        );
-        this.featuredBlogs = response.data.featuredBlogs.map((blog) => ({
-          ...blog,
-          coverImage: baseUrl + blog.coverImage,
-        }));
-      } catch (error) {
-        console.error(
-          "Gagal mengambil data portfolio yang di-highlight:",
-          error
-        );
-      }
-    },
-    initAnimations() {
-      const gsap = this.$gsap;
+  }
+});
 
-      const animateOnScroll = (elem, vars) => {
-        if (!elem) return;
-        gsap.from(elem, {
-          scrollTrigger: {
-            trigger: elem,
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
-          duration: 0.8,
-          autoAlpha: 0,
-          y: 50,
-          ease: "power3.out",
-          ...vars,
-        });
-      };
+const initAnimations = () => {
+  const animateOnScroll = (elem, vars) => {
+    if (!elem) return;
+    $gsap.from(elem, {
+      scrollTrigger: {
+        trigger: elem,
+        start: "top 85%",
+        toggleActions: "play none none none",
+      },
+      duration: 0.8,
+      autoAlpha: 0,
+      y: 50,
+      ease: "power3.out",
+      ...vars,
+    });
+  };
 
-      // Hero section
-      gsap.from(this.$refs.heroContent.children, {
-        duration: 1,
-        autoAlpha: 0,
-        y: 30,
-        ease: "power3.out",
-        stagger: 0.2,
-        delay: 0.2,
-      });
-      gsap.from(this.$refs.heroButton, {
-        duration: 1,
-        autoAlpha: 0,
-        y: 30,
-        ease: "power3.out",
-        delay: 0.4,
-      });
+  // Hero section
+  if (heroContent.value) {
+    $gsap.from(heroContent.value.children, {
+      duration: 1,
+      autoAlpha: 0,
+      y: 30,
+      ease: "power3.out",
+      stagger: 0.2,
+      delay: 0.2,
+    });
+  }
+  if (heroButton.value) {
+    $gsap.from(heroButton.value, {
+      duration: 1,
+      autoAlpha: 0,
+      y: 30,
+      ease: "power3.out",
+      delay: 0.4,
+    });
+  }
 
-      // 2. "Visi Kami" section
-      if (this.$refs.visiSection) {
-        animateOnScroll(this.$refs.visiSection.children[0]);
-      }
-
-      // 3. "Our Portfolio" section
-      if (this.$refs.portfolioSection) {
-        animateOnScroll(this.$refs.portfolioSection.querySelector("h1"));
-        animateOnScroll(this.$refs.portfolioSection.querySelector("p"));
-        if (this.$refs.portfolioGrid) {
-          const portfolioCards =
-            this.$refs.portfolioGrid.querySelectorAll(".h-full");
-          portfolioCards.forEach((card, index) => {
-            animateOnScroll(card, { delay: index * 0.1 });
-          });
-        }
-      }
-
-      // 4. "News & Report" section
-      if (this.$refs.newsSection) {
-        animateOnScroll(this.$refs.newsSection.querySelector("h1"));
-        animateOnScroll(this.$refs.newsSection.querySelector("p"));
-        if (this.$refs.newsCarousel) {
-          const carouselItems =
-            this.$refs.newsCarousel.querySelectorAll(".carousel-item");
-          carouselItems.forEach((item, index) => {
-            animateOnScroll(item, { delay: index * 0.1 });
-          });
-        }
-      }
-
-      // 5. "Contact Us" section
-      if (this.$refs.contactSection) {
-        animateOnScroll(this.$refs.contactSection.children[0]);
-      }
-    },
-  },
+  // News & Report section
+  if (newsCarousel.value) {
+    const carouselItems = newsCarousel.value.querySelectorAll(".carousel-item");
+    carouselItems.forEach((item, index) => {
+      animateOnScroll(item, { delay: index * 0.1 });
+    });
+  }
 };
+
+onMounted(() => {
+  if (!pending.value && contentData.value) {
+    initAnimations();
+  }
+});
 </script>
 
 <style>

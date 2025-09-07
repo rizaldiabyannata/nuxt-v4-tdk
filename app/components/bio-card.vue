@@ -4,10 +4,12 @@
     class="flex flex-row xl:w-110 w-140 bg-slate-800 justify-center items-center px-4 h-72 shadow-xl shadow-gray-400 rounded-xl transition-all duration-300"
   >
     <div class="w-44 h-44 rounded-md">
-      <img
+      <NuxtImg
         src="/img/Alireza.jpg"
         class="w-full h-full object-cover rounded-md"
         alt=""
+        loading="lazy"
+        placeholder
       />
     </div>
     <div class="flex flex-col justify-center w-full h-full pl-4 text-white">
