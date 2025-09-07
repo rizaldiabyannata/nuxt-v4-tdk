@@ -1,21 +1,21 @@
 <template>
   <div
     ref="card"
-    class="card bg-base-100 image-full w-full shadow-xl rounded-2xl ratio-square transition-all duration-300"
+    class="card bg-base-100 image-full w-full shadow-xl rounded-2xl transition-all duration-300"
   >
     <figure>
       <NuxtImg
         :src="imageUrl"
         crossorigin="anonymous"
         alt="Shoes"
-        class="object-cover aspect-square"
+        class="object-cover aspect-square w-full h-48 sm:h-64 md:h-72 lg:h-80 rounded-t-2xl"
         loading="lazy"
         placeholder
       />
     </figure>
     <div class="card-body px-4 sm:px-6 gap-1 sm:gap-2">
       <h2 class="card-title text-lg sm:text-xl md:text-2xl">{{ title }}</h2>
-      <p class="text-xs sm:text-sm mt-1 sm:mt-2">
+      <p class="text-xs sm:text-sm mt-1 sm:mt-2 break-all line-clamp-2">
         {{ shortDescription }}
       </p>
       <div class="card-actions justify-end mt-4 sm:mt-6">

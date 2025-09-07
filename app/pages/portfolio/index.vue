@@ -39,27 +39,30 @@
         <SkeletonHomepageCardSmallSkeleton />
       </div>
     </div>
-    <div v-else-if="highlightedPortfolios.length > 0" class="w-full max-w-6xl mt-12">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div
-            v-for="(portfolio, index) in highlightedPortfolios.slice(0, 5)"
-            :key="portfolio._id"
-            :class="{
-              'lg:col-span-2 lg:row-span-2': index === 0,
-            }"
-          >
-            <component
-              :is="index === 0 ? 'HomepageCard' : 'HomepageCardSmall'"
-              :title="portfolio.title"
-              :shortDescription="portfolio.shortDescription"
-              :imageUrl="portfolio.coverImage"
-              :slug="portfolio.slug"
-              :navigateTO="`/portfolio/${portfolio.slug}`"
-              class="h-full"
-            />
-          </div>
+    <div
+      v-else-if="highlightedPortfolios.length > 0"
+      class="w-full max-w-6xl mt-12"
+    >
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div
+          v-for="(portfolio, index) in highlightedPortfolios.slice(0, 5)"
+          :key="portfolio._id"
+          :class="{
+            'lg:col-span-2 lg:row-span-2': index === 0,
+          }"
+        >
+          <component
+            :is="index === 0 ? 'HomepageCard' : 'HomepageCardSmall'"
+            :title="portfolio.title"
+            :shortDescription="portfolio.shortDescription"
+            :imageUrl="portfolio.coverImage"
+            :slug="portfolio.slug"
+            :navigateTO="`/portfolio/${portfolio.slug}`"
+            class="h-full"
+          />
         </div>
       </div>
+    </div>
   </div>
   <div
     id="portfolio-section"
@@ -206,7 +209,10 @@ export default {
           const response = await $api.get(`/api/content-tracking/`);
           return response.data.highlightedPortfolios;
         } catch (error) {
-          console.error("Gagal mengambil data portfolio yang di-highlight:", error);
+          console.error(
+            "Gagal mengambil data portfolio yang di-highlight:",
+            error
+          );
           return [];
         }
       }
@@ -217,12 +223,14 @@ export default {
       "portfolios-list",
       () => {
         try {
-            return $api.get(
-                `/api/portfolios?limit=${pageSize}&page=${currentPage.value}&status=active`
-            ).then(res => res.data);
+          return $api
+            .get(
+              `/api/portfolios?limit=${pageSize}&page=${currentPage.value}&status=active`
+            )
+            .then((res) => res.data);
         } catch (error) {
-            console.error("Gagal mengambil data portfolio:", error);
-            return { data: [], pagination: { totalPages: 1 } };
+          console.error("Gagal mengambil data portfolio:", error);
+          return { data: [], pagination: { totalPages: 1 } };
         }
       },
       { watch: [currentPage] }
@@ -236,7 +244,7 @@ export default {
       portfoliosData,
       currentPage,
       totalPages,
-      pageSize
+      pageSize,
     };
   },
   watch: {
@@ -263,6 +271,20 @@ export default {
   },
   mounted() {
     this.initAnimations();
+    // Isi data langsung jika sudah tersedia dari useAsyncData
+    if (this.highlightedData) {
+      this.highlightedPortfolios = this.highlightedData.map((portfolio) => ({
+        ...portfolio,
+        coverImage: this.baseUrl + portfolio.coverImage,
+      }));
+    }
+    if (this.portfoliosData) {
+      this.portfoliosList = this.portfoliosData.data.map((portfolio) => ({
+        ...portfolio,
+        coverImage: this.baseUrl + portfolio.coverImage,
+      }));
+      this.totalPages = this.portfoliosData.pagination.totalPages;
+    }
   },
   methods: {
     goToPage(page) {
@@ -308,21 +330,27 @@ export default {
       }
       if (this.$refs.featuredSection) {
         animateOnScroll(this.$refs.featuredSection.querySelector("p"));
-        animateOnScroll(this.$refs.featuredSection.querySelector("h1"), { delay: 0.1 });
-        const featuredCards = this.$refs.featuredSection.querySelectorAll(".grid > div");
+        animateOnScroll(this.$refs.featuredSection.querySelector("h1"), {
+          delay: 0.1,
+        });
+        const featuredCards =
+          this.$refs.featuredSection.querySelectorAll(".grid > div");
         featuredCards.forEach((card, index) => {
           animateOnScroll(card, { delay: index * 0.1 });
         });
       }
       if (this.$refs.allProjectsSection) {
         animateOnScroll(this.$refs.allProjectsSection.querySelector("p"));
-        animateOnScroll(this.$refs.allProjectsSection.querySelector("h1"), { delay: 0.1 });
+        animateOnScroll(this.$refs.allProjectsSection.querySelector("h1"), {
+          delay: 0.1,
+        });
       }
     },
     animatePortfolioCards() {
-        const { $gsap } = useNuxtApp();
+      const { $gsap } = useNuxtApp();
       if (this.$refs.portfolioGrid) {
-        const portfolioCards = this.$refs.portfolioGrid.querySelectorAll(".h-5\\/6");
+        const portfolioCards =
+          this.$refs.portfolioGrid.querySelectorAll(".h-5\\/6");
         $gsap.set(portfolioCards, { autoAlpha: 0, y: 50 });
         $gsap.to(portfolioCards, {
           duration: 0.5,

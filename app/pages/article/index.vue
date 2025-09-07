@@ -121,12 +121,12 @@
 </template>
 
 <script>
-import { ref, onMounted, watch, nextTick } from 'vue';
-import SkeletonCarouselCardSkeleton from '~/components/skeleton/CarouselCardSkeleton.vue';
-import CarouselCard from '~/components/carousel-card.vue'; // Add missing import
+import { ref, onMounted, watch, nextTick } from "vue";
+import SkeletonCarouselCardSkeleton from "~/components/skeleton/CarouselCardSkeleton.vue";
+import CarouselCard from "~/components/carousel-card.vue"; // Add missing import
 
 export default {
-  name: 'ArticleIndexPage',
+  name: "ArticleIndexPage",
   components: {
     SkeletonCarouselCardSkeleton,
     CarouselCard,
@@ -147,12 +147,14 @@ export default {
     const totalPages = ref(1);
 
     const { pending, data: articlesData } = useAsyncData(
-      'articles-list',
+      "articles-list",
       () => {
         try {
-          return $api.get(
-            `/api/blogs?limit=${pageSize}&page=${currentPage.value}&status=active`
-          ).then(res => res.data);
+          return $api
+            .get(
+              `/api/blogs?limit=${pageSize}&page=${currentPage.value}&status=active`
+            )
+            .then((res) => res.data);
         } catch (error) {
           console.error("Gagal mengambil data artikel:", error);
           return { data: [], pagination: { totalPages: 1 } };
@@ -184,6 +186,13 @@ export default {
   },
   mounted() {
     this.initAnimations();
+    if (this.articlesData) {
+      this.articleList = this.articlesData.data.map((article) => ({
+        ...article,
+        coverImage: this.baseUrl + article.coverImage,
+      }));
+      this.totalPages = this.articlesData.pagination.totalPages;
+    }
   },
   methods: {
     goToPage(page) {
@@ -194,9 +203,9 @@ export default {
     goToPageWithScroll(page) {
       this.goToPage(page);
       nextTick(() => {
-        const section = document.getElementById('article-section');
+        const section = document.getElementById("article-section");
         if (section) {
-          section.scrollIntoView({ behavior: 'smooth' });
+          section.scrollIntoView({ behavior: "smooth" });
         }
       });
     },
@@ -231,7 +240,9 @@ export default {
 
       if (this.$refs.articlesSection) {
         animateOnScroll(this.$refs.articlesSection.querySelector("p"));
-        animateOnScroll(this.$refs.articlesSection.querySelector("h1"), { delay: 0.1 });
+        animateOnScroll(this.$refs.articlesSection.querySelector("h1"), {
+          delay: 0.1,
+        });
       }
     },
     animateArticleCards() {
@@ -252,6 +263,6 @@ export default {
         }
       });
     },
-  }
-}
+  },
+};
 </script>

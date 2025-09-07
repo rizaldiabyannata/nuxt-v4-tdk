@@ -431,6 +431,20 @@ export default {
       baseUrl,
     };
   },
+  mounted() {
+    if (this.contentData) {
+      this.highlightedPortfolios = this.contentData.highlightedPortfolios.map(
+        (portfolio) => ({
+          ...portfolio,
+          coverImage: this.baseUrl + portfolio.coverImage,
+        })
+      );
+      this.featuredBlogs = this.contentData.featuredBlogs.map((blog) => ({
+        ...blog,
+        coverImage: this.baseUrl + blog.coverImage,
+      }));
+    }
+  },
   watch: {
     contentData: {
       handler(newData) {
