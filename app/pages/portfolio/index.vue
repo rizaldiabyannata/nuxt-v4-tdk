@@ -161,157 +161,178 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted, watch } from "vue";
+<script>
+import { ref, onMounted, watch, nextTick } from "vue";
 import SkeletonHomepageCardSkeleton from "~/components/skeleton/HomepageCardSkeleton.vue";
 import SkeletonHomepageCardSmallSkeleton from "~/components/skeleton/HomepageCardSmallSkeleton.vue";
 import SkeletonPortfolioCardSkeleton from "~/components/skeleton/PortfolioCardSkeleton.vue";
 import HomepageCard from "~/components/homepage-card.vue";
 import HomepageCardSmall from "~/components/homepage-card-small.vue";
+import PortfolioCard from "~/components/portfolio-card.vue"; // This was used but not imported
 
-const { $api, $gsap } = useNuxtApp();
-const config = useRuntimeConfig();
-const baseUrl = config.public.apiBaseUrl;
-
-const highlightedPortfolios = ref([]);
-const portfoliosList = ref([]);
-const currentPage = ref(1);
-const pageSize = 6;
-const totalPages = ref(1);
-
-const heroSection = ref(null);
-const featuredSection = ref(null);
-const allProjectsSection = ref(null);
-const portfolioGrid = ref(null);
-
-// Fetch highlighted portfolios
-const { pending: highlightedPending, data: highlightedData } = useAsyncData(
-  "highlighted-portfolios",
-  async () => {
-    try {
-      const response = await $api.get(`/api/content-tracking/`);
-      return response.data.highlightedPortfolios;
-    } catch (error) {
-      console.error("Gagal mengambil data portfolio yang di-highlight:", error);
-      return [];
-    }
-  }
-);
-
-watch(highlightedData, (newData) => {
-  if (newData) {
-    highlightedPortfolios.value = newData.map((portfolio) => ({
-      ...portfolio,
-      coverImage: baseUrl + portfolio.coverImage,
-    }));
-  }
-});
-
-// Fetch paginated portfolios
-const { pending: portfoliosPending, data: portfoliosData, refresh: refreshPortfolios } = useAsyncData(
-  "portfolios-list",
-  async () => {
-    try {
-      const response = await $api.get(
-        `/api/portfolios?limit=${pageSize}&page=${currentPage.value}&status=active`
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Gagal mengambil data portfolio:", error);
-      return { data: [], pagination: { totalPages: 1 } };
-    }
+export default {
+  name: "PortfolioPage",
+  components: {
+    SkeletonHomepageCardSkeleton,
+    SkeletonHomepageCardSmallSkeleton,
+    SkeletonPortfolioCardSkeleton,
+    HomepageCard,
+    HomepageCardSmall,
+    PortfolioCard,
   },
-  { watch: [currentPage] }
-);
+  data() {
+    return {
+      highlightedPortfolios: [],
+      portfoliosList: [],
+      // currentPage will be managed by setup's ref
+      // pageSize: 6,
+      // totalPages: 1,
+    };
+  },
+  setup() {
+    const { $api } = useNuxtApp();
+    const config = useRuntimeConfig();
+    const baseUrl = config.public.apiBaseUrl;
 
-watch(portfoliosData, (newData) => {
-  if (newData) {
-    portfoliosList.value = newData.data.map((portfolio) => ({
-      ...portfolio,
-      coverImage: baseUrl + portfolio.coverImage,
-    }));
-    totalPages.value = newData.pagination.totalPages;
-    nextTick(() => {
-      animatePortfolioCards();
-    });
-  }
-});
+    const currentPage = ref(1);
+    const pageSize = 6;
+    const totalPages = ref(1);
 
+    // Fetch highlighted portfolios
+    const { pending: highlightedPending, data: highlightedData } = useAsyncData(
+      "highlighted-portfolios",
+      async () => {
+        try {
+          const response = await $api.get(`/api/content-tracking/`);
+          return response.data.highlightedPortfolios;
+        } catch (error) {
+          console.error("Gagal mengambil data portfolio yang di-highlight:", error);
+          return [];
+        }
+      }
+    );
 
-const goToPage = (page) => {
-  if (page >= 1 && page <= totalPages.value) {
-    currentPage.value = page;
-  }
-};
-
-const goToPageWithScroll = (page) => {
-  goToPage(page);
-  nextTick(() => {
-    const section = document.getElementById("portfolio-section");
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  });
-};
-
-const initAnimations = () => {
-  const animateOnScroll = (elem, vars) => {
-    if (!elem) return;
-    $gsap.from(elem, {
-      scrollTrigger: {
-        trigger: elem,
-        start: "top 85%",
-        toggleActions: "play none none none",
+    // Fetch paginated portfolios
+    const { pending: portfoliosPending, data: portfoliosData } = useAsyncData(
+      "portfolios-list",
+      () => {
+        try {
+            return $api.get(
+                `/api/portfolios?limit=${pageSize}&page=${currentPage.value}&status=active`
+            ).then(res => res.data);
+        } catch (error) {
+            console.error("Gagal mengambil data portfolio:", error);
+            return { data: [], pagination: { totalPages: 1 } };
+        }
       },
-      duration: 0.8,
-      autoAlpha: 0,
-      y: 50,
-      ease: "power3.out",
-      ...vars,
-    });
-  };
+      { watch: [currentPage] }
+    );
 
-  if(heroSection.value) {
-    $gsap.from(heroSection.value.children, {
-      duration: 1,
-      autoAlpha: 0,
-      y: 30,
-      ease: "power3.out",
-      stagger: 0.2,
-      delay: 0.2,
-    });
-  }
-
-  if (featuredSection.value) {
-    animateOnScroll(featuredSection.value.querySelector("p"));
-    animateOnScroll(featuredSection.value.querySelector("h1"), { delay: 0.1 });
-    const featuredCards = featuredSection.value.querySelectorAll(".grid > div");
-    featuredCards.forEach((card, index) => {
-      animateOnScroll(card, { delay: index * 0.1 });
-    });
-  }
-
-  if (allProjectsSection.value) {
-    animateOnScroll(allProjectsSection.value.querySelector("p"));
-    animateOnScroll(allProjectsSection.value.querySelector("h1"), { delay: 0.1 });
-  }
+    return {
+      baseUrl,
+      highlightedPending,
+      highlightedData,
+      portfoliosPending,
+      portfoliosData,
+      currentPage,
+      totalPages,
+      pageSize
+    };
+  },
+  watch: {
+    highlightedData(newData) {
+      if (newData) {
+        this.highlightedPortfolios = newData.map((portfolio) => ({
+          ...portfolio,
+          coverImage: this.baseUrl + portfolio.coverImage,
+        }));
+      }
+    },
+    portfoliosData(newData) {
+      if (newData) {
+        this.portfoliosList = newData.data.map((portfolio) => ({
+          ...portfolio,
+          coverImage: this.baseUrl + portfolio.coverImage,
+        }));
+        this.totalPages = newData.pagination.totalPages;
+        nextTick(() => {
+          this.animatePortfolioCards();
+        });
+      }
+    },
+  },
+  mounted() {
+    this.initAnimations();
+  },
+  methods: {
+    goToPage(page) {
+      if (page >= 1 && page <= this.totalPages) {
+        this.currentPage = page;
+      }
+    },
+    goToPageWithScroll(page) {
+      this.goToPage(page);
+      nextTick(() => {
+        const section = document.getElementById("portfolio-section");
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    },
+    initAnimations() {
+      const { $gsap } = useNuxtApp();
+      const animateOnScroll = (elem, vars) => {
+        if (!elem) return;
+        $gsap.from(elem, {
+          scrollTrigger: {
+            trigger: elem,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+          duration: 0.8,
+          autoAlpha: 0,
+          y: 50,
+          ease: "power3.out",
+          ...vars,
+        });
+      };
+      if (this.$refs.heroSection) {
+        $gsap.from(this.$refs.heroSection.children, {
+          duration: 1,
+          autoAlpha: 0,
+          y: 30,
+          ease: "power3.out",
+          stagger: 0.2,
+          delay: 0.2,
+        });
+      }
+      if (this.$refs.featuredSection) {
+        animateOnScroll(this.$refs.featuredSection.querySelector("p"));
+        animateOnScroll(this.$refs.featuredSection.querySelector("h1"), { delay: 0.1 });
+        const featuredCards = this.$refs.featuredSection.querySelectorAll(".grid > div");
+        featuredCards.forEach((card, index) => {
+          animateOnScroll(card, { delay: index * 0.1 });
+        });
+      }
+      if (this.$refs.allProjectsSection) {
+        animateOnScroll(this.$refs.allProjectsSection.querySelector("p"));
+        animateOnScroll(this.$refs.allProjectsSection.querySelector("h1"), { delay: 0.1 });
+      }
+    },
+    animatePortfolioCards() {
+        const { $gsap } = useNuxtApp();
+      if (this.$refs.portfolioGrid) {
+        const portfolioCards = this.$refs.portfolioGrid.querySelectorAll(".h-5\\/6");
+        $gsap.set(portfolioCards, { autoAlpha: 0, y: 50 });
+        $gsap.to(portfolioCards, {
+          duration: 0.5,
+          autoAlpha: 1,
+          y: 0,
+          ease: "power3.out",
+          stagger: 0.1,
+        });
+      }
+    },
+  },
 };
-
-const animatePortfolioCards = () => {
-  if (portfolioGrid.value) {
-    const portfolioCards = portfolioGrid.value.querySelectorAll(".h-5\\/6");
-    $gsap.set(portfolioCards, { autoAlpha: 0, y: 50 });
-    $gsap.to(portfolioCards, {
-      duration: 0.5,
-      autoAlpha: 1,
-      y: 0,
-      ease: "power3.out",
-      stagger: 0.1,
-    });
-  }
-};
-
-onMounted(() => {
-  initAnimations();
-});
 </script>

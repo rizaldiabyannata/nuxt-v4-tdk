@@ -31,23 +31,65 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue';
+<script>
+import articleTemplate from '~/components/articleTemplate.vue';
 
-const route = useRoute();
-const { $api } = useNuxtApp();
-const config = useRuntimeConfig();
-const slug = route.params.slug;
+export default {
+  name: 'ArticleDetailPage',
+  components: {
+    articleTemplate,
+  },
+  data() {
+    return {
+      blog: null,
+      pending: true,
+    };
+  },
+  setup() {
+    const route = useRoute();
+    const { $api } = useNuxtApp();
+    const config = useRuntimeConfig();
+    const slug = route.params.slug;
 
-const { pending, data: blog } = useAsyncData(`blog-${slug}`, async () => {
-  try {
-    const response = await $api.get(`/api/blogs/${slug}`);
-    const blogData = response.data.data;
-    blogData.coverImage = config.public.apiBaseUrl + blogData.coverImage;
-    return blogData;
-  } catch (error) {
-    console.error("Gagal mengambil data blog:", error);
-    return null;
+    const { pending, data: blogData } = useAsyncData(`blog-${slug}`, async () => {
+      try {
+        const response = await $api.get(`/api/blogs/${slug}`);
+        const fetchedBlog = response.data.data;
+        if (fetchedBlog && fetchedBlog.coverImage) {
+            fetchedBlog.coverImage = config.public.apiBaseUrl + fetchedBlog.coverImage;
+        }
+        return fetchedBlog;
+      } catch (error) {
+        console.error("Gagal mengambil data blog:", error);
+        if (process.server) {
+            const nuxtApp = useNuxtApp()
+            // Check for ssrContext before using it
+            if (nuxtApp.ssrContext && nuxtApp.ssrContext.res) {
+                 nuxtApp.ssrContext.res.statusCode = 404
+            }
+        }
+        return null;
+      }
+    });
+
+    return {
+      pendingState: pending,
+      fetchedBlog: blogData,
+    };
+  },
+  watch: {
+    fetchedBlog: {
+      handler(newBlog) {
+        this.blog = newBlog;
+      },
+      immediate: true,
+    },
+    pendingState: {
+        handler(newPending) {
+            this.pending = newPending;
+        },
+        immediate: true,
+    }
   }
-});
+};
 </script>

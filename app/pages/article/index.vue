@@ -120,73 +120,91 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted, watch } from 'vue';
+<script>
+import { ref, onMounted, watch, nextTick } from 'vue';
 import SkeletonCarouselCardSkeleton from '~/components/skeleton/CarouselCardSkeleton.vue';
+import CarouselCard from '~/components/carousel-card.vue'; // Add missing import
 
-const { $api, $gsap } = useNuxtApp();
-const config = useRuntimeConfig();
-const baseUrl = config.public.apiBaseUrl;
-
-const articleList = ref([]);
-const currentPage = ref(1);
-const pageSize = 6;
-const totalPages = ref(1);
-
-const heroSection = ref(null);
-const articlesSection = ref(null);
-const articlesGrid = ref(null);
-
-const { pending, data: articlesData, refresh: refreshArticles } = useAsyncData(
-  'articles-list',
-  async () => {
-    try {
-      const response = await $api.get(
-        `/api/blogs?limit=${pageSize}&page=${currentPage.value}&status=active`
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Gagal mengambil data artikel:", error);
-      return { data: [], pagination: { totalPages: 1 } };
-    }
+export default {
+  name: 'ArticleIndexPage',
+  components: {
+    SkeletonCarouselCardSkeleton,
+    CarouselCard,
   },
-  { watch: [currentPage] }
-);
+  data() {
+    return {
+      articleList: [],
+      // currentPage and totalPages will be managed via setup()
+    };
+  },
+  setup() {
+    const { $api } = useNuxtApp();
+    const config = useRuntimeConfig();
+    const baseUrl = config.public.apiBaseUrl;
 
-watch(articlesData, (newData) => {
-  if (newData) {
-    articleList.value = newData.data.map((article) => ({
-      ...article,
-      coverImage: baseUrl + article.coverImage,
-    }));
-    totalPages.value = newData.pagination.totalPages;
-    nextTick(() => {
-      animateArticleCards();
-    });
-  }
-});
+    const currentPage = ref(1);
+    const pageSize = 6;
+    const totalPages = ref(1);
 
-const goToPage = (page) => {
-  if (page >= 1 && page <= totalPages.value) {
-    currentPage.value = page;
-  }
-};
+    const { pending, data: articlesData } = useAsyncData(
+      'articles-list',
+      () => {
+        try {
+          return $api.get(
+            `/api/blogs?limit=${pageSize}&page=${currentPage.value}&status=active`
+          ).then(res => res.data);
+        } catch (error) {
+          console.error("Gagal mengambil data artikel:", error);
+          return { data: [], pagination: { totalPages: 1 } };
+        }
+      },
+      { watch: [currentPage] }
+    );
 
-const goToPageWithScroll = (page) => {
-  goToPage(page);
-  nextTick(() => {
-    const section = document.getElementById('article-section');
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    }
-  });
-};
-
-const initAnimations = () => {
-      const gsap = $gsap;
+    return {
+      baseUrl,
+      pending,
+      articlesData,
+      currentPage,
+      totalPages,
+      pageSize,
+    };
+  },
+  watch: {
+    articlesData(newData) {
+      if (newData) {
+        this.articleList = newData.data.map((article) => ({
+          ...article,
+          coverImage: this.baseUrl + article.coverImage,
+        }));
+        this.totalPages = newData.pagination.totalPages;
+        this.animateArticleCards();
+      }
+    },
+  },
+  mounted() {
+    this.initAnimations();
+  },
+  methods: {
+    goToPage(page) {
+      if (page >= 1 && page <= this.totalPages) {
+        this.currentPage = page;
+      }
+    },
+    goToPageWithScroll(page) {
+      this.goToPage(page);
+      nextTick(() => {
+        const section = document.getElementById('article-section');
+        if (section) {
+          section.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    },
+    initAnimations() {
+      const { $gsap } = useNuxtApp();
       const animateOnScroll = (elem, vars) => {
         if (!elem) return;
-        gsap.from(elem, {
+        $gsap.from(elem, {
           scrollTrigger: {
             trigger: elem,
             start: "top 85%",
@@ -200,8 +218,8 @@ const initAnimations = () => {
         });
       };
 
-      if(heroSection.value) {
-        gsap.from(heroSection.value.children, {
+      if (this.$refs.heroSection) {
+        $gsap.from(this.$refs.heroSection.children, {
           duration: 1,
           autoAlpha: 0,
           y: 30,
@@ -211,34 +229,29 @@ const initAnimations = () => {
         });
       }
 
-      const articlesSectionElem = articlesSection.value;
-      if (articlesSectionElem) {
-        animateOnScroll(articlesSectionElem.querySelector("p"));
-        animateOnScroll(articlesSectionElem.querySelector("h1"), { delay: 0.1 });
+      if (this.$refs.articlesSection) {
+        animateOnScroll(this.$refs.articlesSection.querySelector("p"));
+        animateOnScroll(this.$refs.articlesSection.querySelector("h1"), { delay: 0.1 });
       }
-    };
-
-const animateArticleCards = () => {
-  const gsap = $gsap;
-  nextTick(() => {
-    const articlesGridElem = articlesGrid.value;
-    if (articlesGridElem) {
-      const articleCards = articlesGridElem.querySelectorAll(
-        ".transition-transform"
-      );
-      gsap.set(articleCards, { autoAlpha: 0, y: 50 });
-      gsap.to(articleCards, {
-        duration: 0.5,
-        autoAlpha: 1,
-        y: 0,
-        ease: "power3.out",
-        stagger: 0.1,
+    },
+    animateArticleCards() {
+      const { $gsap } = useNuxtApp();
+      nextTick(() => {
+        if (this.$refs.articlesGrid) {
+          const articleCards = this.$refs.articlesGrid.querySelectorAll(
+            ".transition-transform"
+          );
+          $gsap.set(articleCards, { autoAlpha: 0, y: 50 });
+          $gsap.to(articleCards, {
+            duration: 0.5,
+            autoAlpha: 1,
+            y: 0,
+            ease: "power3.out",
+            stagger: 0.1,
+          });
+        }
       });
-    }
-  });
-};
-
-onMounted(() => {
-  initAnimations();
-});
+    },
+  }
+}
 </script>

@@ -381,107 +381,130 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from "vue";
+<script>
+import { nextTick } from "vue";
 import SkeletonHomepageCardSkeleton from "~/components/skeleton/HomepageCardSkeleton.vue";
 import SkeletonHomepageCardSmallSkeleton from "~/components/skeleton/HomepageCardSmallSkeleton.vue";
 import SkeletonCarouselCardSkeleton from "~/components/skeleton/CarouselCardSkeleton.vue";
 import HomepageCard from "~/components/homepage-card.vue";
 import HomepageCardSmall from "~/components/homepage-card-small.vue";
+import CarouselCard from "~/components/carousel-card.vue";
 
-const { $api, $gsap } = useNuxtApp();
-const config = useRuntimeConfig();
-const baseUrl = config.public.apiBaseUrl;
+export default {
+  name: "HomePage",
+  components: {
+    SkeletonHomepageCardSkeleton,
+    SkeletonHomepageCardSmallSkeleton,
+    SkeletonCarouselCardSkeleton,
+    HomepageCard,
+    HomepageCardSmall,
+    CarouselCard,
+  },
+  data() {
+    return {
+      highlightedPortfolios: [],
+      featuredBlogs: [],
+    };
+  },
+  setup() {
+    const { $api } = useNuxtApp();
+    const config = useRuntimeConfig();
+    const baseUrl = config.public.apiBaseUrl;
 
-const highlightedPortfolios = ref([]);
-const featuredBlogs = ref([]);
-const heroContent = ref(null);
-const heroButton = ref(null);
-const newsCarousel = ref(null);
-
-const { pending, data: contentData } = useAsyncData(
-  "content-tracking",
-  async () => {
-    try {
-      const response = await $api.get(`/api/content-tracking/`);
-      return response.data;
-    } catch (error) {
-      console.error("Gagal mengambil data:", error);
-      return { highlightedPortfolios: [], featuredBlogs: [] };
-    }
-  }
-);
-
-watch(contentData, (newData) => {
-  if (newData) {
-    highlightedPortfolios.value = newData.highlightedPortfolios.map(
-      (portfolio) => ({
-        ...portfolio,
-        coverImage: baseUrl + portfolio.coverImage,
-      })
+    const { data: contentData, pending } = useAsyncData(
+      "content-tracking",
+      async () => {
+        try {
+          const response = await $api.get(`/api/content-tracking/`);
+          console.log("API Response:", response.data);
+          return response.data;
+        } catch (error) {
+          console.error("Gagal mengambil data:", error);
+          return { highlightedPortfolios: [], featuredBlogs: [] };
+        }
+      }
     );
-    featuredBlogs.value = newData.featuredBlogs.map((blog) => ({
-      ...blog,
-      coverImage: baseUrl + blog.coverImage,
-    }));
-    nextTick(() => {
-      initAnimations();
-    });
-  }
-});
 
-const initAnimations = () => {
-  const animateOnScroll = (elem, vars) => {
-    if (!elem) return;
-    $gsap.from(elem, {
-      scrollTrigger: {
-        trigger: elem,
-        start: "top 85%",
-        toggleActions: "play none none none",
+    return {
+      contentData,
+      pending,
+      baseUrl,
+    };
+  },
+  watch: {
+    contentData: {
+      handler(newData) {
+        if (newData) {
+          console.log("Watcher triggered with new data:", newData);
+          this.highlightedPortfolios = newData.highlightedPortfolios.map(
+            (portfolio) => ({
+              ...portfolio,
+              coverImage: this.baseUrl + portfolio.coverImage,
+            })
+          );
+          this.featuredBlogs = newData.featuredBlogs.map((blog) => ({
+            ...blog,
+            coverImage: this.baseUrl + blog.coverImage,
+          }));
+
+          nextTick(() => {
+            this.initAnimations();
+          });
+        }
       },
-      duration: 0.8,
-      autoAlpha: 0,
-      y: 50,
-      ease: "power3.out",
-      ...vars,
-    });
-  };
+      immediate: true,
+    },
+  },
+  methods: {
+    initAnimations() {
+      const { $gsap } = useNuxtApp();
 
-  // Hero section
-  if (heroContent.value) {
-    $gsap.from(heroContent.value.children, {
-      duration: 1,
-      autoAlpha: 0,
-      y: 30,
-      ease: "power3.out",
-      stagger: 0.2,
-      delay: 0.2,
-    });
-  }
-  if (heroButton.value) {
-    $gsap.from(heroButton.value, {
-      duration: 1,
-      autoAlpha: 0,
-      y: 30,
-      ease: "power3.out",
-      delay: 0.4,
-    });
-  }
+      const animateOnScroll = (elem, vars) => {
+        if (!elem) return;
+        $gsap.from(elem, {
+          scrollTrigger: {
+            trigger: elem,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+          duration: 0.8,
+          autoAlpha: 0,
+          y: 50,
+          ease: "power3.out",
+          ...vars,
+        });
+      };
 
-  // News & Report section
-  if (newsCarousel.value) {
-    const carouselItems = newsCarousel.value.querySelectorAll(".carousel-item");
-    carouselItems.forEach((item, index) => {
-      animateOnScroll(item, { delay: index * 0.1 });
-    });
-  }
+      if (this.$refs.heroContent) {
+        $gsap.from(this.$refs.heroContent.children, {
+          duration: 1,
+          autoAlpha: 0,
+          y: 30,
+          ease: "power3.out",
+          stagger: 0.2,
+          delay: 0.2,
+        });
+      }
+      if (this.$refs.heroButton) {
+        $gsap.from(this.$refs.heroButton, {
+          duration: 1,
+          autoAlpha: 0,
+          y: 30,
+          ease: "power3.out",
+          delay: 0.4,
+        });
+      }
+
+      if (this.$refs.newsCarousel) {
+        const carouselItems =
+          this.$refs.newsCarousel.querySelectorAll(".carousel-item");
+        carouselItems.forEach((item, index) => {
+          animateOnScroll(item, { delay: index * 0.1 });
+        });
+      }
+    },
+  },
 };
-
-onMounted(() => {
-  if (!pending.value && contentData.value) {
-    initAnimations();
-  }
-});
 </script>
 
 <style>

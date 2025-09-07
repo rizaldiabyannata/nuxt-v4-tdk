@@ -18,22 +18,39 @@
   </div>
 </template>
 
-<script setup>
-import { useRoute } from "vue-router";
-import { ref, watchEffect } from "vue";
+<script>
+import PortoTemplate from '~/components/portoTemplate.vue';
 
-const route = useRoute();
-const portfolio = ref(null);
-
-watchEffect(() => {
-  if (route.query) {
-    portfolio.value = {
-      title: route.query.title || "Untitled",
-      summary: route.query.shortDescription || "",
-      description: route.query.description || "",
-      coverImage: route.query.coverImage || "/img/placeholder.png",
-      author: "PT. Total Desain Konsultan",
+export default {
+  name: 'PortfolioPreviewPage',
+  components: {
+    PortoTemplate,
+  },
+  data() {
+    return {
+      portfolio: null,
     };
-  }
-});
+  },
+  methods: {
+    updatePortfolioFromQuery(query) {
+      if (query) {
+        this.portfolio = {
+          title: query.title || 'Untitled',
+          summary: query.shortDescription || '',
+          description: query.description || '',
+          coverImage: query.coverImage || '/img/placeholder.png',
+          author: 'PT. Total Desain Konsultan',
+        };
+      }
+    },
+  },
+  created() {
+    this.updatePortfolioFromQuery(this.$route.query);
+  },
+  watch: {
+    '$route.query'(newQuery) {
+      this.updatePortfolioFromQuery(newQuery);
+    },
+  },
+};
 </script>
