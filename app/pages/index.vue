@@ -125,17 +125,6 @@
           </NuxtLink>
         </div>
       </div>
-      <!-- <div class="flex flex-col lg:flex-row w-full mt-5 gap-4">
-        <homepage-card
-          v-for="portfolio in highlightedPortfolios"
-          :key="portfolio._id"
-          :title="portfolio.title"
-          :shortDescription="portfolio.shortDescription"
-          :imageUrl="portfolio.coverImage"
-          :slug="portfolio.slug"
-          class="w-full lg:w-1/2"
-        />
-      </div> -->
       <div v-if="highlightedPortfolios.length > 0" class="w-full mt-12">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div
