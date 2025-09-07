@@ -177,7 +177,10 @@
           Popular News
         </p>
       </div>
-      <div v-if="pending" class="carousel carousel-center bg-transparent rounded-2xl lg:rounded-3xl w-full max-w-7xl space-x-4 sm:space-x-8 p-4">
+      <div
+        v-if="pending"
+        class="carousel carousel-center bg-transparent rounded-2xl lg:rounded-3xl w-full max-w-7xl space-x-4 sm:space-x-8 p-4"
+      >
         <div class="carousel-item" v-for="i in 3" :key="i">
           <SkeletonCarouselCardSkeleton />
         </div>
