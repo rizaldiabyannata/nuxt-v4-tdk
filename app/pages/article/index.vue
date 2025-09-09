@@ -121,21 +121,15 @@
 </template>
 
 <script>
-import { ref, onMounted, watch, nextTick } from "vue";
+import { ref, onMounted, watch, nextTick, computed } from "vue";
 import SkeletonCarouselCardSkeleton from "~/components/skeleton/CarouselCardSkeleton.vue";
-import CarouselCard from "~/components/carousel-card.vue"; // Add missing import
+import CarouselCard from "~/components/carousel-card.vue";
 
 export default {
   name: "ArticleIndexPage",
   components: {
     SkeletonCarouselCardSkeleton,
     CarouselCard,
-  },
-  data() {
-    return {
-      articleList: [],
-      // currentPage and totalPages will be managed via setup()
-    };
   },
   setup() {
     const { $api } = useNuxtApp();
@@ -144,7 +138,6 @@ export default {
 
     const currentPage = ref(1);
     const pageSize = 6;
-    const totalPages = ref(1);
 
     const { pending, data: articlesData } = useAsyncData(
       "articles-list",
@@ -160,39 +153,48 @@ export default {
           return { data: [], pagination: { totalPages: 1 } };
         }
       },
-      { watch: [currentPage] }
+      {
+        watch: [currentPage],
+        transform(input) {
+          if (!input) return { data: [], pagination: { totalPages: 1 } };
+          return {
+            data: input.data.map((article) => ({
+              ...article,
+              coverImage: baseUrl + article.coverImage,
+            })),
+            pagination: input.pagination,
+          };
+        },
+        default: () => ({ data: [], pagination: { totalPages: 1 } }),
+      }
+    );
+
+    const articleList = computed(
+      () => (articlesData.value && articlesData.value.data) || []
+    );
+    const totalPages = computed(
+      () =>
+        (articlesData.value && articlesData.value.pagination.totalPages) || 1
     );
 
     return {
-      baseUrl,
       pending,
-      articlesData,
+      articleList,
       currentPage,
       totalPages,
       pageSize,
     };
   },
   watch: {
-    articlesData(newData) {
-      if (newData) {
-        this.articleList = newData.data.map((article) => ({
-          ...article,
-          coverImage: this.baseUrl + article.coverImage,
-        }));
-        this.totalPages = newData.pagination.totalPages;
-        this.animateArticleCards();
-      }
+    articleList() {
+      // Animate cards whenever the list changes
+      this.animateArticleCards();
     },
   },
   mounted() {
     this.initAnimations();
-    if (this.articlesData) {
-      this.articleList = this.articlesData.data.map((article) => ({
-        ...article,
-        coverImage: this.baseUrl + article.coverImage,
-      }));
-      this.totalPages = this.articlesData.pagination.totalPages;
-    }
+    // Also animate on initial mount
+    this.animateArticleCards();
   },
   methods: {
     goToPage(page) {

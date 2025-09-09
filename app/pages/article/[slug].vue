@@ -32,64 +32,55 @@
 </template>
 
 <script>
-import articleTemplate from '~/components/articleTemplate.vue';
+import { computed } from "vue";
+import articleTemplate from "~/components/articleTemplate.vue";
 
 export default {
-  name: 'ArticleDetailPage',
+  name: "ArticleDetailPage",
   components: {
     articleTemplate,
   },
-  data() {
-    return {
-      blog: null,
-      pending: true,
-    };
-  },
   setup() {
-    const route = useRoute();
     const { $api } = useNuxtApp();
+    const route = useRoute();
     const config = useRuntimeConfig();
     const slug = route.params.slug;
+    const baseUrl = config.public.apiBaseUrl;
 
-    const { pending, data: blogData } = useAsyncData(`blog-${slug}`, async () => {
-      try {
-        const response = await $api.get(`/api/blogs/${slug}`);
-        const fetchedBlog = response.data.data;
-        if (fetchedBlog && fetchedBlog.coverImage) {
-            fetchedBlog.coverImage = config.public.apiBaseUrl + fetchedBlog.coverImage;
+    const {
+      data: blog,
+      pending,
+      error,
+    } = useAsyncData(
+      `blog-${slug}`,
+      async () => {
+        try {
+          const response = await $api.get(`/api/blogs/${slug}`);
+          return response.data.data;
+        } catch (err) {
+          console.error(`Gagal mengambil data blog untuk slug: ${slug}`, err);
+          throw createError({
+            statusCode: 404,
+            statusMessage: "Blog post not found",
+            fatal: true,
+          });
         }
-        return fetchedBlog;
-      } catch (error) {
-        console.error("Gagal mengambil data blog:", error);
-        if (process.server) {
-            const nuxtApp = useNuxtApp()
-            // Check for ssrContext before using it
-            if (nuxtApp.ssrContext && nuxtApp.ssrContext.res) {
-                 nuxtApp.ssrContext.res.statusCode = 404
-            }
-        }
-        return null;
+      },
+      {
+        transform(input) {
+          if (!input) return null;
+          return {
+            ...input,
+            coverImage: baseUrl + input.coverImage,
+          };
+        },
       }
-    });
+    );
 
     return {
-      pendingState: pending,
-      fetchedBlog: blogData,
+      blog,
+      pending,
     };
   },
-  watch: {
-    fetchedBlog: {
-      handler(newBlog) {
-        this.blog = newBlog;
-      },
-      immediate: true,
-    },
-    pendingState: {
-        handler(newPending) {
-            this.pending = newPending;
-        },
-        immediate: true,
-    }
-  }
 };
 </script>

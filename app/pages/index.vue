@@ -416,7 +416,7 @@
 </template>
 
 <script>
-import { nextTick } from "vue";
+import { nextTick, computed } from "vue";
 import SkeletonHomepageCardSkeleton from "~/components/skeleton/HomepageCardSkeleton.vue";
 import SkeletonHomepageCardSmallSkeleton from "~/components/skeleton/HomepageCardSmallSkeleton.vue";
 import SkeletonCarouselCardSkeleton from "~/components/skeleton/CarouselCardSkeleton.vue";
@@ -434,74 +434,65 @@ export default {
     HomepageCardSmall,
     CarouselCard,
   },
-  data() {
-    return {
-      highlightedPortfolios: [],
-      featuredBlogs: [],
-    };
-  },
   setup() {
     const { $api } = useNuxtApp();
     const config = useRuntimeConfig();
     const baseUrl = config.public.apiBaseUrl;
 
-    const { data: contentData, pending } = useAsyncData(
+    const { data, pending } = useAsyncData(
       "content-tracking",
       async () => {
         try {
           const response = await $api.get(`/api/content-tracking/`);
-          console.log("API Response:", response.data);
           return response.data;
         } catch (error) {
           console.error("Gagal mengambil data:", error);
           return { highlightedPortfolios: [], featuredBlogs: [] };
         }
+      },
+      {
+        transform(input) {
+          if (!input) {
+            return { highlightedPortfolios: [], featuredBlogs: [] };
+          }
+          return {
+            highlightedPortfolios: input.highlightedPortfolios.map(
+              (portfolio) => ({
+                ...portfolio,
+                coverImage: baseUrl + portfolio.coverImage,
+              })
+            ),
+            featuredBlogs: input.featuredBlogs.map((blog) => ({
+              ...blog,
+              coverImage: baseUrl + blog.coverImage,
+            })),
+          };
+        },
+        // Provide a default value to prevent data being null on initial client render
+        default: () => ({ highlightedPortfolios: [], featuredBlogs: [] }),
       }
     );
 
+    // Use computed properties to reactively derive state from the async data.
+    // This ensures that the data is always consistent.
+    const highlightedPortfolios = computed(
+      () => (data.value && data.value.highlightedPortfolios) || []
+    );
+    const featuredBlogs = computed(
+      () => (data.value && data.value.featuredBlogs) || []
+    );
+
     return {
-      contentData,
       pending,
-      baseUrl,
+      highlightedPortfolios,
+      featuredBlogs,
     };
   },
   mounted() {
-    if (this.contentData) {
-      this.highlightedPortfolios = this.contentData.highlightedPortfolios.map(
-        (portfolio) => ({
-          ...portfolio,
-          coverImage: this.baseUrl + portfolio.coverImage,
-        })
-      );
-      this.featuredBlogs = this.contentData.featuredBlogs.map((blog) => ({
-        ...blog,
-        coverImage: this.baseUrl + blog.coverImage,
-      }));
-    }
-  },
-  watch: {
-    contentData: {
-      handler(newData) {
-        if (newData) {
-          console.log("Watcher triggered with new data:", newData);
-          this.highlightedPortfolios = newData.highlightedPortfolios.map(
-            (portfolio) => ({
-              ...portfolio,
-              coverImage: this.baseUrl + portfolio.coverImage,
-            })
-          );
-          this.featuredBlogs = newData.featuredBlogs.map((blog) => ({
-            ...blog,
-            coverImage: this.baseUrl + blog.coverImage,
-          }));
-
-          nextTick(() => {
-            this.initAnimations();
-          });
-        }
-      },
-      immediate: true,
-    },
+    // Animations need to run on the client after the DOM is mounted.
+    nextTick(() => {
+      this.initAnimations();
+    });
   },
   methods: {
     initAnimations() {

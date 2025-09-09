@@ -166,13 +166,13 @@
 </template>
 
 <script>
-import { ref, onMounted, watch, nextTick } from "vue";
+import { ref, onMounted, nextTick, computed } from "vue";
 import SkeletonHomepageCardSkeleton from "~/components/skeleton/HomepageCardSkeleton.vue";
 import SkeletonHomepageCardSmallSkeleton from "~/components/skeleton/HomepageCardSmallSkeleton.vue";
 import SkeletonPortfolioCardSkeleton from "~/components/skeleton/PortfolioCardSkeleton.vue";
 import HomepageCard from "~/components/homepage-card.vue";
 import HomepageCardSmall from "~/components/homepage-card-small.vue";
-import PortfolioCard from "~/components/portfolio-card.vue"; // This was used but not imported
+import PortfolioCard from "~/components/portfolio-card.vue";
 
 export default {
   name: "PortfolioPage",
@@ -184,15 +184,6 @@ export default {
     HomepageCardSmall,
     PortfolioCard,
   },
-  data() {
-    return {
-      highlightedPortfolios: [],
-      portfoliosList: [],
-      // currentPage will be managed by setup's ref
-      // pageSize: 6,
-      // totalPages: 1,
-    };
-  },
   setup() {
     const { $api } = useNuxtApp();
     const config = useRuntimeConfig();
@@ -200,7 +191,6 @@ export default {
 
     const currentPage = ref(1);
     const pageSize = 6;
-    const totalPages = ref(1);
 
     // Fetch highlighted portfolios
     const { pending: highlightedPending, data: highlightedData } = useAsyncData(
@@ -216,6 +206,16 @@ export default {
           );
           return [];
         }
+      },
+      {
+        transform(input) {
+          if (!input) return [];
+          return input.map((portfolio) => ({
+            ...portfolio,
+            coverImage: baseUrl + portfolio.coverImage,
+          }));
+        },
+        default: () => [],
       }
     );
 
@@ -234,36 +234,46 @@ export default {
           return { data: [], pagination: { totalPages: 1 } };
         }
       },
-      { watch: [currentPage] }
+      {
+        watch: [currentPage],
+        transform(input) {
+          if (!input) return { data: [], pagination: { totalPages: 1 } };
+          return {
+            data: input.data.map((portfolio) => ({
+              ...portfolio,
+              coverImage: baseUrl + portfolio.coverImage,
+            })),
+            pagination: input.pagination,
+          };
+        },
+        default: () => ({ data: [], pagination: { totalPages: 1 } }),
+      }
+    );
+
+    const highlightedPortfolios = computed(() => highlightedData.value || []);
+    const portfoliosList = computed(
+      () => (portfoliosData.value && portfoliosData.value.data) || []
+    );
+    const totalPages = computed(
+      () =>
+        (portfoliosData.value && portfoliosData.value.pagination.totalPages) ||
+        1
     );
 
     return {
-      baseUrl,
       highlightedPending,
-      highlightedData,
       portfoliosPending,
-      portfoliosData,
+      highlightedPortfolios,
+      portfoliosList,
       currentPage,
       totalPages,
       pageSize,
     };
   },
   watch: {
-    highlightedData(newData) {
-      if (newData) {
-        this.highlightedPortfolios = newData.map((portfolio) => ({
-          ...portfolio,
-          coverImage: this.baseUrl + portfolio.coverImage,
-        }));
-      }
-    },
-    portfoliosData(newData) {
-      if (newData) {
-        this.portfoliosList = newData.data.map((portfolio) => ({
-          ...portfolio,
-          coverImage: this.baseUrl + portfolio.coverImage,
-        }));
-        this.totalPages = newData.pagination.totalPages;
+    // Watch for data changes to trigger animations
+    portfoliosList(newList, oldList) {
+      if (newList.length > 0) {
         nextTick(() => {
           this.animatePortfolioCards();
         });
@@ -272,19 +282,9 @@ export default {
   },
   mounted() {
     this.initAnimations();
-    // Isi data langsung jika sudah tersedia dari useAsyncData
-    if (this.highlightedData) {
-      this.highlightedPortfolios = this.highlightedData.map((portfolio) => ({
-        ...portfolio,
-        coverImage: this.baseUrl + portfolio.coverImage,
-      }));
-    }
-    if (this.portfoliosData) {
-      this.portfoliosList = this.portfoliosData.data.map((portfolio) => ({
-        ...portfolio,
-        coverImage: this.baseUrl + portfolio.coverImage,
-      }));
-      this.totalPages = this.portfoliosData.pagination.totalPages;
+    // Animate cards on initial load as well
+    if (this.portfoliosList.length > 0) {
+      this.animatePortfolioCards();
     }
   },
   methods: {
