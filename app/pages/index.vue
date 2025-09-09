@@ -214,28 +214,30 @@
           <SkeletonCarouselCardSkeleton />
         </div>
       </div>
-      <div
-        v-else-if="featuredBlogs.length > 0"
-        ref="newsCarousel"
-        class="carousel carousel-center bg-transparent rounded-2xl lg:rounded-3xl w-full max-w-7xl space-x-4 sm:space-x-8 p-4"
-      >
+      <client-only>
         <div
-          v-for="blog in featuredBlogs"
-          :key="blog._id"
-          class="carousel-item"
+          v-if="featuredBlogs.length > 0"
+          ref="newsCarousel"
+          class="carousel carousel-center bg-transparent rounded-2xl lg:rounded-3xl w-full max-w-7xl space-x-4 sm:space-x-8 p-4"
         >
-          <carousel-card
-            :title="blog.title"
-            :shortDescription="blog.summary"
-            :imageUrl="blog.coverImage"
-            :createdAt="blog.createdAt"
-            :slug="blog.slug"
-          />
+          <div
+            v-for="blog in featuredBlogs"
+            :key="blog._id"
+            class="carousel-item"
+          >
+            <carousel-card
+              :title="blog.title"
+              :shortDescription="blog.summary"
+              :imageUrl="blog.coverImage"
+              :createdAt="blog.createdAt"
+              :slug="blog.slug"
+            />
+          </div>
         </div>
-      </div>
-      <div v-else class="text-center py-16">
-        <p class="text-gray-500 text-lg">No article to show.</p>
-      </div>
+        <div v-else class="text-center py-16">
+          <p class="text-gray-500 text-lg">No article to show.</p>
+        </div>
+      </client-only>
     </div>
   </div>
 
