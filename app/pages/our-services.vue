@@ -3,9 +3,11 @@
     ref="heroSection"
     class="relative min-h-screen flex flex-col justify-center px-4 py-16 sm:px-8 sm:py-24"
   >
-    <div
-      class="absolute inset-0 bg-[url('/img/sample/sample-5.jpeg')] bg-cover bg-center brightness-50 -z-10"
-    ></div>
+    <NuxtImg
+      src="/img/sample/sample-5.jpeg"
+      class="absolute inset-0 w-full h-full object-cover brightness-50 -z-10"
+      placeholder
+    />
 
     <div class="relative flex flex-col flex-grow w-full justify-center">
       <div class="flex flex-col w-full md:w-1/2 justify-center items-start">

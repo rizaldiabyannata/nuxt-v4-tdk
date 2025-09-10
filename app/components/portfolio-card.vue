@@ -26,12 +26,14 @@
     </div>
 
     <figure class="h-[40%] mt-2">
-      <img
+      <NuxtImg
         crossorigin="anonymous"
         id="image"
         :src="imageUrl"
         alt="Product Image"
         class="w-full h-auto object-cover"
+        loading="lazy"
+        placeholder
       />
     </figure>
   </div>

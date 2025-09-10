@@ -28,27 +28,56 @@
 </template>
 
 <script>
+import { computed } from "vue";
+import PortoTemplate from "~/components/portoTemplate.vue";
+
 export default {
-  data() {
-    return {
-      portfolio: {},
-      slug: this.$route.params.slug,
-    };
+  components: {
+    PortoTemplate,
   },
-  created() {
-    this.fetchPortfolio();
-  },
-  methods: {
-    async fetchPortfolio() {
-      try {
-        const response = await this.$api.get(`/api/portfolios/${this.slug}`);
-        this.portfolio = response.data.data;
-        this.portfolio.coverImage = useRuntimeConfig().public.apiBaseUrl + this.portfolio.coverImage; 
-        console.log("Data portfolio berhasil diambil:", this.portfolio);
-      } catch (error) {
-        console.error("Gagal mengambil data portfolio:", error);
+  setup() {
+    const { $api } = useNuxtApp();
+    const route = useRoute();
+    const config = useRuntimeConfig();
+    const slug = route.params.slug;
+    const baseUrl = config.public.apiBaseUrl;
+
+    const { data, pending, error } = useAsyncData(
+      `portfolio-${slug}`,
+      async () => {
+        try {
+          const response = await $api.get(`/api/portfolios/${slug}`);
+          return response.data.data;
+        } catch (err) {
+          console.error(
+            `Gagal mengambil data portfolio untuk slug: ${slug}`,
+            err
+          );
+          // This will cause the error page to be shown if the portfolio is not found
+          throw createError({
+            statusCode: 404,
+            statusMessage: "Portfolio Not Found",
+            fatal: true,
+          });
+        }
+      },
+      {
+        transform(input) {
+          if (!input) return null;
+          return {
+            ...input,
+            coverImage: baseUrl + input.coverImage,
+          };
+        },
       }
-    }
+    );
+
+    const portfolio = computed(() => data.value);
+
+    return {
+      portfolio,
+      pending,
+    };
   },
 };
 </script>

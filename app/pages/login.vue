@@ -6,11 +6,11 @@
         class="flex flex-col lg:flex-row-reverse lg:w-3/5 w-full max-w-4xl h-auto lg:h-[60vh] shadow-2xl rounded-3xl overflow-hidden"
       >
         <div class="relative h-48 lg:h-full lg:w-2/5">
-          <img
+          <NuxtImg
             src="/img/login-placeholder.png"
             alt="Halaman Login"
             class="w-full h-full object-cover"
-            onerror="this.onerror=null;this.src='https://placehold.co/600x800/1E1E1E/FFFBFC?text=Image';"
+            placeholder
           />
         </div>
 
@@ -56,7 +56,7 @@
                 name="password"
                 id="password"
                 class="p-3 w-full bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500 transition"
-                placeholder="••••••••"
+                placeholder="••••••••••••••••"
                 required
               />
             </div>
@@ -143,7 +143,11 @@ export default {
           const authToken = useCookie("accessToken");
           authToken.value = token;
         }
-        await navigateTo("/admin");
+        if (!response.data.email) {
+          await navigateTo("/admin/profile");
+        } else {
+          await navigateTo("/admin");
+        }
       } catch (error) {
         navigateTo("/login");
         console.error("Login failed:", error);

@@ -3,12 +3,11 @@
     ref="heroSection"
     class="relative h-[50vh] lg:h-[60vh] flex flex-col justify-center text-black overflow-hidden px-4 sm:px-8"
   >
-    <!-- Background image overlay with brightness -->
-    <div
-      class="absolute inset-0 bg-[url('/img/sample/sample-2.jpeg')] bg-cover bg-center brightness-50 -z-10"
-    ></div>
-
-    <!-- Konten tetap terang -->
+    <NuxtImg
+      src="/img/sample/sample-2.jpeg"
+      class="absolute inset-0 w-full h-full object-cover brightness-50 -z-10"
+      placeholder
+    />
     <div class="w-full lg:w-1/2 relative z-10 space-y-4">
       <h1 class="font-extrabold text-3xl md:text-4xl lg:text-5xl text-white">
         Stay Updated with Our Latest News & Reports
@@ -20,7 +19,6 @@
     </div>
   </div>
 
-  <!-- Tetap gunakan bagian ini tanpa perubahan -->
   <div
     id="article-section"
     ref="articlesSection"
@@ -36,6 +34,13 @@
       class="flex flex-col lg:flex-row w-full max-w-6xl mt-12 justify-center items-center"
     >
       <div
+        v-if="pending"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full"
+      >
+        <SkeletonCarouselCardSkeleton v-for="i in pageSize" :key="i" />
+      </div>
+      <div
+        v-else
         ref="articlesGrid"
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full"
       >
@@ -54,7 +59,7 @@
       </div>
     </div>
     <div
-      v-if="articleList.length === 0"
+      v-if="!pending && articleList.length === 0"
       class="flex flex-col items-center justify-center py-16"
     >
       <svg
@@ -85,7 +90,7 @@
     <div class="pagination flex gap-2 justify-center mt-8">
       <button
         @click="goToPageWithScroll(currentPage - 1)"
-        :disabled="currentPage === 1"
+        :disabled="currentPage === 1 || pending"
         class="px-4 py-2 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow cursor-pointer"
       >
         Prev
@@ -93,6 +98,7 @@
       <span v-for="page in totalPages" :key="page">
         <button
           @click="goToPageWithScroll(page)"
+          :disabled="pending"
           :class="[
             'mx-1 px-3 py-2 rounded-full border transition-all shadow cursor-pointer',
             page === currentPage
@@ -105,7 +111,7 @@
       </span>
       <button
         @click="goToPageWithScroll(currentPage + 1)"
-        :disabled="currentPage === totalPages"
+        :disabled="currentPage === totalPages || pending"
         class="px-4 py-2 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow cursor-pointer"
       >
         Next
@@ -115,27 +121,101 @@
 </template>
 
 <script>
+import { ref, onMounted, watch, nextTick, computed } from "vue";
+import SkeletonCarouselCardSkeleton from "~/components/skeleton/CarouselCardSkeleton.vue";
+import CarouselCard from "~/components/carousel-card.vue";
+
 export default {
-  data() {
+  name: "ArticleIndexPage",
+  components: {
+    SkeletonCarouselCardSkeleton,
+    CarouselCard,
+  },
+  setup() {
+    const { $api } = useNuxtApp();
+    const config = useRuntimeConfig();
+    const baseUrl = config.public.apiBaseUrl;
+
+    const currentPage = ref(1);
+    const pageSize = 6;
+
+    const { pending, data: articlesData } = useAsyncData(
+      "articles-list",
+      () => {
+        try {
+          return $api
+            .get(
+              `/api/blogs?limit=${pageSize}&page=${currentPage.value}&status=active`
+            )
+            .then((res) => res.data);
+        } catch (error) {
+          console.error("Gagal mengambil data artikel:", error);
+          return { data: [], pagination: { totalPages: 1 } };
+        }
+      },
+      {
+        watch: [currentPage],
+        transform(input) {
+          if (!input) return { data: [], pagination: { totalPages: 1 } };
+          return {
+            data: input.data.map((article) => ({
+              ...article,
+              coverImage: baseUrl + article.coverImage,
+            })),
+            pagination: input.pagination,
+          };
+        },
+        default: () => ({ data: [], pagination: { totalPages: 1 } }),
+      }
+    );
+
+    const articleList = computed(
+      () => (articlesData.value && articlesData.value.data) || []
+    );
+    const totalPages = computed(
+      () =>
+        (articlesData.value && articlesData.value.pagination.totalPages) || 1
+    );
+
     return {
-      articleList: [],
-      currentPage: 1,
-      pageSize: 6,
-      totalPages: 1,
+      pending,
+      articleList,
+      currentPage,
+      totalPages,
+      pageSize,
     };
   },
-
-  async mounted() {
-    await this.fetchArticles();
-    this.initAnimations();
+  watch: {
+    articleList() {
+      // Animate cards whenever the list changes
+      this.animateArticleCards();
+    },
   },
-
+  mounted() {
+    this.initAnimations();
+    // Also animate on initial mount
+    this.animateArticleCards();
+  },
   methods: {
+    goToPage(page) {
+      if (page >= 1 && page <= this.totalPages) {
+        this.currentPage = page;
+      }
+    },
+    goToPageWithScroll(page) {
+      this.goToPage(page);
+      nextTick(() => {
+        const section = document.getElementById("article-section");
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    },
     initAnimations() {
-      const gsap = this.$gsap;
+      const { $gsap } = useNuxtApp();
       const animateOnScroll = (elem, vars) => {
         if (!elem) return;
-        gsap.from(elem, {
+        $gsap.from(elem, {
           scrollTrigger: {
             trigger: elem,
             start: "top 85%",
@@ -149,75 +229,39 @@ export default {
         });
       };
 
-      // Hero Section
-      gsap.from(this.$refs.heroSection.children, {
-        duration: 1,
-        autoAlpha: 0,
-        y: 30,
-        ease: "power3.out",
-        stagger: 0.2,
-        delay: 0.2,
-      });
-
-      // Articles Section
-      const articlesSection = this.$refs.articlesSection;
-      if (articlesSection) {
-        animateOnScroll(articlesSection.querySelector("p"));
-        animateOnScroll(articlesSection.querySelector("h1"), { delay: 0.1 });
+      if (this.$refs.heroSection) {
+        $gsap.from(this.$refs.heroSection.children, {
+          duration: 1,
+          autoAlpha: 0,
+          y: 30,
+          ease: "power3.out",
+          stagger: 0.2,
+          delay: 0.2,
+        });
       }
-      // Jangan panggil animasi kartu di sini
-    },
 
+      if (this.$refs.articlesSection) {
+        animateOnScroll(this.$refs.articlesSection.querySelector("p"));
+        animateOnScroll(this.$refs.articlesSection.querySelector("h1"), {
+          delay: 0.1,
+        });
+      }
+    },
     animateArticleCards() {
-      const gsap = this.$gsap;
-      this.$nextTick(() => {
-        const articlesGrid = this.$refs.articlesGrid;
-        if (articlesGrid) {
-          const articleCards = articlesGrid.querySelectorAll(
+      const { $gsap } = useNuxtApp();
+      nextTick(() => {
+        if (this.$refs.articlesGrid) {
+          const articleCards = this.$refs.articlesGrid.querySelectorAll(
             ".transition-transform"
           );
-          // Set all cards to initial state before animating
-          gsap.set(articleCards, { autoAlpha: 0, y: 50 });
-          gsap.to(articleCards, {
+          $gsap.set(articleCards, { autoAlpha: 0, y: 50 });
+          $gsap.to(articleCards, {
             duration: 0.5,
             autoAlpha: 1,
             y: 0,
             ease: "power3.out",
             stagger: 0.1,
           });
-        }
-      });
-    },
-    async fetchArticles() {
-      const baseUrl = useRuntimeConfig().public.apiBaseUrl;
-      try {
-        const response = await this.$api.get(
-          `/api/blogs?limit=${this.pageSize}&page=${this.currentPage}&status=active`
-        );
-        this.articleList = response.data.data.map((article) => ({
-          ...article,
-          coverImage: baseUrl + article.coverImage,
-        }));
-        this.totalPages = response.data.pagination.totalPages;
-        this.$nextTick(() => {
-          this.animateArticleCards();
-        });
-      } catch (error) {
-        console.error("Gagal mengambil data artikel:", error);
-      }
-    },
-    goToPage(page) {
-      if (page >= 1 && page <= this.totalPages) {
-        this.currentPage = page;
-        this.fetchArticles();
-      }
-    },
-    goToPageWithScroll(page) {
-      this.goToPage(page);
-      this.$nextTick(() => {
-        const section = document.getElementById("article-section");
-        if (section) {
-          section.scrollIntoView({ behavior: "smooth" });
         }
       });
     },

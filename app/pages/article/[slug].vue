@@ -1,10 +1,14 @@
 <template>
-  <div v-if="blog">
+  <div v-if="pending" class="min-h-screen flex items-center justify-center">
+    <p>Loading...</p> <!-- Replace with a proper skeleton loader if you have one -->
+  </div>
+  <div v-else-if="blog">
     <div class="relative min-h-[300px] h-[50vh] flex flex-col justify-center text-white px-4 py-16 sm:px-8 sm:py-24">
-      <div
-        class="absolute inset-0 bg-cover bg-center brightness-50 -z-10"
-        :style="`background-image: url('${blog.coverImage}')`"
-      ></div>
+      <NuxtImg
+        :src="blog.coverImage"
+        class="absolute inset-0 w-full h-full object-cover brightness-50 -z-10"
+        placeholder
+      />
       <div class="relative space-y-2 w-full lg:w-2/3">
         <h1 class="font-extrabold text-3xl md:text-4xl lg:text-5xl">
           {{ blog.title }}
@@ -22,33 +26,61 @@
       />
     </div>
   </div>
-  <div v-else>
-    <p>Blog tidak ditemukan.</p>
+  <div v-else class="min-h-screen flex items-center justify-center">
+    <p class="text-xl text-gray-500">Blog post not found.</p>
   </div>
 </template>
 
 <script>
+import { computed } from "vue";
+import articleTemplate from "~/components/articleTemplate.vue";
+
 export default {
-  data() {
-    return {
-      blog: {},
-      slug: this.$route.params.slug,
-    };
+  name: "ArticleDetailPage",
+  components: {
+    articleTemplate,
   },
-  created() {
-    this.fetchBlog();
-  },
-  methods: {
-    async fetchBlog() {
-      try {
-        const response = await this.$api.get(`/api/blogs/${this.slug}`);
-        this.blog = response.data.data;
-        this.blog.coverImage = useRuntimeConfig().public.apiBaseUrl + this.blog.coverImage; 
-        console.log("Data blog berhasil diambil:", this.blog);
-      } catch (error) {
-        console.error("Gagal mengambil data blog:", error);
+  setup() {
+    const { $api } = useNuxtApp();
+    const route = useRoute();
+    const config = useRuntimeConfig();
+    const slug = route.params.slug;
+    const baseUrl = config.public.apiBaseUrl;
+
+    const {
+      data: blog,
+      pending,
+      error,
+    } = useAsyncData(
+      `blog-${slug}`,
+      async () => {
+        try {
+          const response = await $api.get(`/api/blogs/${slug}`);
+          return response.data.data;
+        } catch (err) {
+          console.error(`Gagal mengambil data blog untuk slug: ${slug}`, err);
+          throw createError({
+            statusCode: 404,
+            statusMessage: "Blog post not found",
+            fatal: true,
+          });
+        }
+      },
+      {
+        transform(input) {
+          if (!input) return null;
+          return {
+            ...input,
+            coverImage: baseUrl + input.coverImage,
+          };
+        },
       }
-    }
+    );
+
+    return {
+      blog,
+      pending,
+    };
   },
 };
 </script>

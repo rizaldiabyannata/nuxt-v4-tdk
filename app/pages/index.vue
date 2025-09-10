@@ -3,10 +3,9 @@
     <div
       class="absolute inset-0 bg-[url('/img/sample/sample-1.jpeg')] bg-cover bg-center brightness-50 -z-10"
     ></div>
-    <div
-      class="flex flex-col flex-grow w-full justify-center items-center p-4 mt-[YOUR_NAVBAR_HEIGHT]"
-    >
+    <div class="flex flex-col flex-grow w-full justify-center items-center p-4">
       <div
+        v-if="highlightedPortfolios.length > 0"
         ref="heroContent"
         class="flex flex-col w-full max-w-xl sm:w-4/5 md:w-3/5 lg:w-2/5 justify-center items-center text-center"
       >
@@ -21,31 +20,61 @@
               : highlightedPortfolios[0]?.shortDescription
           }}
         </p>
-      </div>
-      <NuxtLink
-        ref="heroButton"
-        :to="
-          highlightedPortfolios[0]?.link ||
-          '/portfolio/' + highlightedPortfolios[0]?.slug
-        "
-        class="flex flex-row shadow-xl backdrop-blur-lg border border-white rounded-full px-4 py-2 mt-6 text-sm items-center space-x-2 hover:bg-white hover:text-black group transition-colors"
-      >
-        <svg
-          width="13"
-          height="14"
-          viewBox="0 0 18 19"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+        <NuxtLink
+          ref="heroButton"
+          :to="
+            highlightedPortfolios[0]?.link ||
+            '/portfolio/' + highlightedPortfolios[0]?.slug
+          "
+          class="flex flex-row shadow-xl backdrop-blur-lg border border-white rounded-full px-4 py-2 mt-6 text-sm items-center space-x-2 hover:bg-white hover:text-black group transition-colors"
         >
-          <path
-            d="M7.62842 14.4654V1.89356C7.62842 1.57481 7.73642 1.30781 7.95242 1.09256C8.16842 0.877309 8.43542 0.769309 8.75342 0.768559C9.07142 0.767809 9.33842 0.875809 9.55442 1.09256C9.77042 1.30931 9.87842 1.57631 9.87842 1.89356V14.4654L15.3909 8.95293C15.6159 8.72793 15.8784 8.61993 16.1784 8.62893C16.4784 8.63793 16.7409 8.75531 16.9659 8.98106C17.1722 9.20606 17.2802 9.46855 17.2899 9.76855C17.2997 10.0686 17.1917 10.3311 16.9659 10.5561L9.54092 17.9811C9.42842 18.0936 9.30654 18.1734 9.17529 18.2207C9.04404 18.2679 8.90342 18.2912 8.75342 18.2904C8.60342 18.2897 8.46279 18.2664 8.33154 18.2207C8.20029 18.1749 8.07842 18.0951 7.96592 17.9811L0.540918 10.5561C0.334668 10.3498 0.231543 10.0922 0.231543 9.78318C0.231543 9.47418 0.334668 9.20681 0.540918 8.98106C0.765918 8.75606 1.03292 8.64356 1.34192 8.64356C1.65092 8.64356 1.91829 8.75606 2.14404 8.98106L7.62842 14.4654Z"
-            fill="#EB5523"
-          />
-        </svg>
-        <p class="font-semibold text-white group-hover:text-black">
-          Learn More
+          <svg
+            width="13"
+            height="14"
+            viewBox="0 0 18 19"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M7.62842 14.4654V1.89356C7.62842 1.57481 7.73642 1.30781 7.95242 1.09256C8.16842 0.877309 8.43542 0.769309 8.75342 0.768559C9.07142 0.767809 9.33842 0.875809 9.55442 1.09256C9.77042 1.30931 9.87842 1.57631 9.87842 1.89356V14.4654L15.3909 8.95293C15.6159 8.72793 15.8784 8.61993 16.1784 8.62893C16.4784 8.63793 16.7409 8.75531 16.9659 8.98106C17.1722 9.20606 17.2802 9.46855 17.2899 9.76855C17.2997 10.0686 17.1917 10.3311 16.9659 10.5561L9.54092 17.9811C9.42842 18.0936 9.30654 18.1734 9.17529 18.2207C9.04404 18.2679 8.90342 18.2912 8.75342 18.2904C8.60342 18.2897 8.46279 18.2664 8.33154 18.2207C8.20029 18.1749 8.07842 18.0951 7.96592 17.9811L0.540918 10.5561C0.334668 10.3498 0.231543 10.0922 0.231543 9.78318C0.231543 9.47418 0.334668 9.20681 0.540918 8.98106C0.765918 8.75606 1.03292 8.64356 1.34192 8.64356C1.65092 8.64356 1.91829 8.75606 2.14404 8.98106L7.62842 14.4654Z"
+              fill="#EB5523"
+            />
+          </svg>
+          <p class="font-semibold text-white group-hover:text-black">
+            Learn More
+          </p>
+        </NuxtLink>
+      </div>
+      <div
+        v-else
+        class="flex flex-col w-full max-w-xl sm:w-4/5 md:w-3/5 lg:w-2/5 justify-center items-center text-center py-16"
+      >
+        <h1 class="font-bold text-3xl md:text-4xl lg:text-5xl text-white mb-4">
+          Temukan Solusi Proyek Terbaik Bersama Kami
+        </h1>
+        <p class="mt-2 text-base lg:text-lg text-white mb-6">
+          Kami siap membantu Anda mewujudkan proyek impian. Hubungi tim kami
+          untuk konsultasi gratis dan penawaran terbaik!
         </p>
-      </NuxtLink>
+        <NuxtLink
+          to="/contact"
+          class="flex flex-row items-center space-x-2 px-6 py-3 rounded-full border border-white bg-white/20 backdrop-blur-lg shadow-lg text-white hover:bg-white/40 group transition-colors"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 18 19"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M7.62842 14.4654V1.89356C7.62842 1.57481 7.73642 1.30781 7.95242 1.09256C8.16842 0.877309 8.43542 0.769309 8.75342 0.768559C9.07142 0.767809 9.33842 0.875809 9.55442 1.09256C9.77042 1.30931 9.87842 1.57631 9.87842 1.89356V14.4654L15.3909 8.95293C15.6159 8.72793 15.8784 8.61993 16.1784 8.62893C16.4784 8.63793 16.7409 8.75531 16.9659 8.98106C17.1722 9.20606 17.2802 9.46855 17.2899 9.76855C17.2997 10.0686 17.1917 10.3311 16.9659 10.5561L9.54092 17.9811C9.42842 18.0936 9.30654 18.1734 9.17529 18.2207C9.04404 18.2679 8.90342 18.2912 8.75342 18.2904C8.60342 18.2897 8.46279 18.2664 8.33154 18.2207C8.20029 18.1749 8.07842 18.0951 7.96592 17.9811L0.540918 10.5561C0.334668 10.3498 0.231543 10.0922 0.231543 9.78318C0.231543 9.47418 0.334668 9.20681 0.540918 8.98106C0.765918 8.75606 1.03292 8.64356 1.34192 8.64356C1.65092 8.64356 1.91829 8.75606 2.14404 8.98106L7.62842 14.4654Z"
+              fill="white"
+            />
+          </svg>
+          <p class="font-semibold drop-shadow">Hubungi Kami</p>
+        </NuxtLink>
+      </div>
     </div>
   </div>
 
@@ -83,7 +112,7 @@
   </div>
 
   <div
-    class="flex flex-col min-h-screen bg-[#DDDDDD] justify-center items-center px-4 py-16 sm:px-8 sm:py-24"
+    class="flex flex-col min-h-screen bg-[#DDDDDD] justify-start items-center px-4 py-16 sm:px-8 sm:py-24"
   >
     <div class="flex flex-col w-full max-w-6xl justify-center items-center">
       <div class="flex flex-col w-full items-start">
@@ -125,39 +154,46 @@
           </NuxtLink>
         </div>
       </div>
-      <div v-if="highlightedPortfolios.length > 0" class="w-full mt-12">
+      <div v-if="pending" class="w-full mt-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="lg:col-span-2 lg:row-span-2">
+            <SkeletonHomepageCardSkeleton />
+          </div>
+          <SkeletonHomepageCardSmallSkeleton />
+          <SkeletonHomepageCardSmallSkeleton />
+          <SkeletonHomepageCardSmallSkeleton />
+          <SkeletonHomepageCardSmallSkeleton />
+        </div>
+      </div>
+      <div v-else-if="highlightedPortfolios.length > 0" class="w-full mt-12">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div
-            class="lg:col-span-2 lg:row-span-2"
-            v-if="highlightedPortfolios[0]"
+            v-for="(portfolio, index) in highlightedPortfolios.slice(0, 5)"
+            :key="portfolio._id"
+            :class="{
+              'lg:col-span-2 lg:row-span-2': index === 0,
+            }"
           >
-            <homepage-card
-              :title="highlightedPortfolios[0].title"
-              :shortDescription="highlightedPortfolios[0].shortDescription"
-              :imageUrl="highlightedPortfolios[0].coverImage"
-              :slug="highlightedPortfolios[0].slug"
-              class="h-full"
-            />
-          </div>
-          <template
-            v-for="(portfolio, index) in highlightedPortfolios.slice(1, 5)"
-            :key="index"
-          >
-            <homepage-card-small
+            <component
+              :is="index === 0 ? 'HomepageCard' : 'HomepageCardSmall'"
               :title="portfolio.title"
               :shortDescription="portfolio.shortDescription"
               :imageUrl="portfolio.coverImage"
+              :slug="portfolio.slug"
               :navigateTO="`/portfolio/${portfolio.slug}`"
               class="h-full"
             />
-          </template>
+          </div>
         </div>
+      </div>
+      <div v-else class="text-center py-16">
+        <p class="text-gray-500 text-lg">No portfolios to show.</p>
       </div>
     </div>
   </div>
 
   <div
-    class="flex flex-col min-h-screen bg-white justify-center items-center px-4 py-16 sm:px-8 sm:py-24"
+    class="flex flex-col min-h-screen bg-white justify-start items-center px-4 py-16 sm:px-8 sm:py-24"
   >
     <div class="flex flex-col w-full max-w-7xl justify-center items-center">
       <div
@@ -171,23 +207,37 @@
         </p>
       </div>
       <div
-        ref="newsCarousel"
+        v-if="pending"
         class="carousel carousel-center bg-transparent rounded-2xl lg:rounded-3xl w-full max-w-7xl space-x-4 sm:space-x-8 p-4"
       >
-        <div
-          v-for="blog in featuredBlogs"
-          :key="blog._id"
-          class="carousel-item"
-        >
-          <carousel-card
-            :title="blog.title"
-            :shortDescription="blog.summary"
-            :imageUrl="blog.coverImage"
-            :createdAt="blog.createdAt"
-            :slug="blog.slug"
-          />
+        <div class="carousel-item" v-for="i in 3" :key="i">
+          <SkeletonCarouselCardSkeleton />
         </div>
       </div>
+      <client-only>
+        <div
+          v-if="featuredBlogs.length > 0"
+          ref="newsCarousel"
+          class="carousel carousel-center bg-transparent rounded-2xl lg:rounded-3xl w-full max-w-7xl space-x-4 sm:space-x-8 p-4"
+        >
+          <div
+            v-for="blog in featuredBlogs"
+            :key="blog._id"
+            class="carousel-item"
+          >
+            <carousel-card
+              :title="blog.title"
+              :shortDescription="blog.summary"
+              :imageUrl="blog.coverImage"
+              :createdAt="blog.createdAt"
+              :slug="blog.slug"
+            />
+          </div>
+        </div>
+        <div v-else class="text-center py-16">
+          <p class="text-gray-500 text-lg">No article to show.</p>
+        </div>
+      </client-only>
     </div>
   </div>
 
@@ -197,80 +247,94 @@
     <div
       class="animate-marquee group-hover:[animation-play-state:paused] inline-block w-max"
     >
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/tesla.png"
         alt="Tesla"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/porsche.png"
         alt="Porsche"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/aston-martin.png"
         alt="Aston Martin"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/nike.png"
         alt="Nike"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/jordan.png"
         alt="Jordan"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/adidas.png"
         alt="Adidas"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/bmw.png"
         alt="BMW"
+        loading="lazy"
       />
     </div>
     <div
       class="animate-marquee group-hover:[animation-play-state:paused] inline-block w-max"
       aria-hidden="true"
     >
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/tesla.png"
         alt="Tesla"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/porsche.png"
         alt="Porsche"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/aston-martin.png"
         alt="Aston Martin"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/nike.png"
         alt="Nike"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/jordan.png"
         alt="Jordan"
+        loading="lazy"
       />
-      <img
+      <Nuxt_img
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/adidas.png"
         alt="Adidas"
+        loading="lazy"
       />
-      <img
+      <NuxtImg
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/bmw.png"
         alt="BMW"
+        loading="lazy"
       />
     </div>
   </div>
@@ -352,47 +416,91 @@
 </template>
 
 <script>
+import { nextTick, computed } from "vue";
+import SkeletonHomepageCardSkeleton from "~/components/skeleton/HomepageCardSkeleton.vue";
+import SkeletonHomepageCardSmallSkeleton from "~/components/skeleton/HomepageCardSmallSkeleton.vue";
+import SkeletonCarouselCardSkeleton from "~/components/skeleton/CarouselCardSkeleton.vue";
+import HomepageCard from "~/components/homepage-card.vue";
+import HomepageCardSmall from "~/components/homepage-card-small.vue";
+import CarouselCard from "~/components/carousel-card.vue";
+
 export default {
-  data() {
+  name: "HomePage",
+  components: {
+    SkeletonHomepageCardSkeleton,
+    SkeletonHomepageCardSmallSkeleton,
+    SkeletonCarouselCardSkeleton,
+    HomepageCard,
+    HomepageCardSmall,
+    CarouselCard,
+  },
+  setup() {
+    const { $api } = useNuxtApp();
+    const config = useRuntimeConfig();
+    const baseUrl = config.public.apiBaseUrl;
+
+    const { data, pending } = useAsyncData(
+      "content-tracking",
+      async () => {
+        try {
+          const response = await $api.get(`/api/content-tracking/`);
+          return response.data;
+        } catch (error) {
+          console.error("Gagal mengambil data:", error);
+          return { highlightedPortfolios: [], featuredBlogs: [] };
+        }
+      },
+      {
+        transform(input) {
+          if (!input) {
+            return { highlightedPortfolios: [], featuredBlogs: [] };
+          }
+          return {
+            highlightedPortfolios: input.highlightedPortfolios.map(
+              (portfolio) => ({
+                ...portfolio,
+                coverImage: baseUrl + portfolio.coverImage,
+              })
+            ),
+            featuredBlogs: input.featuredBlogs.map((blog) => ({
+              ...blog,
+              coverImage: baseUrl + blog.coverImage,
+            })),
+          };
+        },
+        // Provide a default value to prevent data being null on initial client render
+        default: () => ({ highlightedPortfolios: [], featuredBlogs: [] }),
+      }
+    );
+
+    // Use computed properties to reactively derive state from the async data.
+    // This ensures that the data is always consistent.
+    const highlightedPortfolios = computed(
+      () => (data.value && data.value.highlightedPortfolios) || []
+    );
+    const featuredBlogs = computed(
+      () => (data.value && data.value.featuredBlogs) || []
+    );
+
     return {
-      highlightedPortfolios: [],
-      featuredBlogs: [],
+      pending,
+      highlightedPortfolios,
+      featuredBlogs,
     };
   },
-  async mounted() {
-    await this.fetchContentManagement();
-    this.$nextTick(() => {
+  mounted() {
+    // Animations need to run on the client after the DOM is mounted.
+    nextTick(() => {
       this.initAnimations();
     });
   },
   methods: {
-    async fetchContentManagement() {
-      const baseUrl = useRuntimeConfig().public.apiBaseUrl;
-      try {
-        const response = await this.$api.get(`/api/content-tracking/`);
-        this.highlightedPortfolios = response.data.highlightedPortfolios.map(
-          (portfolio) => ({
-            ...portfolio,
-            coverImage: baseUrl + portfolio.coverImage,
-          })
-        );
-        this.featuredBlogs = response.data.featuredBlogs.map((blog) => ({
-          ...blog,
-          coverImage: baseUrl + blog.coverImage,
-        }));
-      } catch (error) {
-        console.error(
-          "Gagal mengambil data portfolio yang di-highlight:",
-          error
-        );
-      }
-    },
     initAnimations() {
-      const gsap = this.$gsap;
+      const { $gsap } = useNuxtApp();
 
       const animateOnScroll = (elem, vars) => {
         if (!elem) return;
-        gsap.from(elem, {
+        $gsap.from(elem, {
           scrollTrigger: {
             trigger: elem,
             start: "top 85%",
@@ -406,57 +514,32 @@ export default {
         });
       };
 
-      // Hero section
-      gsap.from(this.$refs.heroContent.children, {
-        duration: 1,
-        autoAlpha: 0,
-        y: 30,
-        ease: "power3.out",
-        stagger: 0.2,
-        delay: 0.2,
-      });
-      gsap.from(this.$refs.heroButton, {
-        duration: 1,
-        autoAlpha: 0,
-        y: 30,
-        ease: "power3.out",
-        delay: 0.4,
-      });
-
-      // 2. "Visi Kami" section
-      if (this.$refs.visiSection) {
-        animateOnScroll(this.$refs.visiSection.children[0]);
+      if (this.$refs.heroContent) {
+        $gsap.from(this.$refs.heroContent.children, {
+          duration: 1,
+          autoAlpha: 0,
+          y: 30,
+          ease: "power3.out",
+          stagger: 0.2,
+          delay: 0.2,
+        });
+      }
+      if (this.$refs.heroButton) {
+        $gsap.from(this.$refs.heroButton, {
+          duration: 1,
+          autoAlpha: 0,
+          y: 30,
+          ease: "power3.out",
+          delay: 0.4,
+        });
       }
 
-      // 3. "Our Portfolio" section
-      if (this.$refs.portfolioSection) {
-        animateOnScroll(this.$refs.portfolioSection.querySelector("h1"));
-        animateOnScroll(this.$refs.portfolioSection.querySelector("p"));
-        if (this.$refs.portfolioGrid) {
-          const portfolioCards =
-            this.$refs.portfolioGrid.querySelectorAll(".h-full");
-          portfolioCards.forEach((card, index) => {
-            animateOnScroll(card, { delay: index * 0.1 });
-          });
-        }
-      }
-
-      // 4. "News & Report" section
-      if (this.$refs.newsSection) {
-        animateOnScroll(this.$refs.newsSection.querySelector("h1"));
-        animateOnScroll(this.$refs.newsSection.querySelector("p"));
-        if (this.$refs.newsCarousel) {
-          const carouselItems =
-            this.$refs.newsCarousel.querySelectorAll(".carousel-item");
-          carouselItems.forEach((item, index) => {
-            animateOnScroll(item, { delay: index * 0.1 });
-          });
-        }
-      }
-
-      // 5. "Contact Us" section
-      if (this.$refs.contactSection) {
-        animateOnScroll(this.$refs.contactSection.children[0]);
+      if (this.$refs.newsCarousel) {
+        const carouselItems =
+          this.$refs.newsCarousel.querySelectorAll(".carousel-item");
+        carouselItems.forEach((item, index) => {
+          animateOnScroll(item, { delay: index * 0.1 });
+        });
       }
     },
   },

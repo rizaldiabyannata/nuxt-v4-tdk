@@ -28,21 +28,38 @@
   </div>
 </template>
 
-<script setup>
-import { useRoute } from "vue-router";
-import { ref, watchEffect } from "vue";
+<script>
+import ArticleTemplate from '~/components/article-template.vue';
 
-const route = useRoute();
-const article = ref(null);
-
-watchEffect(() => {
-  if (route.query) {
-    article.value = {
-      title: route.query.title || "Untitled",
-      content: route.query.content || "",
-      coverImage: route.query.coverImage || "/img/placeholder.png",
-      author: "PT. Total Desain Konsultan",
+export default {
+  name: 'ArticlePreviewPage',
+  components: {
+    'article-template': ArticleTemplate,
+  },
+  data() {
+    return {
+      article: null,
     };
-  }
-});
+  },
+  methods: {
+    updateArticleFromQuery(query) {
+      if (query) {
+        this.article = {
+          title: query.title || 'Untitled',
+          content: query.content || '',
+          coverImage: query.coverImage || '/img/placeholder.png',
+          author: 'PT. Total Desain Konsultan',
+        };
+      }
+    },
+  },
+  created() {
+    this.updateArticleFromQuery(this.$route.query);
+  },
+  watch: {
+    '$route.query'(newQuery) {
+      this.updateArticleFromQuery(newQuery);
+    },
+  },
+};
 </script>

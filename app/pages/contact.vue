@@ -4,10 +4,12 @@
       ref="heroSection"
       class="flex flex-col md:flex-row w-full min-h-[50vh] md:h-screen"
     >
-      <img
+      <NuxtImg
         src="/img/contact-2.png"
         alt=""
         class="h-1/2 w-full md:h-full md:w-1/2 object-cover"
+        loading="lazy"
+        placeholder
       />
       <div
         class="flex flex-col bg-white text-black h-1/2 w-full md:h-full md:w-1/2 items-center justify-center text-center p-8"
@@ -93,11 +95,13 @@
           </button>
         </form>
       </div>
-      <img
+      <NuxtImg
         src="/img/contact.png"
         crossorigin="anonymous"
         alt=""
         class="h-1/2 w-full md:h-full md:w-1/2 object-cover"
+        loading="lazy"
+        placeholder
       />
     </div>
   </div>

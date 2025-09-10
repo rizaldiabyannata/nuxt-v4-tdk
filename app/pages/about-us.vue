@@ -169,10 +169,12 @@
     <h1 class="text-3xl text-[#EB5523] font-bold">Struktur Manajemen</h1>
     <h2 class="text-2xl text-[#EB5523] font-semibold mb-8">Direktur Utama</h2>
     <div class="flex flex-row w-180 h-fit pt-6">
-      <img
+      <NuxtImg
         src="/img/Alireza.jpg"
         alt="Alireza"
         class="w-64 h-auto object-cover shadow-lg shadow-gray-400 rounded-lg"
+        loading="lazy"
+        placeholder
       />
       <div
         class="flex flex-col bg-white h-auto w-full my-4 shadow-lg shadow-gray-400 p-8 justify-center space-y-4 rounded-r-lg"
