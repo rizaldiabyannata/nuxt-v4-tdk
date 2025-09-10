@@ -56,7 +56,6 @@
             v-model="filter.status"
             @change="onFilterChange"
           >
-            <option value="all">All</option>
             <option value="unarchive">Unarchive</option>
             <option value="archive">Archive</option>
           </select>
@@ -268,7 +267,7 @@ export default {
       loadingHighlights: null,
       searchTimeout: null,
       filter: {
-        status: "all",
+        status: "unarchive",
         search: "",
       },
     };
@@ -310,9 +309,10 @@ export default {
     async fetchPortfolios() {
       const { search, status } = this.filter;
       let apiUrl = `/api/portfolios?limit=10&page=1`;
-      if (status && status !== "all") {
-        const statusFilter = status === "archive" ? "archived" : "active";
-        apiUrl += `&status=${statusFilter}`;
+      if (status === "unarchive") {
+        apiUrl += `&status=active`;
+      } else if (status === "archive") {
+        apiUrl += `&status=archived`;
       }
       if (search) {
         apiUrl += `&search=${encodeURIComponent(search)}`;
