@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import { computed } from "vue";
 import articleTemplate from "~/components/articleTemplate.vue";
 
 export default {
@@ -41,41 +40,12 @@ export default {
     articleTemplate,
   },
   setup() {
-    const { $api } = useNuxtApp();
     const route = useRoute();
-    const config = useRuntimeConfig();
     const slug = route.params.slug;
-    const baseUrl = config.public.apiBaseUrl;
 
-    const {
-      data: blog,
-      pending,
-      error,
-    } = useAsyncData(
-      `blog-${slug}`,
-      async () => {
-        try {
-          const response = await $api.get(`/api/blogs/${slug}`);
-          return response.data.data;
-        } catch (err) {
-          console.error(`Gagal mengambil data blog untuk slug: ${slug}`, err);
-          throw createError({
-            statusCode: 404,
-            statusMessage: "Blog post not found",
-            fatal: true,
-          });
-        }
-      },
-      {
-        transform(input) {
-          if (!input) return null;
-          return {
-            ...input,
-            coverImage: baseUrl + input.coverImage,
-          };
-        },
-      }
-    );
+    // Gunakan composable generik untuk mengambil konten berdasarkan slug.
+    const { fetchContentBySlug } = useContentBySlug();
+    const { data: blog, pending } = fetchContentBySlug('blogs', slug);
 
     return {
       blog,

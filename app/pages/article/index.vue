@@ -132,43 +132,15 @@ export default {
     CarouselCard,
   },
   setup() {
-    const { $api } = useNuxtApp();
-    const config = useRuntimeConfig();
-    const baseUrl = config.public.apiBaseUrl;
-
     const currentPage = ref(1);
     const pageSize = 6;
 
-    const { pending, data: articlesData } = useAsyncData(
-      "articles-list",
-      () => {
-        try {
-          return $api
-            .get(
-              `/api/blogs?limit=${pageSize}&page=${currentPage.value}&status=active`
-            )
-            .then((res) => res.data);
-        } catch (error) {
-          console.error("Gagal mengambil data artikel:", error);
-          return { data: [], pagination: { totalPages: 1 } };
-        }
-      },
-      {
-        watch: [currentPage],
-        transform(input) {
-          if (!input) return { data: [], pagination: { totalPages: 1 } };
-          return {
-            data: input.data.map((article) => ({
-              ...article,
-              coverImage: baseUrl + article.coverImage,
-            })),
-            pagination: input.pagination,
-          };
-        },
-        default: () => ({ data: [], pagination: { totalPages: 1 } }),
-      }
-    );
+    // Gunakan composable `useArticles` untuk mengambil data.
+    // Logika caching dan fetching kini terenkapsulasi di dalamnya.
+    const { fetchArticles } = useArticles();
+    const { pending, data: articlesData } = fetchArticles(currentPage, pageSize);
 
+    // Computed properties untuk mengakses data dengan aman, sama seperti sebelumnya.
     const articleList = computed(
       () => (articlesData.value && articlesData.value.data) || []
     );

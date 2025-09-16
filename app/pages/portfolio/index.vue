@@ -185,78 +185,31 @@ export default {
     PortfolioCard,
   },
   setup() {
-    const { $api } = useNuxtApp();
-    const config = useRuntimeConfig();
-    const baseUrl = config.public.apiBaseUrl;
-
     const currentPage = ref(1);
     const pageSize = 6;
 
-    // Fetch highlighted portfolios
-    const { pending: highlightedPending, data: highlightedData } = useAsyncData(
-      "highlighted-portfolios",
-      async () => {
-        try {
-          const response = await $api.get(`/api/content-tracking/`);
-          return response.data.highlightedPortfolios;
-        } catch (error) {
-          console.error(
-            "Gagal mengambil data portfolio yang di-highlight:",
-            error
-          );
-          return [];
-        }
-      },
-      {
-        transform(input) {
-          if (!input) return [];
-          return input.map((portfolio) => ({
-            ...portfolio,
-            coverImage: baseUrl + portfolio.coverImage,
-          }));
-        },
-        default: () => [],
-      }
+    // 1. Ambil data content tracking (untuk portofolio yang di-highlight)
+    const { fetchContentTracking } = useContentTracking();
+    const { pending: highlightedPending, data: contentTrackingData } =
+      fetchContentTracking();
+    const highlightedPortfolios = computed(
+      () =>
+        (contentTrackingData.value &&
+          contentTrackingData.value.highlightedPortfolios) ||
+        []
     );
 
-    // Fetch paginated portfolios
-    const { pending: portfoliosPending, data: portfoliosData } = useAsyncData(
-      "portfolios-list",
-      () => {
-        try {
-          return $api
-            .get(
-              `/api/portfolios?limit=${pageSize}&page=${currentPage.value}&status=active`
-            )
-            .then((res) => res.data);
-        } catch (error) {
-          console.error("Gagal mengambil data portfolio:", error);
-          return { data: [], pagination: { totalPages: 1 } };
-        }
-      },
-      {
-        watch: [currentPage],
-        transform(input) {
-          if (!input) return { data: [], pagination: { totalPages: 1 } };
-          return {
-            data: input.data.map((portfolio) => ({
-              ...portfolio,
-              coverImage: baseUrl + portfolio.coverImage,
-            })),
-            pagination: input.pagination,
-          };
-        },
-        default: () => ({ data: [], pagination: { totalPages: 1 } }),
-      }
-    );
-
-    const highlightedPortfolios = computed(() => highlightedData.value || []);
+    // 2. Ambil daftar portofolio yang dipaginasi
+    const { fetchPortfolios } = usePortfolios();
+    const { pending: portfoliosPending, data: portfoliosData } =
+      fetchPortfolios(currentPage, pageSize);
     const portfoliosList = computed(
       () => (portfoliosData.value && portfoliosData.value.data) || []
     );
     const totalPages = computed(
       () =>
-        (portfoliosData.value && portfoliosData.value.pagination.totalPages) ||
+        (portfoliosData.value &&
+          portfoliosData.value.pagination.totalPages) ||
         1
     );
 
@@ -271,7 +224,7 @@ export default {
     };
   },
   watch: {
-    // Watch for data changes to trigger animations
+    // Tonton perubahan data untuk memicu animasi
     portfoliosList(newList, oldList) {
       if (newList.length > 0) {
         nextTick(() => {
@@ -282,7 +235,7 @@ export default {
   },
   mounted() {
     this.initAnimations();
-    // Animate cards on initial load as well
+    // Animasikan kartu saat muat awal juga
     if (this.portfoliosList.length > 0) {
       this.animatePortfolioCards();
     }

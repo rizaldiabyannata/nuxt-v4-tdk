@@ -435,46 +435,11 @@ export default {
     CarouselCard,
   },
   setup() {
-    const { $api } = useNuxtApp();
-    const config = useRuntimeConfig();
-    const baseUrl = config.public.apiBaseUrl;
+    // Ambil data content tracking (portofolio & blog unggulan) menggunakan composable.
+    const { fetchContentTracking } = useContentTracking();
+    const { pending, data } = fetchContentTracking();
 
-    const { data, pending } = useAsyncData(
-      "content-tracking",
-      async () => {
-        try {
-          const response = await $api.get(`/api/content-tracking/`);
-          return response.data;
-        } catch (error) {
-          console.error("Gagal mengambil data:", error);
-          return { highlightedPortfolios: [], featuredBlogs: [] };
-        }
-      },
-      {
-        transform(input) {
-          if (!input) {
-            return { highlightedPortfolios: [], featuredBlogs: [] };
-          }
-          return {
-            highlightedPortfolios: input.highlightedPortfolios.map(
-              (portfolio) => ({
-                ...portfolio,
-                coverImage: baseUrl + portfolio.coverImage,
-              })
-            ),
-            featuredBlogs: input.featuredBlogs.map((blog) => ({
-              ...blog,
-              coverImage: baseUrl + blog.coverImage,
-            })),
-          };
-        },
-        // Provide a default value to prevent data being null on initial client render
-        default: () => ({ highlightedPortfolios: [], featuredBlogs: [] }),
-      }
-    );
-
-    // Use computed properties to reactively derive state from the async data.
-    // This ensures that the data is always consistent.
+    // Gunakan computed properties untuk mendapatkan data secara reaktif dan aman.
     const highlightedPortfolios = computed(
       () => (data.value && data.value.highlightedPortfolios) || []
     );
@@ -489,7 +454,7 @@ export default {
     };
   },
   mounted() {
-    // Animations need to run on the client after the DOM is mounted.
+    // Animasi perlu dijalankan di sisi klien setelah DOM terpasang.
     nextTick(() => {
       this.initAnimations();
     });
