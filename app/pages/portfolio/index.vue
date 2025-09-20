@@ -72,7 +72,7 @@
   >
     <div class="flex flex-col w-full max-w-6xl text-center">
       <p class="text-lg font-semibold text-gray-600">Our Portfolio</p>
-      <h1 class="text-4xl md:text-5xl font-bold text-[#EB5523] mt-2">
+      <h1 class="text-4xl md:text-5xl font-bold text-[#EB5523] md:mt-2">
         All Projects
       </h1>
     </div>
@@ -88,10 +88,10 @@
       <div
         v-else
         ref="portfolioGrid"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-8 gap-3 w-full"
       >
         <portfolio-card
-          class="h-5/6"
+          class="md:h-5/6"
           v-for="portfolio in portfoliosList"
           :key="portfolio._id"
           :title="portfolio.title"
@@ -188,28 +188,71 @@ export default {
     const currentPage = ref(1);
     const pageSize = 6;
 
-    // 1. Ambil data content tracking (untuk portofolio yang di-highlight)
-    const { fetchContentTracking } = useContentTracking();
-    const { pending: highlightedPending, data: contentTrackingData } =
-      fetchContentTracking();
-    const highlightedPortfolios = computed(
-      () =>
-        (contentTrackingData.value &&
-          contentTrackingData.value.highlightedPortfolios) ||
-        []
+    // Fetch highlighted portfolios
+    const { pending: highlightedPending, data: highlightedData } = useAsyncData(
+      "highlighted-portfolios",
+      async () => {
+        try {
+          const response = await $api.get(`/api/content-tracking/`);
+          return response.data.highlightedPortfolios;
+        } catch (error) {
+          console.error(
+            "Gagal mengambil data portfolio yang di-highlight:",
+            error
+          );
+          return [];
+        }
+      },
+      {
+        transform(input) {
+          if (!input) return [];
+          return input.map((portfolio) => ({
+            ...portfolio,
+            coverImage: baseUrl + portfolio.coverImage,
+          }));
+        },
+        default: () => [],
+      }
     );
 
-    // 2. Ambil daftar portofolio yang dipaginasi
-    const { fetchPortfolios } = usePortfolios();
-    const { pending: portfoliosPending, data: portfoliosData } =
-      fetchPortfolios(currentPage, pageSize);
+    // Fetch paginated portfolios
+    const { pending: portfoliosPending, data: portfoliosData } = useAsyncData(
+      "portfolios-list",
+      () => {
+        try {
+          return $api
+            .get(
+              `/api/portfolios?limit=${pageSize}&page=${currentPage.value}&status=active`
+            )
+            .then((res) => res.data);
+        } catch (error) {
+          console.error("Gagal mengambil data portfolio:", error);
+          return { data: [], pagination: { totalPages: 1 } };
+        }
+      },
+      {
+        watch: [currentPage],
+        transform(input) {
+          if (!input) return { data: [], pagination: { totalPages: 1 } };
+          return {
+            data: input.data.map((portfolio) => ({
+              ...portfolio,
+              coverImage: baseUrl + portfolio.coverImage,
+            })),
+            pagination: input.pagination,
+          };
+        },
+        default: () => ({ data: [], pagination: { totalPages: 1 } }),
+      }
+    );
+
+    const highlightedPortfolios = computed(() => highlightedData.value || []);
     const portfoliosList = computed(
       () => (portfoliosData.value && portfoliosData.value.data) || []
     );
     const totalPages = computed(
       () =>
-        (portfoliosData.value &&
-          portfoliosData.value.pagination.totalPages) ||
+        (portfoliosData.value && portfoliosData.value.pagination.totalPages) ||
         1
     );
 

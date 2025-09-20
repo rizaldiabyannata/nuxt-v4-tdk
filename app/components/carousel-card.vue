@@ -1,7 +1,7 @@
 <template>
   <div
     ref="card"
-    class="w-full max-w-xs sm:max-w-sm bg-[#F5EE9E] shadow-lg rounded-2xl flex flex-col p-6 transition-all duration-300"
+    class="w-full sm:max-w-sm bg-[#F5EE9E] shadow-lg rounded-2xl flex flex-col p-6 transition-all duration-300 justify-start "
   >
     <figure class="w-full h-48 rounded-lg overflow-hidden mb-4">
       <NuxtImg

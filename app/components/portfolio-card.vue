@@ -1,7 +1,7 @@
 <template>
   <div
     ref="card"
-    class="card bg-base-100 w-full shadow-lg rounded-2xl overflow-hidden aspect-3/4 transition-all duration-300"
+    class="card bg-base-100 w-full shadow-lg rounded-2xl overflow-hidden aspect-square md:aspect-[3/4] transition-all duration-300"
   >
     <div class="card-body bg-white rounded-t-2xl p-6 h-[60%] flex flex-col">
       <h2 id="title" class="card-title text-black text-xl font-bold">
