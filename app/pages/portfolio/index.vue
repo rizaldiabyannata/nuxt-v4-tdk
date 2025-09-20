@@ -187,6 +187,10 @@ export default {
   setup() {
     const currentPage = ref(1);
     const pageSize = 6;
+    // Access Nuxt app and runtime config within setup
+    const { $api, $gsap } = useNuxtApp();
+    const config = useRuntimeConfig();
+    const baseUrl = config.public.apiBaseUrl;
 
     // Fetch highlighted portfolios
     const { pending: highlightedPending, data: highlightedData } = useAsyncData(
@@ -208,7 +212,9 @@ export default {
           if (!input) return [];
           return input.map((portfolio) => ({
             ...portfolio,
-            coverImage: baseUrl + portfolio.coverImage,
+            coverImage: portfolio.coverImage?.startsWith("http")
+              ? portfolio.coverImage
+              : baseUrl + portfolio.coverImage,
           }));
         },
         default: () => [],
@@ -237,7 +243,9 @@ export default {
           return {
             data: input.data.map((portfolio) => ({
               ...portfolio,
-              coverImage: baseUrl + portfolio.coverImage,
+              coverImage: portfolio.coverImage?.startsWith("http")
+                ? portfolio.coverImage
+                : baseUrl + portfolio.coverImage,
             })),
             pagination: input.pagination,
           };
@@ -264,6 +272,7 @@ export default {
       currentPage,
       totalPages,
       pageSize,
+      $gsap,
     };
   },
   watch: {
@@ -299,10 +308,9 @@ export default {
       });
     },
     initAnimations() {
-      const { $gsap } = useNuxtApp();
       const animateOnScroll = (elem, vars) => {
         if (!elem) return;
-        $gsap.from(elem, {
+        this.$gsap.from(elem, {
           scrollTrigger: {
             trigger: elem,
             start: "top 85%",
@@ -316,7 +324,7 @@ export default {
         });
       };
       if (this.$refs.heroSection) {
-        $gsap.from(this.$refs.heroSection.children, {
+        this.$gsap.from(this.$refs.heroSection.children, {
           duration: 1,
           autoAlpha: 0,
           y: 30,
@@ -344,12 +352,11 @@ export default {
       }
     },
     animatePortfolioCards() {
-      const { $gsap } = useNuxtApp();
       if (this.$refs.portfolioGrid) {
         const portfolioCards =
           this.$refs.portfolioGrid.querySelectorAll(".h-5\\/6");
-        $gsap.set(portfolioCards, { autoAlpha: 0, y: 50 });
-        $gsap.to(portfolioCards, {
+        this.$gsap.set(portfolioCards, { autoAlpha: 0, y: 50 });
+        this.$gsap.to(portfolioCards, {
           duration: 0.5,
           autoAlpha: 1,
           y: 0,

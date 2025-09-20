@@ -79,7 +79,7 @@
             :isArchived="portfolio.isArchived"
             :isHighlighted="true"
             :loading-highlight="loadingHighlights"
-            :imageUrl="`http://localhost:5000${portfolio.coverImage}`"
+            :imageUrl="baseUrl + portfolio.coverImage"
             @unhighlight="deletePortHighlight"
             @edit="handleEdit"
             @archive="updatePortfolioStatus(portfolio.slug, 'archive')"
@@ -110,7 +110,7 @@
             :isArchived="portfolio.isArchived"
             :isHighlighted="false"
             :loading-highlight="loadingHighlights"
-            :imageUrl="`http://localhost:5000${portfolio.coverImage}`"
+            :imageUrl="baseUrl + portfolio.coverImage"
             @highlight="sendHighlight"
             @delete="deleteCard"
             @edit="handleEdit"
@@ -220,7 +220,9 @@
             >Description</label
           >
           <div class="mt-1 border border-gray-300 rounded-lg">
-            <TiptapEditor v-model="portfolio.description" />
+            <client-only>
+              <TiptapEditor v-model="portfolio.description" />
+            </client-only>
           </div>
         </div>
 
@@ -251,6 +253,11 @@ definePageMeta({
 });
 
 export default {
+  setup() {
+    // Expose baseUrl for Options API methods via returned bindings
+    const baseUrl = useRuntimeConfig().public.apiBaseUrl;
+    return { baseUrl };
+  },
   data() {
     return {
       tampilanAktif: "daftar", // 'daftar', 'buat', 'edit'
@@ -364,7 +371,6 @@ export default {
         this.resetForm();
         await this.fetchPortfolios();
         await this.fetchHighlighted();
-        window.location.reload(true);
       } catch (error) {
         console.error("Failed to create portfolio:", error);
         useToast().error?.({
@@ -384,8 +390,7 @@ export default {
           description: dataToEdit.description,
           coverImage: null,
         };
-        const baseUrl = useRuntimeConfig().public.apiBaseUrl;
-        this.existingImageUrl = `${baseUrl}${dataToEdit.coverImage}`;
+        this.existingImageUrl = `${this.baseUrl}${dataToEdit.coverImage}`;
         this.tampilanAktif = "edit";
       } catch (error) {
         console.error("Failed to fetch portfolio for editing:", error);
@@ -414,7 +419,6 @@ export default {
         this.resetForm();
         await this.fetchPortfolios();
         await this.fetchHighlighted();
-        window.location.reload(true);
       } catch (error) {
         console.error("Failed to update portfolio:", error);
         useToast().error?.({
@@ -465,7 +469,6 @@ export default {
         });
         await this.fetchPortfolios();
         await this.fetchHighlighted();
-        window.location.reload(true);
       } catch (err) {
         console.error("Failed to highlight portfolio:", err);
         useToast().error?.("Failed to highlight portfolio.");
@@ -493,7 +496,6 @@ export default {
         useToast().success?.("Portfolio deleted successfully.");
         await this.fetchPortfolios();
         await this.fetchHighlighted();
-        window.location.reload(true);
       } catch (error) {
         console.error("Failed to delete portfolio:", error);
         useToast().error?.("Failed to delete portfolio.");
@@ -511,7 +513,6 @@ export default {
           message: "Portfolio highlight removed.",
         });
         await this.fetchHighlighted();
-        window.location.reload(true);
       } catch (error) {
         console.error("Failed to remove highlight:", error);
         useToast().error?.("Failed to remove portfolio highlight.");

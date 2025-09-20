@@ -134,11 +134,16 @@ export default {
   setup() {
     const currentPage = ref(1);
     const pageSize = 6;
+    // Get GSAP instance in setup to avoid calling useNuxtApp() in methods
+    const { $gsap } = useNuxtApp();
 
     // Gunakan composable `useArticles` untuk mengambil data.
     // Logika caching dan fetching kini terenkapsulasi di dalamnya.
     const { fetchArticles } = useArticles();
-    const { pending, data: articlesData } = fetchArticles(currentPage, pageSize);
+    const { pending, data: articlesData } = fetchArticles(
+      currentPage,
+      pageSize
+    );
 
     // Computed properties untuk mengakses data dengan aman, sama seperti sebelumnya.
     const articleList = computed(
@@ -155,6 +160,7 @@ export default {
       currentPage,
       totalPages,
       pageSize,
+      $gsap,
     };
   },
   watch: {
@@ -184,10 +190,9 @@ export default {
       });
     },
     initAnimations() {
-      const { $gsap } = useNuxtApp();
       const animateOnScroll = (elem, vars) => {
         if (!elem) return;
-        $gsap.from(elem, {
+        this.$gsap.from(elem, {
           scrollTrigger: {
             trigger: elem,
             start: "top 85%",
@@ -202,7 +207,7 @@ export default {
       };
 
       if (this.$refs.heroSection) {
-        $gsap.from(this.$refs.heroSection.children, {
+        this.$gsap.from(this.$refs.heroSection.children, {
           duration: 1,
           autoAlpha: 0,
           y: 30,
@@ -220,14 +225,13 @@ export default {
       }
     },
     animateArticleCards() {
-      const { $gsap } = useNuxtApp();
       nextTick(() => {
         if (this.$refs.articlesGrid) {
           const articleCards = this.$refs.articlesGrid.querySelectorAll(
             ".transition-transform"
           );
-          $gsap.set(articleCards, { autoAlpha: 0, y: 50 });
-          $gsap.to(articleCards, {
+          this.$gsap.set(articleCards, { autoAlpha: 0, y: 50 });
+          this.$gsap.to(articleCards, {
             duration: 0.5,
             autoAlpha: 1,
             y: 0,

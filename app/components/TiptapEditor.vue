@@ -1,300 +1,308 @@
 <!-- TiptapEditor.vue -->
 <template>
-  <div v-if="editor" class="tiptap-editor">
-    <!-- Toolbar -->
-    <div class="tiptap-toolbar">
-      <!-- History -->
-      <div class="toolbar-group">
-        <button
-          type="button"
-          @click="editor.chain().focus().undo().run()"
-          :disabled="!editor.can().undo()"
-          class="toolbar-button"
-          title="Undo"
-        >
-          <Icon name="mdi:undo" class="icon" />
-        </button>
-        <button
-          type="button"
-          @click="editor.chain().focus().redo().run()"
-          :disabled="!editor.can().redo()"
-          class="toolbar-button"
-          title="Redo"
-        >
-          <Icon name="mdi:redo" class="icon" />
-        </button>
-      </div>
-
-      <!-- Heading -->
-      <div class="toolbar-group">
-        <div class="relative" ref="headerDropdown">
+  <client-only>
+    <div v-if="editor" class="tiptap-editor">
+      <!-- Toolbar -->
+      <div class="tiptap-toolbar">
+        <!-- History -->
+        <div class="toolbar-group">
           <button
             type="button"
-            @click="toggleHeaderDropdown"
+            @click="editor.chain().focus().undo().run()"
+            :disabled="!editor.can().undo()"
             class="toolbar-button"
+            title="Undo"
           >
-            <span class="w-24">{{ getActiveHeaderText() }}</span>
-            <Icon name="mdi:chevron-down" class="icon" />
+            <Icon name="mdi:undo" class="icon" />
           </button>
-          <div v-if="showHeaderDropdown" class="dropdown-menu">
+          <button
+            type="button"
+            @click="editor.chain().focus().redo().run()"
+            :disabled="!editor.can().redo()"
+            class="toolbar-button"
+            title="Redo"
+          >
+            <Icon name="mdi:redo" class="icon" />
+          </button>
+        </div>
+
+        <!-- Heading -->
+        <div class="toolbar-group">
+          <div class="relative" ref="headerDropdown">
             <button
               type="button"
-              @click="setHeaderLevel('paragraph')"
-              :class="{
-                'is-active': editor.isActive('paragraph'),
-              }"
-              class="dropdown-item"
+              @click="toggleHeaderDropdown"
+              class="toolbar-button"
             >
-              Normal
+              <span class="w-24">{{ getActiveHeaderText() }}</span>
+              <Icon name="mdi:chevron-down" class="icon" />
             </button>
-            <button
-              type="button"
-              @click="setHeaderLevel(1)"
-              :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }"
-              class="dropdown-item heading-1"
-            >
-              Heading 1
-            </button>
-            <button
-              type="button"
-              @click="setHeaderLevel(2)"
-              :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }"
-              class="dropdown-item heading-2"
-            >
-              Heading 2
-            </button>
-            <button
-              type="button"
-              @click="setHeaderLevel(3)"
-              :class="{ 'is-active': editor.isActive('heading', { level: 3 }) }"
-              class="dropdown-item heading-3"
-            >
-              Heading 3
-            </button>
+            <div v-if="showHeaderDropdown" class="dropdown-menu">
+              <button
+                type="button"
+                @click="setHeaderLevel('paragraph')"
+                :class="{
+                  'is-active': editor.isActive('paragraph'),
+                }"
+                class="dropdown-item"
+              >
+                Normal
+              </button>
+              <button
+                type="button"
+                @click="setHeaderLevel(1)"
+                :class="{
+                  'is-active': editor.isActive('heading', { level: 1 }),
+                }"
+                class="dropdown-item heading-1"
+              >
+                Heading 1
+              </button>
+              <button
+                type="button"
+                @click="setHeaderLevel(2)"
+                :class="{
+                  'is-active': editor.isActive('heading', { level: 2 }),
+                }"
+                class="dropdown-item heading-2"
+              >
+                Heading 2
+              </button>
+              <button
+                type="button"
+                @click="setHeaderLevel(3)"
+                :class="{
+                  'is-active': editor.isActive('heading', { level: 3 }),
+                }"
+                class="dropdown-item heading-3"
+              >
+                Heading 3
+              </button>
+            </div>
           </div>
+        </div>
+
+        <!-- Text Style -->
+        <div class="toolbar-group">
+          <button
+            type="button"
+            @click="editor.chain().focus().toggleBold().run()"
+            :class="{ 'is-active': editor.isActive('bold') }"
+            class="toolbar-button"
+            title="Bold"
+          >
+            <Icon name="mdi:format-bold" class="icon" />
+          </button>
+          <button
+            type="button"
+            @click="editor.chain().focus().toggleItalic().run()"
+            :class="{ 'is-active': editor.isActive('italic') }"
+            class="toolbar-button"
+            title="Italic"
+          >
+            <Icon name="mdi:format-italic" class="icon" />
+          </button>
+          <button
+            type="button"
+            @click="editor.chain().focus().toggleUnderline().run()"
+            :class="{ 'is-active': editor.isActive('underline') }"
+            class="toolbar-button"
+            title="Underline"
+          >
+            <Icon name="mdi:format-underline" class="icon" />
+          </button>
+          <button
+            type="button"
+            @click="editor.chain().focus().toggleStrike().run()"
+            :class="{ 'is-active': editor.isActive('strike') }"
+            class="toolbar-button"
+            title="Strikethrough"
+          >
+            <Icon name="mdi:format-strikethrough" class="icon" />
+          </button>
+        </div>
+
+        <!-- Font Family -->
+        <div class="toolbar-group">
+          <div class="relative" ref="fontFamilyDropdown">
+            <button
+              type="button"
+              @click="toggleFontFamilyDropdown"
+              class="toolbar-button"
+              style="width: 8rem"
+            >
+              <span class="truncate w-24 text-left">{{
+                getActiveFontFamily()
+              }}</span>
+              <Icon name="mdi:chevron-down" class="icon ml-1" />
+            </button>
+            <div v-if="showFontFamilyDropdown" class="dropdown-menu">
+              <button
+                type="button"
+                @click="unsetFontFamily()"
+                class="dropdown-item"
+              >
+                Default
+              </button>
+              <button
+                type="button"
+                @click="setFontFamily('Inter')"
+                class="dropdown-item"
+                style="font-family: 'Inter'"
+              >
+                Inter
+              </button>
+              <button
+                type="button"
+                @click="setFontFamily('Arial')"
+                class="dropdown-item"
+                style="font-family: 'Arial'"
+              >
+                Arial
+              </button>
+              <button
+                type="button"
+                @click="setFontFamily('Georgia')"
+                class="dropdown-item"
+                style="font-family: 'Georgia'"
+              >
+                Georgia
+              </button>
+              <button
+                type="button"
+                @click="setFontFamily('Courier New')"
+                class="dropdown-item"
+                style="font-family: 'Courier New'"
+              >
+                Courier New
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Font Size -->
+        <div class="toolbar-group">
+          <input
+            type="number"
+            min="1"
+            @change="setFontSize"
+            :value="getActiveFontSize().replace('px', '')"
+            class="toolbar-input"
+            placeholder="Size"
+            title="Font Size (px)"
+          />
+          <button
+            type="button"
+            @click="unsetFontSize()"
+            class="toolbar-button"
+            title="Default Size"
+          >
+            <Icon name="mdi:format-font-size-decrease" class="icon" />
+          </button>
+        </div>
+
+        <!-- Highlight -->
+        <div class="toolbar-group">
+          <button
+            type="button"
+            @click="editor.chain().focus().toggleHighlight().run()"
+            :class="{ 'is-active': editor.isActive('highlight') }"
+            class="toolbar-button"
+            title="Highlight"
+          >
+            <Icon name="mdi:marker" class="icon" />
+          </button>
+        </div>
+
+        <!-- Image -->
+        <div class="toolbar-group">
+          <button
+            type="button"
+            @click="triggerImageUpload"
+            class="toolbar-button"
+            title="Upload Image"
+          >
+            <Icon name="mdi:image-plus" class="icon" />
+          </button>
+          <input
+            type="file"
+            ref="imageUpload"
+            @change="handleImageUpload"
+            class="hidden"
+            accept="image/*"
+          />
+        </div>
+
+        <!-- Align -->
+        <div class="toolbar-group">
+          <button
+            type="button"
+            @click="setAlignment('left')"
+            :class="{
+              'is-active':
+                editor.isActive({ textAlign: 'left' }) ||
+                editor.isActive('image', { 'data-align': 'left' }),
+            }"
+            class="toolbar-button"
+            title="Align Left"
+          >
+            <Icon name="mdi:format-align-left" class="icon" />
+          </button>
+          <button
+            type="button"
+            @click="setAlignment('center')"
+            :class="{
+              'is-active':
+                editor.isActive({ textAlign: 'center' }) ||
+                editor.isActive('image', { 'data-align': 'center' }),
+            }"
+            class="toolbar-button"
+            title="Align Center"
+          >
+            <Icon name="mdi:format-align-center" class="icon" />
+          </button>
+          <button
+            type="button"
+            @click="setAlignment('right')"
+            :class="{
+              'is-active':
+                editor.isActive({ textAlign: 'right' }) ||
+                editor.isActive('image', { 'data-align': 'right' }),
+            }"
+            class="toolbar-button"
+            title="Align Right"
+          >
+            <Icon name="mdi:format-align-right" class="icon" />
+          </button>
+        </div>
+
+        <!-- Lists -->
+        <div class="toolbar-group">
+          <button
+            type="button"
+            @click="editor.chain().focus().toggleBulletList().run()"
+            :class="{ 'is-active': editor.isActive('bulletList') }"
+            class="toolbar-button"
+            title="Bullet List"
+          >
+            <Icon name="mdi:format-list-bulleted" class="icon" />
+          </button>
+          <button
+            type="button"
+            @click="editor.chain().focus().toggleOrderedList().run()"
+            :class="{ 'is-active': editor.isActive('orderedList') }"
+            class="toolbar-button"
+            title="Ordered List"
+          >
+            <Icon name="mdi:format-list-numbered" class="icon" />
+          </button>
         </div>
       </div>
 
-      <!-- Text Style -->
-      <div class="toolbar-group">
-        <button
-          type="button"
-          @click="editor.chain().focus().toggleBold().run()"
-          :class="{ 'is-active': editor.isActive('bold') }"
-          class="toolbar-button"
-          title="Bold"
-        >
-          <Icon name="mdi:format-bold" class="icon" />
-        </button>
-        <button
-          type="button"
-          @click="editor.chain().focus().toggleItalic().run()"
-          :class="{ 'is-active': editor.isActive('italic') }"
-          class="toolbar-button"
-          title="Italic"
-        >
-          <Icon name="mdi:format-italic" class="icon" />
-        </button>
-        <button
-          type="button"
-          @click="editor.chain().focus().toggleUnderline().run()"
-          :class="{ 'is-active': editor.isActive('underline') }"
-          class="toolbar-button"
-          title="Underline"
-        >
-          <Icon name="mdi:format-underline" class="icon" />
-        </button>
-        <button
-          type="button"
-          @click="editor.chain().focus().toggleStrike().run()"
-          :class="{ 'is-active': editor.isActive('strike') }"
-          class="toolbar-button"
-          title="Strikethrough"
-        >
-          <Icon name="mdi:format-strikethrough" class="icon" />
-        </button>
-      </div>
-
-      <!-- Font Family -->
-      <div class="toolbar-group">
-        <div class="relative" ref="fontFamilyDropdown">
-          <button
-            type="button"
-            @click="toggleFontFamilyDropdown"
-            class="toolbar-button"
-            style="width: 8rem"
-          >
-            <span class="truncate w-24 text-left">{{
-              getActiveFontFamily()
-            }}</span>
-            <Icon name="mdi:chevron-down" class="icon ml-1" />
-          </button>
-          <div v-if="showFontFamilyDropdown" class="dropdown-menu">
-            <button
-              type="button"
-              @click="unsetFontFamily()"
-              class="dropdown-item"
-            >
-              Default
-            </button>
-            <button
-              type="button"
-              @click="setFontFamily('Inter')"
-              class="dropdown-item"
-              style="font-family: 'Inter'"
-            >
-              Inter
-            </button>
-            <button
-              type="button"
-              @click="setFontFamily('Arial')"
-              class="dropdown-item"
-              style="font-family: 'Arial'"
-            >
-              Arial
-            </button>
-            <button
-              type="button"
-              @click="setFontFamily('Georgia')"
-              class="dropdown-item"
-              style="font-family: 'Georgia'"
-            >
-              Georgia
-            </button>
-            <button
-              type="button"
-              @click="setFontFamily('Courier New')"
-              class="dropdown-item"
-              style="font-family: 'Courier New'"
-            >
-              Courier New
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Font Size -->
-      <div class="toolbar-group">
-        <input
-          type="number"
-          min="1"
-          @change="setFontSize"
-          :value="getActiveFontSize().replace('px', '')"
-          class="toolbar-input"
-          placeholder="Size"
-          title="Font Size (px)"
-        />
-        <button
-          type="button"
-          @click="unsetFontSize()"
-          class="toolbar-button"
-          title="Default Size"
-        >
-          <Icon name="mdi:format-font-size-decrease" class="icon" />
-        </button>
-      </div>
-
-      <!-- Highlight -->
-      <div class="toolbar-group">
-        <button
-          type="button"
-          @click="editor.chain().focus().toggleHighlight().run()"
-          :class="{ 'is-active': editor.isActive('highlight') }"
-          class="toolbar-button"
-          title="Highlight"
-        >
-          <Icon name="mdi:marker" class="icon" />
-        </button>
-      </div>
-
-      <!-- Image -->
-      <div class="toolbar-group">
-        <button
-          type="button"
-          @click="triggerImageUpload"
-          class="toolbar-button"
-          title="Upload Image"
-        >
-          <Icon name="mdi:image-plus" class="icon" />
-        </button>
-        <input
-          type="file"
-          ref="imageUpload"
-          @change="handleImageUpload"
-          class="hidden"
-          accept="image/*"
-        />
-      </div>
-
-      <!-- Align -->
-      <div class="toolbar-group">
-        <button
-          type="button"
-          @click="setAlignment('left')"
-          :class="{
-            'is-active':
-              editor.isActive({ textAlign: 'left' }) ||
-              editor.isActive('image', { 'data-align': 'left' }),
-          }"
-          class="toolbar-button"
-          title="Align Left"
-        >
-          <Icon name="mdi:format-align-left" class="icon" />
-        </button>
-        <button
-          type="button"
-          @click="setAlignment('center')"
-          :class="{
-            'is-active':
-              editor.isActive({ textAlign: 'center' }) ||
-              editor.isActive('image', { 'data-align': 'center' }),
-          }"
-          class="toolbar-button"
-          title="Align Center"
-        >
-          <Icon name="mdi:format-align-center" class="icon" />
-        </button>
-        <button
-          type="button"
-          @click="setAlignment('right')"
-          :class="{
-            'is-active':
-              editor.isActive({ textAlign: 'right' }) ||
-              editor.isActive('image', { 'data-align': 'right' }),
-          }"
-          class="toolbar-button"
-          title="Align Right"
-        >
-          <Icon name="mdi:format-align-right" class="icon" />
-        </button>
-      </div>
-
-      <!-- Lists -->
-      <div class="toolbar-group">
-        <button
-          type="button"
-          @click="editor.chain().focus().toggleBulletList().run()"
-          :class="{ 'is-active': editor.isActive('bulletList') }"
-          class="toolbar-button"
-          title="Bullet List"
-        >
-          <Icon name="mdi:format-list-bulleted" class="icon" />
-        </button>
-        <button
-          type="button"
-          @click="editor.chain().focus().toggleOrderedList().run()"
-          :class="{ 'is-active': editor.isActive('orderedList') }"
-          class="toolbar-button"
-          title="Ordered List"
-        >
-          <Icon name="mdi:format-list-numbered" class="icon" />
-        </button>
-      </div>
+      <!-- Editor Content -->
+      <editor-content :editor="editor" />
     </div>
-
-    <!-- Editor Content -->
-    <editor-content :editor="editor" />
-  </div>
+  </client-only>
 </template>
 
 <script>

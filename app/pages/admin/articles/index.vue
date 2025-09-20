@@ -198,7 +198,9 @@
             >Content</label
           >
           <div class="mt-1 border border-gray-300 rounded-lg">
-            <TiptapEditor v-model="article.content" />
+            <client-only>
+              <TiptapEditor v-model="article.content" />
+            </client-only>
           </div>
         </div>
 
@@ -438,7 +440,7 @@ export default {
 
         console.log("Highlight berhasil:", res.data);
         this.$toast?.success?.("Article berhasil di-highlight");
-        window.location.reload(true);
+        await this.fetchHighlighted();
       } catch (err) {
         console.error("Gagal mengirim highlight:", err.response?.data || err);
         this.$toast?.error?.("Gagal highlight article");
@@ -491,7 +493,6 @@ export default {
 
         // 3. ✨ PENTING: Panggil kembali fungsi fetchHighlighted untuk update UI
         await this.fetchHighlighted();
-        window.location.reload(true);
       } catch (error) {
         console.error("Gagal menghapus highlight:", error);
         // 4. Beri notifikasi error ke pengguna

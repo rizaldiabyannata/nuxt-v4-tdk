@@ -23,10 +23,12 @@ interface ContentTrackingData {
   featuredBlogs: Article[];
 }
 
-// Cache tunggal untuk data content tracking.
-const contentTrackingCache = useState<ContentTrackingData | null>('content-tracking-cache', () => null);
-
 export const useContentTracking = () => {
+  // Cache tunggal untuk data content tracking (dideklarasikan dalam konteks composable)
+  const contentTrackingCache = useState<ContentTrackingData | null>(
+    'content-tracking-cache',
+    () => null
+  );
   const { $api } = useNuxtApp();
   const config = useRuntimeConfig();
   const baseUrl = config.public.apiBaseUrl;

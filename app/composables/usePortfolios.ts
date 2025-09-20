@@ -20,10 +20,12 @@ interface PortfoliosData {
   pagination: Pagination;
 }
 
-// Cache untuk menyimpan data portofolio yang sudah diambil, dipisahkan per halaman.
-const portfoliosCache = useState<Record<number, PortfoliosData>>('portfolios-cache', () => ({}));
-
 export const usePortfolios = () => {
+  // Cache untuk menyimpan data portofolio yang sudah diambil, dipisahkan per halaman.
+  const portfoliosCache = useState<Record<number, PortfoliosData>>(
+    'portfolios-cache',
+    () => ({})
+  );
   const { $api } = useNuxtApp();
   const config = useRuntimeConfig();
   const baseUrl = config.public.apiBaseUrl;

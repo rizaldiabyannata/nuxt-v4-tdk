@@ -11,11 +11,13 @@ interface SlugContent {
   [key: string]: any; // Izinkan properti lain
 }
 
-// Satu cache terpusat untuk semua konten berbasis slug.
-// Kunci akan menjadi kombinasi dari tipe konten dan slug, mis., "blogs-judul-artikel".
-const contentCache = useState<Record<string, SlugContent>>('content-by-slug-cache', () => ({}));
-
 export const useContentBySlug = () => {
+  // Satu cache terpusat untuk semua konten berbasis slug (dalam konteks composable).
+  // Kunci akan menjadi kombinasi dari tipe konten dan slug, mis., "blogs-judul-artikel".
+  const contentCache = useState<Record<string, SlugContent>>(
+    'content-by-slug-cache',
+    () => ({})
+  );
   const { $api } = useNuxtApp();
   const config = useRuntimeConfig();
   const baseUrl = config.public.apiBaseUrl;

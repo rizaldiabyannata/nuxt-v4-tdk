@@ -1,5 +1,5 @@
 // app/composables/useArticles.ts
-import { ref, watch } from 'vue';
+import { ref, watch, computed, type Ref } from 'vue';
 
 // Definisikan tipe data untuk artikel dan paginasi agar lebih aman dan jelas.
 interface Article {
@@ -23,9 +23,11 @@ interface ArticlesData {
 
 // `useState` membuat state yang reaktif dan dapat dibagikan di seluruh aplikasi.
 // Data ini akan tetap ada selama sesi pengguna (navigasi sisi klien).
-const articlesCache = useState<Record<number, ArticlesData>>('articles-cache', () => ({}));
-
 export const useArticles = () => {
+  const articlesCache = useState<Record<number, ArticlesData>>(
+    'articles-cache',
+    () => ({})
+  );
   const { $api } = useNuxtApp();
   const config = useRuntimeConfig();
   const baseUrl = config.public.apiBaseUrl;
