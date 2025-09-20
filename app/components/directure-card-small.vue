@@ -1,16 +1,13 @@
 <template>
-  <div
-    ref="card"
-    class="flex flex-row max-w-screen xl:w-110  bg-slate-800 justify-center items-center px-4 h-72 shadow-xl shadow-gray-400 rounded-xl transition-all duration-300"
-  >
+  <div ref="card" class="flex flex-row w-full xl:w-110 bg-white justify-center items-center px-4 h-72 shadow-xl shadow-gray-400 rounded-xl transition-all duration-300">
     <div class="w-44 h-44 rounded-md">
       <NuxtImg src="/img/Alireza.jpg" class="w-full h-full object-cover rounded-md" alt="" loading="lazy" placeholder />
     </div>
     <div class="flex flex-col justify-center w-full h-full pl-4 text-white">
-      <h1 class="text-[#EB5523] font-semibold text-base lg:text-2xl">William George</h1>
-      <p class="text-base">Chief Administrator</p>
-      <hr class="text-white w-24 mt-2" />
-      <p class="text-justify pt-4 text-xs">
+      <h1 class="text-[#EB5523] font-semibold text-base lg:text-2xl">Firman</h1>
+      <p class="text-base text-black">Direktur Utama</p>
+      <hr class="text-black w-24 mt-2" />
+      <p class="text-justify pt-4 text-xs text-black">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis facere rerum soluta ipsa, beatae voluptatibus expedita quibusdam voluptas neque laborum.
       </p>
       <div class="flex flex-row space-x-4 pt-2">
