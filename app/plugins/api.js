@@ -16,11 +16,18 @@ export default defineNuxtPlugin((nuxtApp) => {
   // Membuat instance axios yang sudah dikonfigurasi
   const api = axios.create({
     baseURL: baseURL,
-    // Baris ini adalah yang paling penting untuk otentikasi berbasis cookie.
-    // Ini memberitahu browser untuk secara otomatis mengirim cookie
-    // yang diterima dari server pada setiap permintaan selanjutnya.
+    // Penting untuk cookie berbasis otentikasi (client-side)
     withCredentials: true,
   });
+
+  // SSR: Teruskan cookie dari request masuk ke Axios agar auth tetap terjaga saat refresh/direct URL (server-side)
+  if (process.server) {
+    const reqEvt = nuxtApp.ssrContext?.event;
+    const incomingCookie = reqEvt?.node?.req?.headers?.cookie;
+    if (incomingCookie) {
+      api.defaults.headers.common["cookie"] = incomingCookie;
+    }
+  }
 
   // Interceptor untuk request TIDAK DIPERLUKAN lagi karena browser menangani cookie.
 
@@ -28,7 +35,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   let failedQueue = [];
 
   const processQueue = (error, token = null) => {
-    failedQueue.forEach(prom => {
+    failedQueue.forEach((prom) => {
       if (error) {
         prom.reject(error);
       } else {
@@ -46,26 +53,31 @@ export default defineNuxtPlugin((nuxtApp) => {
     async (error) => {
       const originalRequest = error.config;
 
-      if (error.response?.status === 401 && !originalRequest._retry && originalRequest.url !== '/api/user/refresh-token/') {
+      if (
+        error.response?.status === 401 &&
+        !originalRequest._retry &&
+        originalRequest.url !== "/api/user/refresh-token/"
+      ) {
         if (isRefreshing) {
-          return new Promise(function(resolve, reject) {
+          return new Promise(function (resolve, reject) {
             failedQueue.push({ resolve, reject });
-          }).then(() => {
-            return api(originalRequest);
-          }).catch(err => {
-            return Promise.reject(err);
-          });
+          })
+            .then(() => {
+              return api(originalRequest);
+            })
+            .catch((err) => {
+              return Promise.reject(err);
+            });
         }
 
         originalRequest._retry = true;
         isRefreshing = true;
 
         try {
-          const response = await api.post('/api/user/refresh-token/');
+          const response = await api.post("/api/user/refresh-token/");
           console.log("Token refreshed:", response.data);
           processQueue(null);
           return api(originalRequest);
-
         } catch (refreshError) {
           processQueue(refreshError);
           // Jika refresh token gagal, redirect ke halaman login

@@ -1,14 +1,36 @@
 <template>
-  <div class="relative h-11/13 w-full">
-    <Bar :data="chartData" :options="chartOptions" />
-  </div>
+  <client-only>
+    <div class="relative h-11/13 w-full">
+      <Bar :data="chartData" :options="chartOptions" />
+    </div>
+    <template #fallback>
+      <div class="relative h-11/13 w-full"></div>
+    </template>
+  </client-only>
 </template>
 
 <script setup>
 import { Bar } from "vue-chartjs";
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from "chart.js";
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+} from "chart.js";
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+if (process.client) {
+  ChartJS.register(
+    Title,
+    Tooltip,
+    Legend,
+    BarElement,
+    CategoryScale,
+    LinearScale
+  );
+}
 
 const { chartData, maxData } = defineProps({
   chartData: {
@@ -18,7 +40,7 @@ const { chartData, maxData } = defineProps({
   maxData: {
     type: Number,
     required: true,
-  }
+  },
 });
 
 const chartOptions = {
@@ -53,9 +75,9 @@ const chartOptions = {
       ticks: {
         drawTicks: false,
         stepSize: 1,
-        callback: function(value) {
+        callback: function (value) {
           return Number.isInteger(value) ? value : null;
-        }
+        },
       },
     },
   },

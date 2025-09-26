@@ -12,10 +12,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       // If the call succeeds, the user is authenticated. We can allow navigation.
     } catch (error) {
       // If the API call fails, the user is not authenticated.
-      console.error('Authentication check failed, redirecting to home page.');
-      
-      // Redirect to the root page as requested.
-      return navigateTo('/');
+      console.error('Authentication check failed, redirecting to login.');
+      // Redirect ke halaman login agar jelas status auth, hindari flicker ke public home
+      return navigateTo('/login');
     }
   }
 });

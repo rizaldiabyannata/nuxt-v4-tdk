@@ -14,9 +14,13 @@
           <!-- Avatar Section -->
           <div class="lg:col-span-1 space-y-2">
             <h2 class="text-lg font-medium text-gray-700">Profile Picture</h2>
-            <div class="flex flex-col items-center space-y-4 mt-24">
+            <div class="flex flex-col items-center space-y-4 mt-6">
               <div class="relative w-40 h-40">
-                <img class="w-full h-full rounded-full object-contain" :src="previewImageUrl || '/img/logotdk.png'" alt="User Avatar" />
+                <img
+                  class="w-full h-full rounded-full object-cover border border-gray-200"
+                  src="/img/logotdk.png"
+                  alt="User Avatar"
+                />
               </div>
             </div>
           </div>
@@ -55,7 +59,10 @@
 
         <!-- Form Actions -->
         <div class="flex justify-end pt-4 border-t border-gray-200">
-          <button type="submit" class="btn btn-primary rounded-lg">Update Profile</button>
+          <button type="submit" class="btn btn-primary rounded-lg" :class="{ 'btn-disabled opacity-60': isSubmitting }" :disabled="isSubmitting">
+            <span v-if="isSubmitting" class="loading loading-spinner loading-sm mr-2"></span>
+            {{ isSubmitting ? 'Updating...' : 'Update Profile' }}
+          </button>
         </div>
       </form>
     </div>
@@ -72,48 +79,43 @@ export default {
         password: "",
         confirmPassword: "",
       },
-      previewImageUrl: "",
+      isSubmitting: false,
     };
   },
   methods: {
-    triggerFileInput() {
-      this.$refs.fileInput.click();
-    },
-    handleFileChange(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.user.avatar = file;
-        this.previewImageUrl = URL.createObjectURL(file);
-      }
-    },
     async updateProfile() {
       if (this.user.password && this.user.password !== this.user.confirmPassword) {
         this.$toast?.error?.("Passwords do not match.");
         return;
       }
-
+      this.isSubmitting = true;
       const payload = {
         name: this.user.name,
         email: this.user.email,
+        ...(this.user.password ? { password: this.user.password } : {}),
       };
-      if (this.user.password) {
-        payload.password = this.user.password;
-      }
 
       try {
         await this.$api.put("/api/user/update", payload);
         this.$toast?.success?.("Profile updated successfully.");
+        // Refresh profile data (to get new avatar URL, etc.)
+        await this.fetchProfile();
+        // Clear sensitive fields
+        this.user.password = "";
+        this.user.confirmPassword = "";
       } catch (error) {
         console.error("Failed to update profile:", error);
         this.$toast?.error?.(error.response?.data?.message || "Failed to update profile.");
+      } finally {
+        this.isSubmitting = false;
       }
     },
     async fetchProfile() {
       try {
-        const response = await this.$api.get("/api/users/profile");
-        const profile = response.data.data;
-        this.user.name = profile.name;
-        this.user.email = profile.email;
+        const response = await this.$api.get("/api/user/profile");
+        const profile = response.data?.data || response.data?.user || response.data;
+        this.user.name = profile?.name || profile?.username || "";
+        this.user.email = profile?.email || "";
       } catch (error) {
         console.error("Failed to fetch profile:", error);
       }

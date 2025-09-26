@@ -76,7 +76,7 @@
             :content="article.content"
             :isHighlighted="true"
             :loading-highlight="loadingHighlights"
-            :imageUrl="`http://localhost:5000${article.coverImage}`"
+            :imageUrl="baseUrl + article.coverImage"
             @unhighlight="deleteArticleHighlight"
             @highlight="sendHighlight"
             @delete="deleteCard"
@@ -106,7 +106,7 @@
             :content="article.content"
             :isHighlighted="false"
             :loading-highlight="loadingHighlights"
-            :imageUrl="`http://localhost:5000${article.coverImage}`"
+            :imageUrl="baseUrl + article.coverImage"
             :author="article.author"
             @highlight="sendHighlight"
             @unhighlight="deleteArticleHighlight"
@@ -291,6 +291,10 @@ export default {
       }, 500);
     },
   },
+  setup() {
+    const baseUrl = useRuntimeConfig().public.apiBaseUrl;
+    return { baseUrl };
+  },
   methods: {
     async fetchArticles(searchTerm = "") {
       console.log(`FETCH_ARTICLES: Mencari dengan term: "${searchTerm}"`);
@@ -376,7 +380,7 @@ export default {
           content: dataToEdit.data.content,
           coverImage: null, // Reset gambar, biarkan user upload baru jika ingin ganti
         };
-        this.existingImageUrl = `http://localhost:5000${dataToEdit.data.coverImage}`;
+  this.existingImageUrl = `${this.baseUrl}${dataToEdit.data.coverImage}`;
         console.log("image to edit: ", this.article.coverImage);
         console.log("data terkini: ", this.article);
         // 3. Ubah tampilan ke form edit
@@ -407,7 +411,7 @@ export default {
         );
 
         console.log("Article berhasil diupdate:", response.data);
-        this.tampilanAktif = "daftar"; // Kembali ke daftar
+        this.tampilanAktif = "daftar"; // Kembali to daftar
 
         // ✨ REFRESH DATA TANPA RELOAD HALAMAN (Best Practice)
         await this.fetchArticles();
