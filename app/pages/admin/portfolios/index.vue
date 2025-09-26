@@ -324,7 +324,7 @@ export default {
       if (search) {
         apiUrl += `&search=${encodeURIComponent(search)}`;
       }
-      console.log("Fetching portfolios with url:", apiUrl);
+      // fetch portfolios url: apiUrl
       try {
         const response = await this.$api.get(apiUrl);
         this.portfoliosList = response.data.data || [];

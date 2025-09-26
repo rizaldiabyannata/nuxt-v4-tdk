@@ -44,12 +44,12 @@ export const usePortfolios = () => {
       async () => {
         // 1. Periksa cache terlebih dahulu.
         if (portfoliosCache.value[page.value]) {
-          console.log(`Mengambil portofolio dari cache untuk halaman: ${page.value}`);
+          // cache hit
           return portfoliosCache.value[page.value];
         }
 
         // 2. Jika tidak ada di cache, ambil dari API.
-        console.log(`Mengambil portofolio dari API untuk halaman: ${page.value}`);
+  // fetch from API
         try {
           const response = await $api.get(
             `/api/portfolios?limit=${pageSize}&page=${page.value}&status=active`

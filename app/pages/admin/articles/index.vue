@@ -297,7 +297,7 @@ export default {
   },
   methods: {
     async fetchArticles(searchTerm = "") {
-      console.log(`FETCH_ARTICLES: Mencari dengan term: "${searchTerm}"`);
+      // Fetch articles with optional search term
       try {
         let apiUrl = "/api/blogs?limit=10&page=1";
 
@@ -307,13 +307,7 @@ export default {
         }
 
         const response = await this.$api.get(apiUrl);
-        console.log("FETCH_ARTICLES: Response dari API:", response.data);
-
         this.articleList = response.data.data;
-        console.log(
-          "FETCH_ARTICLES: Isi `this.articleList` setelah di-set:",
-          this.articleList
-        );
       } catch (error) {
         console.error("FETCH_ARTICLES: Gagal mengambil data article:", error);
       }
@@ -338,7 +332,7 @@ export default {
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log("Article berhasil dibuat:", response.data);
+        // Article created
         this.tampilanAktif = "daftar";
         await this.fetchArticles();
       } catch (error) {
@@ -368,9 +362,7 @@ export default {
       try {
         // 1. Panggil API untuk mendapatkan detail portofolio
         const response = await this.$api.get(`/api/blogs/${slug}`);
-        console.log(`Ini adalah isi dari get by ${slug}`, response.data);
         const dataToEdit = response.data;
-        console.log("data To Edit: ", dataToEdit);
 
         // 2. Isi object 'portfolio' dengan data yang didapat
         this.article = {
@@ -380,13 +372,12 @@ export default {
           content: dataToEdit.data.content,
           coverImage: null, // Reset gambar, biarkan user upload baru jika ingin ganti
         };
-  this.existingImageUrl = `${this.baseUrl}${dataToEdit.data.coverImage}`;
-        console.log("image to edit: ", this.article.coverImage);
-        console.log("data terkini: ", this.article);
+        this.existingImageUrl = `${this.baseUrl}${dataToEdit.data.coverImage}`;
+        // Article ready to edit
         // 3. Ubah tampilan ke form edit
         this.tampilanAktif = "edit";
 
-        // console.log("Siap untuk mengedit:", this.article.shortDescription);
+        // ready to edit
       } catch (error) {
         console.error("Gagal mengambil data untuk diedit:", error);
       }
@@ -410,7 +401,7 @@ export default {
           }
         );
 
-        console.log("Article berhasil diupdate:", response.data);
+        // Article updated
         this.tampilanAktif = "daftar"; // Kembali to daftar
 
         // ✨ REFRESH DATA TANPA RELOAD HALAMAN (Best Practice)
@@ -423,7 +414,7 @@ export default {
 
     async sendHighlight(articleId) {
       // Debugging sebelum kirim
-      console.log("Debug: articleId =", articleId);
+      // highlight article
 
       if (!articleId) {
         console.error("Error: articleId kosong atau undefined");
@@ -442,7 +433,7 @@ export default {
           }
         );
 
-        console.log("Highlight berhasil:", res.data);
+        // highlight success
         this.$toast?.success?.("Article berhasil di-highlight");
         await this.fetchHighlighted();
       } catch (err) {
@@ -455,10 +446,6 @@ export default {
       try {
         let apiUrl = "/api/content-tracking/";
         const response = await this.$api.get(apiUrl);
-        console.log(
-          "Data highlited article berhasil diambil:",
-          response.data.featuredBlogs
-        );
         this.articleHighlightList = response.data.featuredBlogs || [];
       } catch (error) {
         console.error("Gagal mengambil data highlited article:", error);
@@ -469,9 +456,7 @@ export default {
     async deleteCard(articleSlug) {
       try {
         let apiUrl = `/api/blogs/${articleSlug}`;
-        console.log(`slug berisi = ${articleSlug}`);
         const response = await this.$api.delete(apiUrl);
-        console.log(`Card dengan slug ${articleSlug} berhasil dihapus`);
       } catch (error) {
         console.error("Gagal menghapus card:", error);
       }
@@ -491,7 +476,7 @@ export default {
         let apiUrl = `/api/content-tracking/featured-blogs/${articleId}`;
         await this.$api.delete(apiUrl);
 
-        console.log(`Highlight dengan id ${articleId} berhasil dihapus.`);
+        // highlight deleted
         // 2. Beri notifikasi sukses ke pengguna
         this.$toast?.success?.("Artikel berhasil dihapus dari highlight.");
 

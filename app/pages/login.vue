@@ -213,4 +213,8 @@ export default {
     },
   },
 };
+
+definePageMeta({
+  middleware: ["guest"],
+});
 </script>

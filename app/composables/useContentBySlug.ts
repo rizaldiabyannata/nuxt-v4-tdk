@@ -36,12 +36,12 @@ export const useContentBySlug = () => {
       async () => {
         // 1. Periksa cache terlebih dahulu.
         if (contentCache.value[cacheKey]) {
-          console.log(`Mengambil konten dari cache untuk kunci: ${cacheKey}`);
+          // cache hit
           return contentCache.value[cacheKey];
         }
 
         // 2. Jika tidak ada di cache, ambil dari API.
-        console.log(`Mengambil konten dari API untuk kunci: ${cacheKey}`);
+  // fetch from API
         try {
           const response = await $api.get(`/api/${contentType}/${slug}`);
           const data = response.data.data;

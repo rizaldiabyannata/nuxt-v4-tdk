@@ -7,7 +7,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   // Mengambil baseURL dari runtimeConfig.
   const baseURL = config.public.apiBaseUrl; // Pastikan ini benar
 
-  console.log("API baseURL:", baseURL);
+  // baseURL loaded from runtime config
 
   if (!baseURL) {
     console.warn("API baseURL tidak diatur di runtimeConfig.public.apiBaseUrl");
@@ -75,7 +75,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
         try {
           const response = await api.post("/api/user/refresh-token/");
-          console.log("Token refreshed:", response.data);
+          // token refreshed
           processQueue(null);
           return api(originalRequest);
         } catch (refreshError) {
@@ -83,7 +83,7 @@ export default defineNuxtPlugin((nuxtApp) => {
           // Jika refresh token gagal, redirect ke halaman login
           // Ini perlu dijalankan di sisi client
           if (process.client) {
-            console.log("Sesi berakhir. Mengarahkan ke halaman login.");
+            // session expired
             // window.location = '/login';
           }
           return Promise.reject(refreshError);

@@ -130,7 +130,7 @@ export default {
           message: this.message.message,
         });
 
-        console.log("Pesan berhasil dikirim", response.data);
+        // message sent
         this.$toast?.success?.("Pesan berhasil dikirim!");
         this.message = { name: "", email: "", message: "" };
       } catch (error) {

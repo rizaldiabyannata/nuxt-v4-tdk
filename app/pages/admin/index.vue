@@ -228,7 +228,7 @@ export default {
       try {
         const apiUrl = "/api/statistic/";
         const response = await this.$api.get(apiUrl);
-        console.log("Data statistic berhasil diambil:", response.data);
+        // statistic data fetched
 
         const apiData = response.data.data;
         this.summary = apiData.summary;
@@ -243,7 +243,7 @@ export default {
               .charAt(0)
               .toLocaleUpperCase() +
             date.toLocaleDateString("en-US", { weekday: "short" }).slice(1);
-          console.log("Formatted date:", item.date);
+          // formatted date
         });
 
         this.portfolioBarData = {
@@ -264,7 +264,7 @@ export default {
         );
         this.maxDataPortfolio =
           maxPortfolio > 4 ? Math.ceil(maxPortfolio) + 1 : 4;
-        console.log("Max data portfolio:", this.maxDataPortfolio);
+        // computed max portfolio data
 
         this.articleBarData = {
           labels: this.dailyData.map((item) => item.date),

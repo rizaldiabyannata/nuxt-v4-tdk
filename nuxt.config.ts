@@ -9,7 +9,8 @@ export default defineNuxtConfig({
       node_env: process.env.NODE_ENV || "development",
     },
   },
-  devtools: { enabled: true },
+  // Disable devtools in production for performance & security
+  devtools: { enabled: process.env.NODE_ENV !== 'production' },
   css: ['~/assets/css/main.css', '~/assets/css/tiptap-content.css'],
   typescript: {
     strict: false,

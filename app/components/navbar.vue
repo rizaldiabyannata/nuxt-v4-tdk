@@ -141,9 +141,7 @@ export default {
     };
   },
   methods: {
-    handleMenuToggle() {
-      console.log("Menu toggled, new state:", this.isMobileMenuOpen);
-    },
+    handleMenuToggle() {},
     closeMobileMenu() {
       this.isMobileMenuOpen = false;
     },

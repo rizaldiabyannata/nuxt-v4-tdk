@@ -29,12 +29,12 @@
 </template>
 
 <script>
-import ArticleTemplate from '~/components/article-template.vue';
+import ArticleTemplate from "~/components/articleTemplate.vue";
 
 export default {
-  name: 'ArticlePreviewPage',
+  name: "ArticlePreviewPage",
   components: {
-    'article-template': ArticleTemplate,
+    "article-template": ArticleTemplate,
   },
   data() {
     return {
@@ -45,10 +45,10 @@ export default {
     updateArticleFromQuery(query) {
       if (query) {
         this.article = {
-          title: query.title || 'Untitled',
-          content: query.content || '',
-          coverImage: query.coverImage || '/img/placeholder.png',
-          author: 'PT. Total Desain Konsultan',
+          title: query.title || "Untitled",
+          content: query.content || "",
+          coverImage: query.coverImage || "/img/placeholder.png",
+          author: "PT. Total Desain Konsultan",
         };
       }
     },
@@ -57,7 +57,7 @@ export default {
     this.updateArticleFromQuery(this.$route.query);
   },
   watch: {
-    '$route.query'(newQuery) {
+    "$route.query"(newQuery) {
       this.updateArticleFromQuery(newQuery);
     },
   },

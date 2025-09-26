@@ -45,12 +45,12 @@ export const useContentTracking = () => {
       async () => {
         // 1. Periksa cache.
         if (contentTrackingCache.value) {
-          console.log('Mengambil data content tracking dari cache.');
+          // cache hit
           return contentTrackingCache.value;
         }
 
         // 2. Jika tidak ada, ambil dari API.
-        console.log('Mengambil data content tracking dari API.');
+  // fetch from API
         try {
           const response = await $api.get('/api/content-tracking/');
           const data = response.data;

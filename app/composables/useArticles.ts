@@ -40,12 +40,12 @@ export const useArticles = () => {
       async () => {
         // 1. Periksa cache terlebih dahulu
         if (articlesCache.value[page.value]) {
-          console.log(`Mengambil dari cache untuk halaman: ${page.value}`);
+          // cache hit
           return articlesCache.value[page.value];
         }
 
         // 2. Jika tidak ada di cache, ambil dari API
-        console.log(`Mengambil dari API untuk halaman: ${page.value}`);
+  // fetch from API
         try {
           const response = await $api.get(
             `/api/blogs?limit=${pageSize}&page=${page.value}&status=active`
