@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col max-w-screen overflow-hidden">
+  <div class="flex flex-col max-w-screen overflow-hidden pt-16 md:pt-0">
     <div
       ref="heroSection"
       class="flex flex-col md:flex-row w-full min-h-[50vh] md:h-screen"
@@ -15,23 +15,27 @@
         class="flex flex-col bg-white text-black h-1/2 w-full md:h-full md:w-1/2 items-center justify-center text-center p-8"
       >
         <h1 class="text-3xl md:text-4xl font-bold">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Biarkan Kami Membantu Anda Mengubah Visi Menjadi Realitas
         </h1>
         <p class="mt-4 text-lg">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Veritatis,
-          velit?
+          Bersama-sama, mari membangun masa depan yang inovatif, berkelanjutan,
+          dan unggul
         </p>
       </div>
     </div>
     <div
       ref="contactSection"
-      class="flex flex-col md:flex-row w-full min-h-screen justify-center items-center bg-white"
+      class="flex flex-col md:flex-row w-full min-h-screen justify-center items-center bg-gray-50"
     >
-      <div class="flex flex-col w-full md:w-1/2 p-8 md:p-16 space-y-4">
-        <h1 class="text-4xl font-bold text-[#EB5523]">Contact Us</h1>
-        <p class="text-black text-lg">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-          perferendis eos necessitatibus, totam earum quasi a.
+      <div
+        class="flex flex-col w-full md:w-1/2 p-8 md:p-16 space-y-4 max-w-2xl"
+      >
+        <h1 class="text-4xl md:text-5xl font-bold text-[#EB5523]">
+          Contact Us
+        </h1>
+        <p class="text-black text-lg leading-relaxed">
+          Kami siap mendengarkan kebutuhan proyek Anda dan memberikan solusi
+          terbaik. Hubungi kami untuk konsultasi dan layanan profesional.
         </p>
         <form @submit.prevent="submitMessage" class="space-y-6 w-full pt-4">
           <div>

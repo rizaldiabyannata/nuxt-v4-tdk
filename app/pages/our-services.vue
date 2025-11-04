@@ -1,7 +1,7 @@
 <template>
   <div
     ref="heroSection"
-    class="relative min-h-screen flex flex-col justify-center px-4 py-16 sm:px-8 sm:py-24"
+    class="relative min-h-screen flex flex-col justify-center px-4 py-16 sm:px-8 sm:py-24 pt-24 md:pt-16"
   >
     <NuxtImg
       src="/img/sample/sample-5.jpeg"
@@ -9,16 +9,17 @@
       placeholder
     />
 
-    <div class="relative flex flex-col flex-grow w-full justify-center">
+    <div class="relative flex flex-col grow w-full justify-center">
       <div class="flex flex-col w-full md:w-1/2 justify-center items-start">
         <h1 class="font-bold text-3xl md:text-4xl text-white">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+          Solusi Inovatif untuk Setiap Proyek Anda
         </h1>
         <p class="mt-4 text-base lg:text-lg text-white">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic eligendi
-          esse accusamus omnis nobis eaque tempore ipsam, odit culpa aut,
-          similique eum dolores iure error temporibus molestiae, voluptatum
-          natus! Minus!
+          Kami memanfaatkan teknologi canggih dan praktik modern untuk
+          memberikan layanan perencanaan dan supervisi terbaik. Tim profesional
+          kami yang berpengalaman menggabungkan keahlian teknis dengan komitmen
+          terhadap keunggulan, memastikan setiap proyek memenuhi standar
+          kualitas dan keberlanjutan tertinggi.
         </p>
       </div>
       <a
@@ -46,20 +47,20 @@
 
   <div
     ref="servicesSection"
-    class="max-w-screen min-h-screen flex flex-col justify-center px-4 py-16 sm:px-8 sm:py-24 space-y-2"
+    class="max-w-screen min-h-screen flex flex-col justify-center px-4 py-16 sm:px-8 sm:py-24 space-y-8 bg-gray-50"
   >
-    <div class="flex flex-col w-full">
-      <p class="text-2xl md:text-3xl">Our Services</p>
-      <h1 class="text-4xl md:text-5xl font-bold text-[#EB5523]">Lorem Ipsum</h1>
+    <div class="flex flex-col w-full max-w-6xl mx-auto">
+      <p class="text-2xl md:text-3xl font-semibold text-gray-600">
+        Our Services
+      </p>
+      <h1 class="text-4xl md:text-5xl font-bold text-[#EB5523] mt-2">
+        What We Offer
+      </h1>
     </div>
     <div
-      class="grid xl:grid-cols-3 grid-cols-1 gap-8 md:grid-cols-1 w-full pt-12"
+      class="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-6 lg:gap-8 w-full max-w-6xl mx-auto"
     >
-      <services-card
-        title="Perencanaan Proyek"
-        :list="list_1"
-        :image="img_1"
-      />
+      <services-card title="Perencanaan Proyek" :list="list_1" :image="img_1" />
       <services-card title="Supervisi Proyek" :list="list_2" :image="img_2" />
       <services-card
         title="Manajemen Konstruksi"

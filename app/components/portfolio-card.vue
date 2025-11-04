@@ -26,7 +26,7 @@
     </div>
 
     <figure class="h-[40%] mt-2">
-      <NuxtImg
+      <MinioImage
         crossorigin="anonymous"
         id="image"
         :src="imageUrl"
@@ -40,7 +40,12 @@
 </template>
 
 <script>
+import MinioImage from "./MinioImage.vue";
+
 export default {
+  components: {
+    MinioImage,
+  },
   props: {
     title: {
       type: String,

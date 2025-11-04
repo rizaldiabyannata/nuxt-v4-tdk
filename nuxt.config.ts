@@ -7,6 +7,8 @@ export default defineNuxtConfig({
     public: {
       apiBaseUrl: process.env.API_BASE_URL || "",
       node_env: process.env.NODE_ENV || "development",
+      minioProxyMode: process.env.MINIO_PROXY_MODE || "backend",
+      minioPublicUrl: process.env.MINIO_PUBLIC_URL || "http://localhost:9004",
     },
   },
   devtools: { enabled: true },

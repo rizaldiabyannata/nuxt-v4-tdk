@@ -4,7 +4,7 @@
     class="w-full max-w-xs sm:max-w-sm bg-[#F5EE9E] shadow-lg rounded-2xl flex flex-col p-6 transition-all duration-300"
   >
     <figure class="w-full h-48 rounded-lg overflow-hidden mb-4">
-      <NuxtImg
+      <MinioImage
         :src="imageUrl"
         alt="Blog image"
         class="w-full h-full object-cover"
@@ -46,7 +46,12 @@
 </template>
 
 <script>
+import MinioImage from "./MinioImage.vue";
+
 export default {
+  components: {
+    MinioImage,
+  },
   props: {
     title: {
       type: String,

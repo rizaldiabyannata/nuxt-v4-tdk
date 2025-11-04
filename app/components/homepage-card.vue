@@ -27,21 +27,23 @@
     </div>
 
     <figure class="h-1/2">
-      <NuxtImg
-        crossorigin="anonymous"
-        id="image"
+      <MinioImage
         :src="imageUrl"
         alt="Product Image"
-        class="w-full h-full object-cover"
-        loading="lazy"
-        placeholder
+        img-class="w-full h-full object-cover"
+        fallback="/img/card-placeholder.png"
       />
     </figure>
   </div>
 </template>
 
 <script>
+import MinioImage from "./MinioImage.vue";
+
 export default {
+  components: {
+    MinioImage,
+  },
   props: {
     title: {
       type: String,

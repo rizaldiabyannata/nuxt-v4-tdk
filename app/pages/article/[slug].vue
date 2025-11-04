@@ -1,9 +1,12 @@
 <template>
   <div v-if="pending" class="min-h-screen flex items-center justify-center">
-    <p>Loading...</p> <!-- Replace with a proper skeleton loader if you have one -->
+    <p>Loading...</p>
+    <!-- Replace with a proper skeleton loader if you have one -->
   </div>
   <div v-else-if="blog">
-    <div class="relative min-h-[300px] h-[50vh] flex flex-col justify-center text-white px-4 py-16 sm:px-8 sm:py-24">
+    <div
+      class="relative min-h-[300px] h-[50vh] flex flex-col justify-center text-white px-4 py-16 sm:px-8 sm:py-24"
+    >
       <NuxtImg
         :src="blog.coverImage"
         class="absolute inset-0 w-full h-full object-cover brightness-50 -z-10"
@@ -14,11 +17,13 @@
           {{ blog.title }}
         </h1>
         <p class="text-base lg:text-lg text-gray-200 mt-4">
-          By {{ blog.author || 'PT. Total Desain Konsultan' }}
+          By {{ blog.author || "PT. Total Desain Konsultan" }}
         </p>
       </div>
     </div>
-    <div class="w-full flex flex-col lg:flex-row bg-white px-4 py-16 sm:px-8 sm:py-24">
+    <div
+      class="w-full flex flex-col lg:flex-row bg-white px-4 py-16 sm:px-8 sm:py-24"
+    >
       <articleTemplate
         :firstParagraph="blog.summary"
         :image="blog.coverImage"
@@ -33,6 +38,7 @@
 
 <script>
 import { computed } from "vue";
+import { getImageUrl } from "@/composables/useImage";
 import articleTemplate from "~/components/articleTemplate.vue";
 
 export default {
@@ -43,9 +49,7 @@ export default {
   setup() {
     const { $api } = useNuxtApp();
     const route = useRoute();
-    const config = useRuntimeConfig();
     const slug = route.params.slug;
-    const baseUrl = config.public.apiBaseUrl;
 
     const {
       data: blog,
@@ -71,7 +75,7 @@ export default {
           if (!input) return null;
           return {
             ...input,
-            coverImage: baseUrl + input.coverImage,
+            coverImage: getImageUrl(input.coverImage),
           };
         },
       }

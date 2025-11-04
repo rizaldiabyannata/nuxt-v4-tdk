@@ -1,7 +1,7 @@
 <template>
   <div
     ref="heroSection"
-    class="relative h-[50vh] lg:h-[60vh] flex flex-col justify-center text-black overflow-hidden px-4 sm:px-8"
+    class="relative h-[50vh] lg:h-[60vh] flex flex-col justify-center text-black overflow-hidden px-4 sm:px-8 pt-16 md:pt-0"
   >
     <NuxtImg
       src="/img/sample/sample-2.jpeg"
@@ -22,27 +22,27 @@
   <div
     id="article-section"
     ref="articlesSection"
-    class="max-w-screen min-h-screen flex flex-col items-center px-4 py-16 sm:px-8 sm:py-24"
+    class="max-w-screen min-h-screen flex flex-col items-center px-4 py-16 sm:px-8 sm:py-24 bg-white"
   >
-    <div class="flex flex-col w-full max-w-6xl text-center">
+    <div class="flex flex-col w-full max-w-6xl text-center mb-12">
       <p class="text-lg font-semibold text-gray-600">Our Articles</p>
       <h1 class="text-4xl md:text-5xl font-bold text-[#EB5523] mt-2">
         Insights & Innovations
       </h1>
     </div>
     <div
-      class="flex flex-col lg:flex-row w-full max-w-6xl mt-12 justify-center items-center"
+      class="flex flex-col lg:flex-row w-full max-w-6xl justify-center items-center"
     >
       <div
         v-if="pending"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 w-full"
       >
         <SkeletonCarouselCardSkeleton v-for="i in pageSize" :key="i" />
       </div>
       <div
         v-else
         ref="articlesGrid"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 w-full"
       >
         <carousel-card
           v-for="article in articleList"
@@ -133,8 +133,6 @@ export default {
   },
   setup() {
     const { $api } = useNuxtApp();
-    const config = useRuntimeConfig();
-    const baseUrl = config.public.apiBaseUrl;
 
     const currentPage = ref(1);
     const pageSize = 6;
@@ -158,10 +156,7 @@ export default {
         transform(input) {
           if (!input) return { data: [], pagination: { totalPages: 1 } };
           return {
-            data: input.data.map((article) => ({
-              ...article,
-              coverImage: baseUrl + article.coverImage,
-            })),
+            data: input.data,
             pagination: input.pagination,
           };
         },

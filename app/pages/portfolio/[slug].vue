@@ -1,6 +1,8 @@
 <template>
   <div v-if="portfolio">
-    <div class="relative min-h-[300px] h-[50vh] flex flex-col justify-center text-white px-4 py-16 sm:px-8 sm:py-24">
+    <div
+      class="relative min-h-[300px] h-[50vh] flex flex-col justify-center text-white px-4 py-16 sm:px-8 sm:py-24"
+    >
       <div
         class="absolute inset-0 bg-cover bg-center brightness-50 -z-10"
         :style="`background-image: url('${portfolio.coverImage}')`"
@@ -10,11 +12,13 @@
           {{ portfolio.title }}
         </h1>
         <p class="text-base lg:text-lg text-gray-200 mt-4">
-          By {{ portfolio.author || 'PT. Total Desain Konsultan' }}
+          By {{ portfolio.author || "PT. Total Desain Konsultan" }}
         </p>
       </div>
     </div>
-    <div class="w-full flex flex-col lg:flex-row bg-white px-4 py-16 sm:px-8 sm:py-24">
+    <div
+      class="w-full flex flex-col lg:flex-row bg-white px-4 py-16 sm:px-8 sm:py-24"
+    >
       <PortoTemplate
         :firstParagraph="portfolio.shortDescription"
         :image="portfolio.coverImage"
@@ -29,6 +33,7 @@
 
 <script>
 import { computed } from "vue";
+import { getImageUrl } from "@/composables/useImage";
 import PortoTemplate from "~/components/portoTemplate.vue";
 
 export default {
@@ -38,9 +43,7 @@ export default {
   setup() {
     const { $api } = useNuxtApp();
     const route = useRoute();
-    const config = useRuntimeConfig();
     const slug = route.params.slug;
-    const baseUrl = config.public.apiBaseUrl;
 
     const { data, pending, error } = useAsyncData(
       `portfolio-${slug}`,
@@ -66,7 +69,7 @@ export default {
           if (!input) return null;
           return {
             ...input,
-            coverImage: baseUrl + input.coverImage,
+            coverImage: getImageUrl(input.coverImage),
           };
         },
       }

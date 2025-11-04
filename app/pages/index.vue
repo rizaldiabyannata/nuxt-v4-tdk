@@ -1,9 +1,9 @@
 <template>
-  <div class="relative min-h-dvh flex flex-col">
+  <div class="relative min-h-dvh flex flex-col pt-16 md:pt-0">
     <div
       class="absolute inset-0 bg-[url('/img/sample/sample-1.jpeg')] bg-cover bg-center brightness-50 -z-10"
     ></div>
-    <div class="flex flex-col flex-grow w-full justify-center items-center p-4">
+    <div class="flex flex-col grow w-full justify-center items-center p-4">
       <div
         v-if="highlightedPortfolios.length > 0"
         ref="heroContent"
@@ -121,7 +121,7 @@
             Our Portfolio
           </h1>
           <p class="w-full font-bold text-[#EB5523] text-4xl md:text-5xl mt-2">
-            Lorem Ipsum
+            Proyek Berkualitas, Hasil Nyata
           </p>
         </div>
         <div class="flex w-full items-end justify-end">
@@ -347,8 +347,8 @@
     >
       <h1 class="text-4xl font-bold text-black">Contact Us</h1>
       <p class="text-black mt-4 text-lg">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-        perferendis eos necessitatibus, totam earum quasi a.
+        Hubungi kami untuk konsultasi dan solusi terbaik untuk proyek Anda. Tim
+        profesional kami siap membantu mewujudkan visi Anda.
       </p>
       <form class="mt-8 space-y-6">
         <div>
@@ -436,8 +436,6 @@ export default {
   },
   setup() {
     const { $api } = useNuxtApp();
-    const config = useRuntimeConfig();
-    const baseUrl = config.public.apiBaseUrl;
 
     const { data, pending } = useAsyncData(
       "content-tracking",
@@ -455,17 +453,14 @@ export default {
           if (!input) {
             return { highlightedPortfolios: [], featuredBlogs: [] };
           }
+          console.log("🔍 Raw data from backend:", input);
+          console.log(
+            "🖼️ First portfolio coverImage:",
+            input.highlightedPortfolios?.[0]?.coverImage
+          );
           return {
-            highlightedPortfolios: input.highlightedPortfolios.map(
-              (portfolio) => ({
-                ...portfolio,
-                coverImage: baseUrl + portfolio.coverImage,
-              })
-            ),
-            featuredBlogs: input.featuredBlogs.map((blog) => ({
-              ...blog,
-              coverImage: baseUrl + blog.coverImage,
-            })),
+            highlightedPortfolios: input.highlightedPortfolios || [],
+            featuredBlogs: input.featuredBlogs || [],
           };
         },
         // Provide a default value to prevent data being null on initial client render

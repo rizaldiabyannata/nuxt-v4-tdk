@@ -87,8 +87,6 @@
 </template>
 
 <script>
-import { navigateTo, useCookie } from "nuxt/app";
-
 export default {
   data() {
     return {
@@ -134,23 +132,23 @@ export default {
       const name = this.name;
       const password = this.password;
       try {
+        // Backend akan otomatis set cookie 'token' dengan HttpOnly
+        // Browser akan otomatis menyimpan dan mengirim cookie ini
         const response = await this.$api.post("/api/user/login", {
           name,
           password,
         });
-        const token = response.data.accessToken;
-        if (token) {
-          const authToken = useCookie("accessToken");
-          authToken.value = token;
-        }
+
+        // Redirect berdasarkan status email
         if (!response.data.email) {
           await navigateTo("/admin/profile");
         } else {
           await navigateTo("/admin");
         }
       } catch (error) {
-        navigateTo("/login");
         console.error("Login failed:", error);
+        // Tampilkan error message ke user (bisa tambahkan alert/toast)
+        alert("Login gagal. Periksa username dan password Anda.");
       }
     },
   },

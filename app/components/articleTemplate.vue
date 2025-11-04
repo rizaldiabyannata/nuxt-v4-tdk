@@ -1,6 +1,6 @@
 <template>
   <div class="w-full max-w-4xl mx-auto flex flex-col items-center space-y-8">
-    <NuxtImg
+    <MinioImage
       crossorigin="anonymous"
       :src="image"
       alt=""
@@ -18,7 +18,12 @@
 </template>
 
 <script>
+import MinioImage from "./MinioImage.vue";
+
 export default {
+  components: {
+    MinioImage,
+  },
   props: {
     image: {
       type: String,

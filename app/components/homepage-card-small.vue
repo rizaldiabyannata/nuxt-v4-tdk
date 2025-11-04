@@ -4,13 +4,11 @@
     class="card bg-base-100 image-full w-full shadow-xl rounded-2xl transition-all duration-300"
   >
     <figure>
-      <NuxtImg
+      <MinioImage
         :src="imageUrl"
-        crossorigin="anonymous"
-        alt="Shoes"
-        class="object-cover aspect-square w-full h-48 sm:h-64 md:h-72 lg:h-80 rounded-t-2xl"
-        loading="lazy"
-        placeholder
+        alt="Portfolio Image"
+        img-class="object-cover aspect-square w-full h-48 sm:h-64 md:h-72 lg:h-80 rounded-t-2xl"
+        fallback="/img/card-placeholder.png"
       />
     </figure>
     <div class="card-body px-4 sm:px-6 gap-1 sm:gap-2">
@@ -32,7 +30,12 @@
 </template>
 
 <script>
+import MinioImage from "./MinioImage.vue";
+
 export default {
+  components: {
+    MinioImage,
+  },
   props: {
     title: {
       type: String,

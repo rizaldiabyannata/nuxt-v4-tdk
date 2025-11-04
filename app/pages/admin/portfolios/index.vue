@@ -79,7 +79,7 @@
             :isArchived="portfolio.isArchived"
             :isHighlighted="true"
             :loading-highlight="loadingHighlights"
-            :imageUrl="`http://localhost:5000${portfolio.coverImage}`"
+            :imageUrl="portfolio.coverImage"
             @unhighlight="deletePortHighlight"
             @edit="handleEdit"
             @archive="updatePortfolioStatus(portfolio.slug, 'archive')"
@@ -110,7 +110,7 @@
             :isArchived="portfolio.isArchived"
             :isHighlighted="false"
             :loading-highlight="loadingHighlights"
-            :imageUrl="`http://localhost:5000${portfolio.coverImage}`"
+            :imageUrl="portfolio.coverImage"
             @highlight="sendHighlight"
             @delete="deleteCard"
             @edit="handleEdit"
@@ -245,6 +245,8 @@
 </template>
 
 <script>
+import { getImageUrl } from "@/composables/useImage";
+
 definePageMeta({
   layout: "admin",
   middleware: "auth",
@@ -384,8 +386,7 @@ export default {
           description: dataToEdit.description,
           coverImage: null,
         };
-        const baseUrl = useRuntimeConfig().public.apiBaseUrl;
-        this.existingImageUrl = `${baseUrl}${dataToEdit.coverImage}`;
+        this.existingImageUrl = this.getImageUrl(dataToEdit.coverImage);
         this.tampilanAktif = "edit";
       } catch (error) {
         console.error("Failed to fetch portfolio for editing:", error);
@@ -537,6 +538,9 @@ export default {
           coverImage: coverImageUrl,
         },
       });
+    },
+    getImageUrl(url) {
+      return getImageUrl(url);
     },
   },
 };

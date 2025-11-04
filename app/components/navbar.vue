@@ -1,14 +1,17 @@
 <template>
   <nav
-    class="flex justify-between items-center w-full fixed z-30 px-4 sm:px-6 lg:px-8 py-4"
+    class="flex justify-between items-center w-full fixed z-30 px-4 sm:px-6 lg:px-8 py-4 bg-linear-to-b from-black/10 to-transparent"
   >
     <div>
       <NuxtLink to="/"
-        ><img class="h-8 md:h-10" src="/img/logotdk.png" alt="Logo"
+        ><img
+          class="h-8 md:h-10 drop-shadow-lg"
+          src="/img/logotdk.png"
+          alt="Logo"
       /></NuxtLink>
     </div>
     <div
-      class="hidden md:flex flex-row shadow-md rounded-full px-8 py-3 space-x-8 text-base bg-gray-300/40 backdrop-blur-md text-black font-medium"
+      class="hidden md:flex flex-row shadow-lg rounded-full px-8 py-3 space-x-8 text-base bg-white/80 backdrop-blur-lg text-black font-medium"
     >
       <NuxtLink
         activeClass="text-[#EB5523]"
@@ -51,7 +54,7 @@
     </div>
     <div class="md:hidden flex items-center justify-center z-40">
       <label
-        class="btn btn-ghost swap swap-rotate rounded-full bg-gray-400/50 backdrop-blur-md"
+        class="btn btn-ghost swap swap-rotate rounded-full bg-white/70 backdrop-blur-lg shadow-lg"
       >
         <input
           type="checkbox"

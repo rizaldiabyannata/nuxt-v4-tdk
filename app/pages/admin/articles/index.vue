@@ -76,7 +76,7 @@
             :content="article.content"
             :isHighlighted="true"
             :loading-highlight="loadingHighlights"
-            :imageUrl="`http://localhost:5000${article.coverImage}`"
+            :imageUrl="article.coverImage"
             @unhighlight="deleteArticleHighlight"
             @highlight="sendHighlight"
             @delete="deleteCard"
@@ -106,7 +106,7 @@
             :content="article.content"
             :isHighlighted="false"
             :loading-highlight="loadingHighlights"
-            :imageUrl="`http://localhost:5000${article.coverImage}`"
+            :imageUrl="article.coverImage"
             :author="article.author"
             @highlight="sendHighlight"
             @unhighlight="deleteArticleHighlight"
@@ -255,6 +255,8 @@
 </template>
 
 <script>
+import { getImageUrl } from "@/composables/useImage";
+
 definePageMeta({
   layout: "admin",
   middleware: "auth",
@@ -360,27 +362,27 @@ export default {
 
     async handleEdit(slug) {
       try {
-        // 1. Panggil API untuk mendapatkan detail portofolio
+        // 1. Panggil API untuk mendapatkan detail article
         const response = await this.$api.get(`/api/blogs/${slug}`);
         console.log(`Ini adalah isi dari get by ${slug}`, response.data);
         const dataToEdit = response.data;
         console.log("data To Edit: ", dataToEdit);
 
-        // 2. Isi object 'portfolio' dengan data yang didapat
+        // 2. Isi object 'article' dengan data yang didapat
         this.article = {
-          // _id: dataToEdit._id,
           slug: dataToEdit.data.slug,
           title: dataToEdit.data.title,
           content: dataToEdit.data.content,
           coverImage: null, // Reset gambar, biarkan user upload baru jika ingin ganti
         };
-        this.existingImageUrl = `http://localhost:5000${dataToEdit.data.coverImage}`;
+
+        // Use helper function untuk normalize URL
+        this.existingImageUrl = this.getImageUrl(dataToEdit.data.coverImage);
         console.log("image to edit: ", this.article.coverImage);
         console.log("data terkini: ", this.article);
+
         // 3. Ubah tampilan ke form edit
         this.tampilanAktif = "edit";
-
-        // console.log("Siap untuk mengedit:", this.article.shortDescription);
       } catch (error) {
         console.error("Gagal mengambil data untuk diedit:", error);
       }
@@ -497,6 +499,9 @@ export default {
         // 4. Beri notifikasi error ke pengguna
         this.$toast?.error?.("Gagal menghapus highlight.");
       }
+    },
+    getImageUrl(url) {
+      return getImageUrl(url);
     },
   },
 

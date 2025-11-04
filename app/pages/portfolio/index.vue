@@ -1,7 +1,7 @@
 <template>
   <div
     ref="heroSection"
-    class="relative h-[50vh] lg:h-[60vh] flex flex-col justify-center items-center text-white px-4 sm:px-8"
+    class="relative h-[50vh] lg:h-[60vh] flex flex-col justify-center items-center text-white px-4 sm:px-8 pt-16 md:pt-0"
   >
     <div
       class="absolute inset-0 bg-[url('/img/sample/sample-4.jpeg')] bg-cover bg-center brightness-50 -z-10"
@@ -68,30 +68,30 @@
   <div
     id="portfolio-section"
     ref="allProjectsSection"
-    class="max-w-screen min-h-screen flex flex-col justify-center items-center px-4 py-16 sm:px-8 sm:py-24 bg-slate-100"
+    class="max-w-screen min-h-screen flex flex-col justify-center items-center px-4 py-16 sm:px-8 sm:py-24 bg-gray-50"
   >
-    <div class="flex flex-col w-full max-w-6xl text-center">
+    <div class="flex flex-col w-full max-w-6xl text-center mb-12">
       <p class="text-lg font-semibold text-gray-600">Our Portfolio</p>
       <h1 class="text-4xl md:text-5xl font-bold text-[#EB5523] mt-2">
         All Projects
       </h1>
     </div>
     <div
-      class="flex flex-col lg:flex-row w-full max-w-6xl mt-12 justify-center items-center"
+      class="flex flex-col lg:flex-row w-full max-w-6xl justify-center items-center"
     >
       <div
         v-if="portfoliosPending"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 w-full"
       >
         <SkeletonPortfolioCardSkeleton v-for="i in pageSize" :key="i" />
       </div>
       <div
         v-else
         ref="portfolioGrid"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 w-full"
       >
         <portfolio-card
-          class="h-5/6"
+          class="transition-transform duration-200 hover:scale-105"
           v-for="portfolio in portfoliosList"
           :key="portfolio._id"
           :title="portfolio.title"
@@ -186,8 +186,6 @@ export default {
   },
   setup() {
     const { $api } = useNuxtApp();
-    const config = useRuntimeConfig();
-    const baseUrl = config.public.apiBaseUrl;
 
     const currentPage = ref(1);
     const pageSize = 6;
@@ -210,10 +208,7 @@ export default {
       {
         transform(input) {
           if (!input) return [];
-          return input.map((portfolio) => ({
-            ...portfolio,
-            coverImage: baseUrl + portfolio.coverImage,
-          }));
+          return input;
         },
         default: () => [],
       }
@@ -239,10 +234,7 @@ export default {
         transform(input) {
           if (!input) return { data: [], pagination: { totalPages: 1 } };
           return {
-            data: input.data.map((portfolio) => ({
-              ...portfolio,
-              coverImage: baseUrl + portfolio.coverImage,
-            })),
+            data: input.data,
             pagination: input.pagination,
           };
         },
