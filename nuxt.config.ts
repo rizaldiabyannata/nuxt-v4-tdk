@@ -17,7 +17,8 @@ export default defineNuxtConfig({
     strict: false,
   },
   plugins:[
-    '~/plugins/api'
+    '~/plugins/api',
+    '~/plugins/imageUrl'
   ],
   vite: {
     plugins: [

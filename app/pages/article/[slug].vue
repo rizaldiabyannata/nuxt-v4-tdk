@@ -25,9 +25,8 @@
       class="w-full flex flex-col lg:flex-row bg-white px-4 py-16 sm:px-8 sm:py-24"
     >
       <articleTemplate
-        :firstParagraph="blog.summary"
         :image="blog.coverImage"
-        :secondParagraph="blog.description"
+        :secondParagraph="blog.content"
       />
     </div>
   </div>
@@ -60,6 +59,7 @@ export default {
       async () => {
         try {
           const response = await $api.get(`/api/blogs/${slug}`);
+          console.log(`✅ Berhasil mengambil data blog untuk slug: ${slug}`, response.data.data);
           return response.data.data;
         } catch (err) {
           console.error(`Gagal mengambil data blog untuk slug: ${slug}`, err);

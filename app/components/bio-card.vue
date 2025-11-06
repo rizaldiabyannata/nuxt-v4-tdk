@@ -1,9 +1,9 @@
 <template>
   <div
     ref="card"
-    class="flex flex-row xl:w-110 w-140 bg-slate-800 justify-center items-center px-4 h-72 shadow-xl shadow-gray-400 rounded-xl transition-all duration-300"
+    class="flex flex-col sm:flex-row w-full bg-slate-800 justify-center items-center px-3 py-4 sm:px-4 sm:py-3 md:px-6 md:py-4 min-h-fit shadow-xl shadow-gray-400 rounded-xl transition-all duration-300 gap-3 sm:gap-4"
   >
-    <div class="w-44 h-44 rounded-md">
+    <div class="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 flex-shrink-0 rounded-md">
       <NuxtImg
         src="/img/Alireza.jpg"
         class="w-full h-full object-cover rounded-md"
@@ -12,18 +12,18 @@
         placeholder
       />
     </div>
-    <div class="flex flex-col justify-center w-full h-full pl-4 text-white">
-      <h1 class="text-[#EB5523] font-semibold text-2xl">William George</h1>
-      <p>Chief Administrator</p>
-      <hr class="text-white w-24 mt-2" />
-      <p class="text-justify pt-4">
+    <div class="flex flex-col justify-center w-full text-white min-w-0">
+      <h1 class="text-[#EB5523] font-semibold text-base sm:text-lg md:text-xl">William George</h1>
+      <p class="text-xs sm:text-sm md:text-base">Chief Administrator</p>
+      <hr class="text-white w-20 sm:w-24 mt-2" />
+      <p class="text-justify pt-3 text-xs sm:text-xs md:text-sm line-clamp-2 sm:line-clamp-3 md:line-clamp-none">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis facere
         rerum soluta ipsa, beatae voluptatibus expedita quibusdam voluptas neque
         laborum.
       </p>
-      <div class="flex flex-row space-x-4 pt-2">
+      <div class="flex flex-row space-x-2 sm:space-x-3 pt-2">
         <div
-          class="w-8 h-8 bg-slate-600 rounded-full flex items-center justify-center"
+          class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 bg-slate-600 rounded-full flex items-center justify-center hover:bg-[#EB5523] transition-colors cursor-pointer"
         >
           <svg
             width="11"
@@ -40,7 +40,7 @@
         </div>
 
         <div
-          class="w-8 h-8 bg-slate-600 rounded-full flex items-center justify-center"
+          class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 bg-slate-600 rounded-full flex items-center justify-center hover:bg-[#EB5523] transition-colors cursor-pointer"
         >
           <svg
             width="24"
@@ -56,7 +56,7 @@
           </svg>
         </div>
         <div
-          class="w-8 h-8 bg-slate-600 rounded-full flex items-center justify-center"
+          class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 bg-slate-600 rounded-full flex items-center justify-center hover:bg-[#EB5523] transition-colors cursor-pointer"
         >
           <svg
             width="18"
@@ -85,7 +85,7 @@
           </svg>
         </div>
         <div
-          class="w-8 h-8 bg-slate-600 rounded-full flex items-center justify-center"
+          class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 bg-slate-600 rounded-full flex items-center justify-center hover:bg-[#EB5523] transition-colors cursor-pointer"
         >
           <svg
             width="20"
@@ -146,14 +146,16 @@ const props = defineProps({
 });
 const card = ref(null);
 onMounted(() => {
-  const tl = gsap.timeline({ paused: true });
-  tl.to(card.value, {
-    scale: 1.05,
-    boxShadow: "0px 10px 20px rgba(0,0,0,0.1)",
-    duration: 0.3,
-    ease: "power2.out",
-  });
-  card.value.addEventListener("mouseenter", () => tl.play());
-  card.value.addEventListener("mouseleave", () => tl.reverse());
+  if (card.value) {
+    const tl = gsap.timeline({ paused: true });
+    tl.to(card.value, {
+      scale: 1.05,
+      boxShadow: "0px 10px 20px rgba(0,0,0,0.1)",
+      duration: 0.3,
+      ease: "power2.out",
+    });
+    card.value.addEventListener("mouseenter", () => tl.play());
+    card.value.addEventListener("mouseleave", () => tl.reverse());
+  }
 });
 </script>

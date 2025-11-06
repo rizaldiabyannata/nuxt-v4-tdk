@@ -17,19 +17,30 @@ export function getImageUrl(imageUrl) {
     return "/img/placeholder.png"; // Fallback placeholder
   }
 
-  // Jika sudah full URL (http/https), return as-is
+  const config = useRuntimeConfig();
+  const minioPublicUrl = config.public.minioPublicUrl || "http://localhost:9004";
+
+  // Jika sudah full URL (http/https)
   if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
+    // Jika URL berisi localhost:9004, replace dengan MINIO_PUBLIC_URL dari env
+    if (imageUrl.includes("localhost:9004")) {
+      const path = imageUrl.replace(/https?:\/\/localhost:9004/, "");
+      return `${minioPublicUrl}${path}`;
+    }
+    
+    // Jika URL berisi 127.0.0.1:9004, replace dengan MINIO_PUBLIC_URL dari env
+    if (imageUrl.includes("127.0.0.1:9004")) {
+      const path = imageUrl.replace(/https?:\/\/127\.0\.0\.1:9004/, "");
+      return `${minioPublicUrl}${path}`;
+    }
+    
+    // Jika URL sudah menggunakan domain/IP yang benar, return as-is
     return imageUrl;
   }
 
-  // Jika relative path, gabungkan dengan base URL
-  // Backend masih serve dari /uploads untuk backward compatibility
-  const config = useRuntimeConfig();
-  const baseUrl = config.public.apiBaseUrl || "http://localhost:5000";
-
-  // Pastikan tidak double slash
+  // Jika relative path, gunakan MINIO_PUBLIC_URL
   const cleanPath = imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`;
-  return `${baseUrl}${cleanPath}`;
+  return `${minioPublicUrl}${cleanPath}`;
 }
 
 /**

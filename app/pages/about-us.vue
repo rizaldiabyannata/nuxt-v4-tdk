@@ -9,11 +9,10 @@
 
     <div class="relative space-y-2 lg:w-1/2 flex flex-col items-center p-4">
       <h1 class="font-extrabold text-3xl lg:text-4xl text-center text-white">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        Building Trust, Shaping the Future
       </h1>
       <p class="text-lg lg:text-xl text-center text-white">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus ab
-        magni explicabo quibusdam architecto tenetur?
+        Our team of professionals brings vision and value to every project we undertake.
       </p>
       <NuxtLink
         to="/our-services"
@@ -283,43 +282,177 @@
         </div>
       </div>
     </div>
-    <div class="grid grid-cols-3 items-center gap-12 mt-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 w-full px-4 sm:px-6 lg:px-8 mt-12">
       <bio-card />
       <bio-card />
       <bio-card />
     </div>
 
-    <!-- <div class="flex justify-center mb-12">
-      <BioCard
-        v-if="mainDirector"
-        :name="mainDirector.name"
-        :title="mainDirector.title"
-        :image="mainDirector.image"
-      />
-      <p v-else>Direktur utama tidak ditemukan.</p>
+  </div>
+  <div
+    ref="legalitySection"
+    class="flex flex-col w-full min-h-screen bg-gray-50 justify-center items-center py-16 sm:py-24 px-4 sm:px-8"
+  >
+    <div class="flex flex-col w-full max-w-4xl space-y-12">
+      <div class="flex flex-col space-y-2 justify-center items-center">
+        <h1 class="text-3xl lg:text-5xl font-bold text-[#EB5523]">
+          Legalitas Perusahaan
+        </h1>
+        <p class="text-lg text-center text-gray-600 mt-4">
+          Dokumen resmi yang menandakan status dan kepercayaan perusahaan kami
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        <!-- Card 1: SIUJK -->
+        <div
+          class="flex flex-col bg-white rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 p-6 sm:p-8 space-y-4 border border-gray-200"
+        >
+          <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-[#EB5523] rounded-lg flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="white"
+              >
+                <path
+                  d="M440-80q-17 0-28.5-11.5T400-120v-206q-37-7-61.5-32t-24.5-65q0-44 31-74t75-30q44 0 75 30t31 74q0 40-24.5 65T560-326v206q0 17-11.5 28.5T520-80h-80Zm40-280q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-120Z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-gray-800">SIUJK</h3>
+              <p class="text-sm text-gray-500">Surat Izin Usaha Jasa Konstruksi</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-gray-700 font-semibold">No. SIUJK:</p>
+            <p class="text-lg text-[#EB5523] font-bold">2020001-0115-0603-1055-358</p>
+            <p class="text-sm text-gray-600 mt-2">
+              Dikeluarkan oleh Lalu Sriwibawa, S.H.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-gray-200">
+            <p class="text-xs text-gray-500">
+              <span class="font-semibold">Tanggal Berlaku:</span> 24 Juli 1998
+            </p>
+          </div>
+        </div>
+
+        <!-- Card 2: No Surat Izin/SBU RK001 -->
+        <div
+          class="flex flex-col bg-white rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 p-6 sm:p-8 space-y-4 border border-gray-200"
+        >
+          <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-[#EB5523] rounded-lg flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="white"
+              >
+                <path
+                  d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm40-80h480v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80Z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-gray-800">Surat Izin/SBU</h3>
+              <p class="text-sm text-gray-500">RK001</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-gray-700 font-semibold">No Surat Izin/SBU:</p>
+            <p class="text-lg text-[#EB5523] font-bold">812011621170000002</p>
+            <p class="text-sm text-gray-600 mt-2">
+              Nomor registrasi untuk klasifikasi RK001
+            </p>
+          </div>
+          <div class="pt-4 border-t border-gray-200">
+            <p class="text-xs text-gray-500">
+              <span class="font-semibold">Status:</span> Aktif dan Terdaftar
+            </p>
+          </div>
+        </div>
+
+        <!-- Card 3: No Surat Izin/SBU RK002 -->
+        <div
+          class="flex flex-col bg-white rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 p-6 sm:p-8 space-y-4 border border-gray-200"
+        >
+          <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-[#EB5523] rounded-lg flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="white"
+              >
+                <path
+                  d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm280-170q83 0 141.5-58.5T680-570q0-83-58.5-141.5T480-770q-83 0-141.5 58.5T280-570q0 83 58.5 141.5T480-370Zm0-60q-58 0-99-41t-41-99q0-58 41-99t99-41q58 0 99 41t41 99q0 58-41 99t-99 41Z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-gray-800">Surat Izin/SBU</h3>
+              <p class="text-sm text-gray-500">RK002</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-gray-700 font-semibold">No Surat Izin/SBU:</p>
+            <p class="text-lg text-[#EB5523] font-bold">812011621170000001</p>
+            <p class="text-sm text-gray-600 mt-2">
+              Nomor registrasi untuk klasifikasi RK002
+            </p>
+          </div>
+          <div class="pt-4 border-t border-gray-200">
+            <p class="text-xs text-gray-500">
+              <span class="font-semibold">Status:</span> Aktif dan Terdaftar
+            </p>
+          </div>
+        </div>
+
+        <!-- Card 4: No Surat Izin/SBU RK003 -->
+        <div
+          class="flex flex-col bg-white rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 p-6 sm:p-8 space-y-4 border border-gray-200"
+        >
+          <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-[#EB5523] rounded-lg flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="white"
+              >
+                <path
+                  d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-gray-800">Surat Izin/SBU</h3>
+              <p class="text-sm text-gray-500">RK003</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-gray-700 font-semibold">No Surat Izin/SBU:</p>
+            <p class="text-lg text-[#EB5523] font-bold">812011621170010003</p>
+            <p class="text-sm text-gray-600 mt-2">
+              Nomor registrasi untuk klasifikasi RK003
+            </p>
+          </div>
+          <div class="pt-4 border-t border-gray-200">
+            <p class="text-xs text-gray-500">
+              <span class="font-semibold">Status:</span> Aktif dan Terdaftar
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div class="flex flex-col space-y-2 xl:flex-row mb-12 max-w-screen px-2 space-x-2">
-      <BioCard
-        v-for="member in otherDirectors"
-        :key="member.id"
-        :name="member.name"
-        :title="member.title"
-        :image="member.image"
-       class=""/>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-8 mb-12">
-      <BioCard
-        v-for="member in generalManagement"
-        :key="member.id"
-        :name="member.name"
-        :title="member.title"
-        :image="member.image"
-      />
-    </div> -->
-
-    <div class="flex flex-row w-full"></div>
   </div>
 </template>
 
@@ -438,6 +571,17 @@ export default {
         animateOnScroll(managementSection.children[2], { delay: 0.2 }); // Director's bio
         const bioCards = managementSection.querySelectorAll(".grid > div");
         bioCards.forEach((card, index) => {
+          animateOnScroll(card, { delay: index * 0.15 });
+        });
+      }
+
+      // Legality Section
+      const legalitySection = this.$refs.legalitySection;
+      if (legalitySection) {
+        animateOnScroll(legalitySection.querySelector("h1"));
+        animateOnScroll(legalitySection.querySelector("p"));
+        const legalityCards = legalitySection.querySelectorAll(".grid > div");
+        legalityCards.forEach((card, index) => {
           animateOnScroll(card, { delay: index * 0.15 });
         });
       }

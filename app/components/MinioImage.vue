@@ -35,9 +35,9 @@ const emit = defineEmits(["load", "error"]);
 
 // Get runtime config in component context
 const config = useRuntimeConfig();
-const baseUrl = config.public.apiBaseUrl || "http://localhost:5000";
-const minioProxyMode = config.public.minioProxyMode || "backend"; // 'backend' or 'direct'
+const minioProxyMode = config.public.minioProxyMode || "direct"; // 'backend' or 'direct'
 const minioPublicUrl = config.public.minioPublicUrl || "http://localhost:9004";
+const baseUrl = config.public.apiBaseUrl || "http://localhost:5000";
 
 console.log("⚙️ MinIO Config:", {
   mode: minioProxyMode,
@@ -58,6 +58,22 @@ const normalizedSrc = computed(() => {
 
   // Jika sudah full URL (http/https)
   if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
+    // Handle localhost:9004 - replace dengan MINIO_PUBLIC_URL dari env
+    if (imageUrl.includes("localhost:9004")) {
+      const path = imageUrl.replace(/https?:\/\/localhost:9004/, "");
+      const transformedUrl = `${minioPublicUrl}${path}`;
+      console.log("🔄 localhost:9004 replaced with:", transformedUrl);
+      return transformedUrl;
+    }
+
+    // Handle 127.0.0.1:9004 - replace dengan MINIO_PUBLIC_URL dari env
+    if (imageUrl.includes("127.0.0.1:9004")) {
+      const path = imageUrl.replace(/https?:\/\/127\.0\.0\.1:9004/, "");
+      const transformedUrl = `${minioPublicUrl}${path}`;
+      console.log("🔄 127.0.0.1:9004 replaced with:", transformedUrl);
+      return transformedUrl;
+    }
+
     // Check if it's internal MinIO hostname that needs URL transformation
     if (imageUrl.includes("minio:9000") || imageUrl.includes("minio:")) {
       if (minioProxyMode === "backend") {
@@ -81,9 +97,9 @@ const normalizedSrc = computed(() => {
     return imageUrl;
   }
 
-  // Jika relative path, gabungkan dengan base URL
+  // Jika relative path, gunakan MINIO_PUBLIC_URL
   const cleanPath = imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`;
-  const fullUrl = `${baseUrl}${cleanPath}`;
+  const fullUrl = `${minioPublicUrl}${cleanPath}`;
   console.log("🔗 Relative path converted to:", fullUrl);
   return fullUrl;
 });

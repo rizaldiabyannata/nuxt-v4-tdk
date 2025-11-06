@@ -50,11 +50,10 @@
         class="flex flex-col w-full max-w-xl sm:w-4/5 md:w-3/5 lg:w-2/5 justify-center items-center text-center py-16"
       >
         <h1 class="font-bold text-3xl md:text-4xl lg:text-5xl text-white mb-4">
-          Temukan Solusi Proyek Terbaik Bersama Kami
+          Discover the Best Project Solutions With Us
         </h1>
         <p class="mt-2 text-base lg:text-lg text-white mb-6">
-          Kami siap membantu Anda mewujudkan proyek impian. Hubungi tim kami
-          untuk konsultasi gratis dan penawaran terbaik!
+          We are ready to help you realize your dream project. Contact our team for free consultation and the best offer!
         </p>
         <NuxtLink
           to="/contact"
@@ -72,7 +71,7 @@
               fill="white"
             />
           </svg>
-          <p class="font-semibold drop-shadow">Hubungi Kami</p>
+          <p class="font-semibold drop-shadow">Contact Us</p>
         </NuxtLink>
       </div>
     </div>
@@ -84,11 +83,9 @@
     <div
       class="flex flex-col bg-[url(/img/grafisbg.png)] bg-cover bg-no-repeat w-full max-w-3xl lg:max-w-4xl aspect-video sm:aspect-auto sm:min-h-[400px] md:min-h-[500px] rounded-2xl lg:rounded-3xl text-white p-8 sm:p-12 space-y-3 sm:space-y-4 justify-center"
     >
-      <p class="font-bold text-3xl md:text-4xl">Visi Kami</p>
+      <p class="font-bold text-3xl md:text-4xl">Our Vision</p>
       <p class="mt-4 text-lg md:text-xl">
-        Menjadi pemimpin terpercaya dalam perencanaan dan supervisi proyek,
-        menciptakan solusi berkelanjutan dan inovatif yang berkontribusi pada
-        pembangunan infrastruktur dan kemajuan masyarakat.
+        To be a trusted leader in project planning and supervision, creating sustainable and innovative solutions that contribute to infrastructure development and community progress.
       </p>
       <NuxtLink
         to="about-us"
@@ -121,7 +118,7 @@
             Our Portfolio
           </h1>
           <p class="w-full font-bold text-[#EB5523] text-4xl md:text-5xl mt-2">
-            Proyek Berkualitas, Hasil Nyata
+            Quality Projects, Real Results
           </p>
         </div>
         <div class="flex w-full items-end justify-end">
@@ -188,6 +185,86 @@
       </div>
       <div v-else class="text-center py-16">
         <p class="text-gray-500 text-lg">No portfolios to show.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Why Us Section -->
+  <div
+    class="flex flex-col min-h-screen bg-[#EB5523] justify-center items-center px-4 py-16 sm:px-8 sm:py-24"
+  >
+    <div class="flex flex-col w-full max-w-5xl justify-center items-center">
+      <div
+        class="flex flex-col w-full justify-center items-center text-center mb-16"
+      >
+        <h1 class="text-white text-3xl md:text-4xl font-bold">
+          Why Choose Us?
+        </h1>
+        <p class="text-white text-lg md:text-xl mt-4 max-w-2xl">
+          We provide comprehensive expertise and professional service for your project success
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 w-full">
+        <!-- Card 1 -->
+        <div
+          class="flex flex-col items-start space-y-4 bg-white/10 backdrop-blur-sm rounded-2xl p-8 hover:bg-white/20 transition-all duration-300"
+        >
+          <div class="flex items-center space-x-4">
+            <div class="shrink-0">
+              <div class="text-5xl font-bold text-white">1</div>
+            </div>
+            <h3 class="text-2xl font-bold text-white">Expert Team</h3>
+          </div>
+          <p class="text-white text-base leading-relaxed">
+            Professional team with extensive experience bringing experience and expertise to every project.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div
+          class="flex flex-col items-start space-y-4 bg-white/10 backdrop-blur-sm rounded-2xl p-8 hover:bg-white/20 transition-all duration-300"
+        >
+          <div class="flex items-center space-x-4">
+            <div class="shrink-0">
+              <div class="text-5xl font-bold text-white">2</div>
+            </div>
+            <h3 class="text-2xl font-bold text-white">Client-Focused Approach</h3>
+          </div>
+          <p class="text-white text-base leading-relaxed">
+            We prioritize client satisfaction by providing tailored solutions designed to meet specific needs.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div
+          class="flex flex-col items-start space-y-4 bg-white/10 backdrop-blur-sm rounded-2xl p-8 hover:bg-white/20 transition-all duration-300"
+        >
+          <div class="flex items-center space-x-4">
+            <div class="shrink-0">
+              <div class="text-5xl font-bold text-white">3</div>
+            </div>
+            <h3 class="text-2xl font-bold text-white">Quality Commitment</h3>
+          </div>
+          <p class="text-white text-base leading-relaxed">
+            We maintain high standards of quality to deliver exceptional results that exceed expectations.
+          </p>
+        </div>
+
+        <!-- Card 4 -->
+        <div
+          class="flex flex-col items-start space-y-4 bg-white/10 backdrop-blur-sm rounded-2xl p-8 hover:bg-white/20 transition-all duration-300"
+        >
+          <div class="flex items-center space-x-4">
+            <div class="shrink-0">
+              <div class="text-5xl font-bold text-white">4</div>
+            </div>
+            <h3 class="text-2xl font-bold text-white">Innovative Solutions</h3>
+          </div>
+          <p class="text-white text-base leading-relaxed">
+            We adopt cutting-edge technology and modern practices prioritizing quality, safety, and environmental sustainability.
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -347,8 +424,7 @@
     >
       <h1 class="text-4xl font-bold text-black">Contact Us</h1>
       <p class="text-black mt-4 text-lg">
-        Hubungi kami untuk konsultasi dan solusi terbaik untuk proyek Anda. Tim
-        profesional kami siap membantu mewujudkan visi Anda.
+        Contact us for consultation and the best solutions for your project. Our professional team is ready to help you realize your vision.
       </p>
       <form class="mt-8 space-y-6">
         <div>
