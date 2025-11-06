@@ -7,20 +7,20 @@
       class="absolute inset-0 bg-[url('/img/sample/aboutus.png')] bg-cover bg-center brightness-50 -z-10"
     ></div>
 
-    <div class="relative space-y-2 lg:w-1/2 flex flex-col items-center p-4">
-      <h1 class="font-extrabold text-3xl lg:text-4xl text-center text-white">
+    <div class="relative space-y-2 lg:w-1/2 w-11/12 flex flex-col items-center p-4 sm:p-6">
+      <h1 class="font-extrabold text-2xl sm:text-3xl lg:text-4xl text-center text-white">
         Building Trust, Shaping the Future
       </h1>
-      <p class="text-lg lg:text-xl text-center text-white">
+      <p class="text-base sm:text-lg lg:text-xl text-center text-white">
         Our team of professionals brings vision and value to every project we undertake.
       </p>
       <NuxtLink
         to="/our-services"
-        class="group flex flex-row w-fit border-white border rounded-full px-4 py-2 mt-8 text-sm items-center space-x-2 hover:bg-white transition-colors"
+        class="group flex flex-row w-fit border-white border rounded-full px-3 sm:px-4 py-2 mt-6 sm:mt-8 text-xs sm:text-sm items-center space-x-2 hover:bg-white transition-colors"
       >
         <svg
-          width="19"
-          height="19"
+          width="16"
+          height="16"
           viewBox="0 0 19 19"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -38,14 +38,14 @@
   </div>
 
   <div
-    class="max-w-screen min-h-screen flex flex-col justify-center px-4 py-16 sm:px-8 sm:py-24 text-justify space-y-12"
+    class="max-w-screen min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-8 py-12 sm:py-16 md:py-24 text-justify space-y-8 sm:space-y-12"
   >
     <div
       ref="visionSection"
-      class="flex flex-col w-full space-y-2 justify-center items-center space-y-12 lg:px-24"
+      class="flex flex-col w-full justify-center items-center space-y-8 sm:space-y-12 lg:px-24"
     >
-      <h1 class="text-3xl lg:text-5xl font-bold text-[#EB5523]">Our Vision</h1>
-      <p class="text-2xl text-center font-bold">
+      <h1 class="text-2xl sm:text-3xl lg:text-5xl font-bold text-[#EB5523]">Our Vision</h1>
+      <p class="text-lg sm:text-xl lg:text-2xl text-center font-bold">
         Menjadi pemimpin terpercaya dalam perencanaan dan supervisi proyek,
         menciptakan solusi berkelanjutan dan inovatif yang berkontribusi pada
         pembangunan infrastruktur dan kemajuan masyarakat.
@@ -54,23 +54,23 @@
     <hr />
     <div
       ref="missionSection"
-      class="flex flex-col w-full space-y-2 jutify-center items-center space-y-12"
+      class="flex flex-col w-full justify-center items-center space-y-8 sm:space-y-12"
     >
-      <h1 class="text-3xl lg:text-5xl font-bold text-[#EB5523]">Our Mission</h1>
+      <h1 class="text-2xl sm:text-3xl lg:text-5xl font-bold text-[#EB5523]">Our Mission</h1>
       <div
-        class="grid grid-cols-2 lg:grid-cols-4 gap-12 justify-center items-center mb-8"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 justify-center items-stretch mb-8"
       >
         <div
-          class="flex flex-col w-72 h-96 bg-gray-300 mb-4 rounded-2xl shadow-lg shadow-gray-400 pt-12 space-y-6 items-center px-8"
+          class="flex flex-col w-full bg-gray-300 rounded-xl shadow-md hover:shadow-lg transition-shadow p-6 space-y-4 items-center"
         >
           <div
-            class="w-32 h-32 bg-[#EB5523] rounded-full justify-center items-center flex"
+            class="w-20 h-20 bg-[#EB5523] rounded-full justify-center items-center flex"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              height="72px"
+              height="48px"
               viewBox="0 -960 960 960"
-              width="72px"
+              width="48px"
               fill="#e3e3e3"
             >
               <path
@@ -78,22 +78,22 @@
               />
             </svg>
           </div>
-          <p class="text-center font-semibold">
+          <p class="text-center text-sm sm:text-base font-semibold">
             Memberikan layanan perencanaan dan supervisi terbaik untuk proyek
             gedung, jalan, jembatan, dan sumber daya air.
           </p>
         </div>
         <div
-          class="flex flex-col w-72 h-96 bg-gray-300 mb-4 rounded-2xl shadow-lg shadow-gray-400 pt-12 space-y-6 items-center px-8 px-8"
+          class="flex flex-col w-full bg-gray-300 rounded-xl shadow-md hover:shadow-lg transition-shadow p-6 space-y-4 items-center"
         >
           <div
-            class="w-32 h-32 bg-[#EB5523] rounded-full justify-center items-center flex"
+            class="w-20 h-20 bg-[#EB5523] rounded-full justify-center items-center flex"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              height="72px"
+              height="48px"
               viewBox="0 -960 960 960"
-              width="72px"
+              width="48px"
               fill="#e3e3e3"
             >
               <path
@@ -101,22 +101,22 @@
               />
             </svg>
           </div>
-          <p class="text-center font-semibold">
+          <p class="text-center text-sm sm:text-base font-semibold">
             Memastikan manajemen konstruksi yang efisien dan memenuhi ekspektasi
             klien.
           </p>
         </div>
         <div
-          class="flex flex-col w-72 h-96 bg-gray-300 mb-4 rounded-2xl shadow-lg shadow-gray-400 pt-12 space-y-6 items-center px-8 px-8"
+          class="flex flex-col w-full bg-gray-300 rounded-xl shadow-md hover:shadow-lg transition-shadow p-6 space-y-4 items-center"
         >
           <div
-            class="w-32 h-32 bg-[#EB5523] rounded-full justify-center items-center flex"
+            class="w-20 h-20 bg-[#EB5523] rounded-full justify-center items-center flex"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              height="72px"
+              height="48px"
               viewBox="0 -960 960 960"
-              width="72px"
+              width="48px"
               fill="#e3e3e3"
             >
               <path
@@ -124,22 +124,22 @@
               />
             </svg>
           </div>
-          <p class="text-center font-semibold">
+          <p class="text-center text-sm sm:text-base font-semibold">
             Mengadopsi teknologi dan praktik inovatif yang memprioritaskan
             kualitas, keselamatan, dan keberlanjutan lingkungan.
           </p>
         </div>
         <div
-          class="flex flex-col w-72 h-96 bg-gray-300 mb-4 rounded-2xl shadow-lg shadow-gray-400 pt-12 space-y-6 items-center px-8"
+          class="flex flex-col w-full bg-gray-300 rounded-xl shadow-md hover:shadow-lg transition-shadow p-6 space-y-4 items-center"
         >
           <div
-            class="w-32 h-32 bg-[#EB5523] rounded-full justify-center items-center flex"
+            class="w-20 h-20 bg-[#EB5523] rounded-full justify-center items-center flex"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              height="72px"
+              height="48px"
               viewBox="0 -960 960 960"
-              width="72px"
+              width="48px"
               fill="#e3e3e3"
             >
               <path
@@ -147,7 +147,7 @@
               />
             </svg>
           </div>
-          <p class="text-center font-semibold">
+          <p class="text-center text-sm sm:text-base font-semibold">
             Membangun kemitraan jangka panjang yang didasarkan pada kepercayaan
             dan profesionalisme.
           </p>
@@ -167,20 +167,31 @@
   >
     <h1 class="text-3xl text-[#EB5523] font-bold">Struktur Manajemen</h1>
     <h2 class="text-2xl text-[#EB5523] font-semibold mb-8">Direktur Utama</h2>
-    <div class="flex flex-row w-180 h-fit pt-6">
+    <div class="flex flex-col lg:flex-row w-full items-center px-6 lg:w-180 h-fit pt-6 gap-0">
+      <!-- Image untuk Desktop (outside card) -->
       <NuxtImg
         src="/img/Alireza.jpg"
         alt="Alireza"
-        class="w-64 h-auto object-cover shadow-lg shadow-gray-400 rounded-lg"
+        class="hidden lg:block lg:w-64 h-auto object-cover shadow-lg shadow-gray-400 rounded-lg"
         loading="lazy"
         placeholder
       />
       <div
-        class="flex flex-col bg-white h-auto w-full my-4 shadow-lg shadow-gray-400 p-8 justify-center space-y-4 rounded-r-lg"
+        class="flex flex-col bg-white h-auto w-full my-2 lg:my-4 shadow-lg shadow-gray-400 p-8 justify-center space-y-4 rounded-xl lg:rounded-r-lg lg:rounded-l-none overflow-hidden"
       >
-        <h1 class="text-black font-bold text-2xl">Firman</h1>
-        <h2 class="text-black font-semibold text-xl">Direktur Utama</h2>
-        <p class="text-black text-justify mt-4">
+        <!-- Image untuk Mobile (inside card) -->
+        <div class="flex justify-center lg:hidden -mx-8 -mt-8 mb-4 pt-4">
+          <NuxtImg
+            src="/img/Alireza.jpg"
+            alt="Alireza"
+            class="w-full max-w-[240px] h-auto aspect-square object-cover rounded-lg"
+            loading="lazy"
+            placeholder
+          />
+        </div>
+        <h1 class="text-black font-bold text-lg lg:text-2xl">Firman</h1>
+        <h2 class="text-black font-semibold text-md lg:text-xl">Direktur Utama</h2>
+        <p class="text-black text-xs lg:text-base text-justify lg:mt-4">
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecati,
           sapiente ea ab minima quae alias odio velit labore, mollitia
           cupiditate delectus, molestias nobis eius? Quis rem nobis,
@@ -282,10 +293,14 @@
         </div>
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 w-full px-4 sm:px-6 lg:px-8 mt-12">
-      <bio-card />
-      <bio-card />
-      <bio-card />
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 w-full px-8 lg:px-8 mt-12">
+      <bio-card
+        v-for="director in otherDirectors"
+        :key="director.name"
+        :name="director.name"
+        :title="director.title"
+        :image="director.image"
+      />
     </div>
 
   </div>
@@ -295,10 +310,10 @@
   >
     <div class="flex flex-col w-full max-w-4xl space-y-12">
       <div class="flex flex-col space-y-2 justify-center items-center">
-        <h1 class="text-3xl lg:text-5xl font-bold text-[#EB5523]">
+        <h1 class="text-2xl sm:text-3xl lg:text-5xl font-bold text-[#EB5523]">
           Legalitas Perusahaan
         </h1>
-        <p class="text-lg text-center text-gray-600 mt-4">
+        <p class="text-sm sm:text-base lg:text-lg text-center text-gray-600 mt-4">
           Dokumen resmi yang menandakan status dan kepercayaan perusahaan kami
         </p>
       </div>
@@ -468,51 +483,57 @@ export default {
       managementTeam: [
         {
           level: 1,
-          name: "John Doe",
+          name: "Andi Firman, ST.",
           title: "Direktur Utama",
-          image: "/img/bioprofile.png",
+          image: "/img/Alireza.jpg",
         },
         {
           level: 2,
-          name: "Jane Smith",
-          title: "Direktur Operasional",
-          image: "/img/bioprofile.png",
-        },
-        {
-          level: 2,
-          name: "Peter Jones",
+          name: "Farida, AMd.",
           title: "Direktur Keuangan",
-          image: "/img/bioprofile.png",
+          image: "/img/Alireza.jpg",
         },
         {
           level: 2,
-          name: "Alice Brown",
-          title: "Kepala Divisi Teknis",
-          image: "/img/bioprofile.png",
+          name: "Ahmad Mujahid, ST.",
+          title: "Direktur Teknik",
+          image: "/img/Alireza.jpg",
+        },
+        {
+          level: 2,
+          name: "Mujiburrahman, ST.",
+          title: "Direktur Marketing",
+          image: "/img/Alireza.jpg",
         },
         {
           level: 3,
-          name: "Rizky Pratama",
-          title: "Manajer Pemasaran",
-          image: "/img/bioprofile.png",
+          name: "Tim Bendahara & Administrasi",
+          title: "Finance & Admin Staff",
+          image: "/img/Alireza.jpg",
         },
         {
           level: 3,
-          name: "Maya Indah Sari",
-          title: "Manajer SDM",
-          image: "/img/bioprofile.png",
+          name: "Devisi Perencanaan",
+          title: "Planning Division",
+          image: "/img/Alireza.jpg",
         },
         {
           level: 3,
-          name: "Joko Susilo",
-          title: "Kepala Proyek Senior",
-          image: "/img/bioprofile.png",
+          name: "Devisi Pengawasan",
+          title: "Supervision Division",
+          image: "/img/Alireza.jpg",
         },
         {
           level: 3,
-          name: "Citra Kirana",
-          title: "Spesialis Desain Grafis",
-          image: "/img/bioprofile.png",
+          name: "Devisi Non Jasa Konstruksi",
+          title: "Non Construction Services",
+          image: "/img/Alireza.jpg",
+        },
+        {
+          level: 3,
+          name: "Staf Marketing",
+          title: "Marketing Staff",
+          image: "/img/Alireza.jpg",
         },
       ],
     };

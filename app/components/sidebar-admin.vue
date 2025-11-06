@@ -90,6 +90,26 @@
         </svg>
         <span class="font-medium">Messages</span>
       </NuxtLink>
+
+      <NuxtLink to="/admin/employees" active-class="bg-white text-[#EB5523] shadow-sm"
+        class="flex items-center gap-x-4 w-full hover:bg-gray-100 py-3 px-4 rounded-lg text-black hover:text-[#EB5523] transition-colors duration-200">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
+          <path
+            d="M17 21H1V19C1 17.9391 1.42143 16.9217 2.17157 16.1716C2.92172 15.4214 3.93913 15 5 15H13C14.0609 15 15.0783 15.4214 15.8284 16.1716C16.5786 16.9217 17 17.9391 17 19V21ZM13 11C13 12.0609 12.5786 13.0783 11.8284 13.8284C11.0783 14.5786 10.0609 15 9 15C7.93913 15 6.92172 14.5786 6.17157 13.8284C5.42143 13.0783 5 12.0609 5 11C5 9.93913 5.42143 8.92172 6.17157 7.17157C6.92172 6.42143 7.93913 6 9 6C10.0609 6 11.0783 6.42143 11.8284 7.17157C12.5786 7.92172 13 8.93913 13 9V11ZM23 21H19V19C19 17.9391 18.5786 16.9217 17.8284 16.1716C17.0783 15.4214 16.0609 15 15 15H14V11C14 9.93913 14.4214 8.92172 15.1716 7.17157C15.9217 6.42143 16.9391 6 18 6C19.0609 6 20.0783 6.42143 20.8284 7.17157C21.5786 7.92172 22 8.93913 22 10V21H23Z"
+            fill="currentColor" />
+        </svg>
+        <span class="font-medium">Employees</span>
+      </NuxtLink>
+
+      <NuxtLink to="/admin/work-scope" active-class="bg-white text-[#EB5523] shadow-sm"
+        class="flex items-center gap-x-4 w-full hover:bg-gray-100 py-3 px-4 rounded-lg text-black hover:text-[#EB5523] transition-colors duration-200">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
+          <path
+            d="M3 4C2.44772 4 2 4.44772 2 5V19C2 19.5523 2.44772 20 3 20H21C21.5523 20 22 19.5523 22 19V5C22 4.44772 21.5523 4 21 4H3ZM4 6H20V18H4V6ZM6 8V10H18V8H6ZM6 12V14H18V12H6ZM6 16V18H14V16H6Z"
+            fill="currentColor" />
+        </svg>
+        <span class="font-medium">Work Scope</span>
+      </NuxtLink>
     </div>
   </div>
 </template>

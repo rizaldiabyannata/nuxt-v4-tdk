@@ -73,6 +73,7 @@ defineProps({
   author: {
     type: String,
     required: true,
+    default: "PT. TDK KONSULTAN",  
   },
 });
 </script>

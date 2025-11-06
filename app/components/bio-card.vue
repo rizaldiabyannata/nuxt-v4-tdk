@@ -3,9 +3,9 @@
     ref="card"
     class="flex flex-col sm:flex-row w-full bg-slate-800 justify-center items-center px-3 py-4 sm:px-4 sm:py-3 md:px-6 md:py-4 min-h-fit shadow-xl shadow-gray-400 rounded-xl transition-all duration-300 gap-3 sm:gap-4"
   >
-    <div class="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 flex-shrink-0 rounded-md">
+    <div class="w-32 h-32 sm:w-32 sm:h-32 md:w-40 md:h-40 flex-shrink-0 rounded-md">
       <NuxtImg
-        src="/img/Alireza.jpg"
+        :src="image"
         class="w-full h-full object-cover rounded-md"
         alt=""
         loading="lazy"
@@ -13,13 +13,11 @@
       />
     </div>
     <div class="flex flex-col justify-center w-full text-white min-w-0">
-      <h1 class="text-[#EB5523] font-semibold text-base sm:text-lg md:text-xl">William George</h1>
-      <p class="text-xs sm:text-sm md:text-base">Chief Administrator</p>
+      <h1 class="text-[#EB5523] font-semibold text-base sm:text-xs md:text-xl">{{ name }}</h1>
+      <p class="text-xs sm:text-sm md:text-base">{{ title }}</p>
       <hr class="text-white w-20 sm:w-24 mt-2" />
       <p class="text-justify pt-3 text-xs sm:text-xs md:text-sm line-clamp-2 sm:line-clamp-3 md:line-clamp-none">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis facere
-        rerum soluta ipsa, beatae voluptatibus expedita quibusdam voluptas neque
-        laborum.
+        Profesional berpengalaman dengan dedikasi tinggi terhadap pengembangan bisnis dan kepemimpinan organisasi yang berkelanjutan.
       </p>
       <div class="flex flex-row space-x-2 sm:space-x-3 pt-2">
         <div
@@ -141,7 +139,7 @@ const props = defineProps({
   },
   image: {
     type: String,
-    default: "/img/bioprofile.png", // Provide a default image if none is passed
+    default: "/img/Alireza.jpg", // Provide a default image if none is passed
   },
 });
 const card = ref(null);
