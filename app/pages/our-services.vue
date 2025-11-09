@@ -3,10 +3,11 @@
     ref="heroSection"
     class="relative min-h-screen flex flex-col justify-center px-4 py-16 sm:px-8 sm:py-24 pt-24 md:pt-16"
   >
-    <NuxtImg
+    <img
       src="/img/sample/sample-5.jpeg"
       class="absolute inset-0 w-full h-full object-cover brightness-50 -z-10"
-      placeholder
+      alt="Services background"
+      loading="lazy"
     />
 
     <div class="relative flex flex-col grow w-full justify-center">
@@ -60,85 +61,175 @@
     <div
       class="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-6 lg:gap-8 w-full max-w-6xl mx-auto"
     >
-      <services-card title="Perencanaan Proyek" :list="list_1" :image="img_1" />
-      <services-card title="Supervisi Proyek" :list="list_2" :image="img_2" />
-      <services-card
-        title="Manajemen Konstruksi"
-        :list="list_3"
-        :image="img_3"
-      />
+      <div v-if="pending" class="col-span-full">
+        <p class="text-center text-gray-500">Loading services...</p>
+      </div>
+      <div v-else-if="services.length === 0" class="col-span-full">
+        <p class="text-center text-gray-500">No services available.</p>
+      </div>
+      <template v-else>
+        <services-card
+          v-for="service in services"
+          :key="service._id"
+          :title="service.title"
+          :list="service.list"
+          :image="service.image"
+        />
+      </template>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      list_1: [
-        "Perencanaan konstruksi gedung",
-        "Desain jalan dan jembatan",
-        "Proyek irigasi dan sumber daya air",
-      ],
-      list_2: [
-        "Jaminan kualitas di lokasi",
-        "Kepatuhan terhadap protokol keselamatan",
-        "Penyelesaian proyek tepat waktu",
-      ],
-      list_3: [
-        "Manajemen biaya dan anggaran",
-        "Penjadwalan dan koordinasi",
-        "Manajemen risiko dan mitigasi",
-      ],
-      img_1: "/img/projectPlanning.jpeg",
-      img_2: "/img/supervision.jpeg",
-      img_3: "/img/management.jpeg",
-    };
-  },
-  mounted() {
-    this.initAnimations();
-  },
-  methods: {
-    initAnimations() {
-      const gsap = this.$gsap;
+<script setup>
+import { getImageUrl } from "@/composables/useImage";
 
-      const animateOnScroll = (elem, vars) => {
-        if (!elem) return;
-        gsap.from(elem, {
-          scrollTrigger: {
-            trigger: elem,
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
-          duration: 0.8,
-          autoAlpha: 0,
-          y: 50,
-          ease: "power3.out",
-          ...vars,
-        });
-      };
+const { $api, $gsap } = useNuxtApp();
 
-      // Hero Section
-      gsap.from(this.$refs.heroSection.querySelector(".relative").children, {
-        duration: 1,
-        autoAlpha: 0,
-        y: 30,
-        ease: "power3.out",
-        stagger: 0.2,
-        delay: 0.2,
-      });
+// State
+const services = ref([]);
+const pending = ref(false);
+const error = ref(null);
 
-      // Services Section
-      const servicesSection = this.$refs.servicesSection;
-      if (servicesSection) {
-        animateOnScroll(servicesSection.querySelector("p"));
-        animateOnScroll(servicesSection.querySelector("h1"), { delay: 0.1 });
-        const serviceCards = servicesSection.querySelectorAll(".grid > div");
-        serviceCards.forEach((card, index) => {
-          animateOnScroll(card, { delay: index * 0.15 });
-        });
+// Refs for animations
+const heroSection = ref(null);
+const servicesSection = ref(null);
+
+// Fetch services dari backend
+async function fetchServices() {
+  pending.value = true;
+  error.value = null;
+  
+  try {
+    console.log("🚀 Starting fetch services...");
+    const response = await $api.get("/api/services");
+    console.log("🔍 Raw services response:", response.data);
+    
+    const input = response.data;
+    
+    if (!input || !Array.isArray(input)) {
+      console.warn("⚠️ Services data is not an array:", input);
+      services.value = [];
+      return;
+    }
+    
+    console.log("📦 Services count:", input.length);
+    
+    // Map to display format with robust normalization (sama seperti work-scope admin)
+    services.value = input.map((item) => {
+      console.log("🔧 Processing service:", item.title);
+      console.log("  - Raw list:", item.list);
+      
+      // Normalize list: can be array or a JSON/string from backend
+      let normalizedList = []
+      const rawList = item?.list
+      
+      if (Array.isArray(rawList)) {
+        // Handle cases where backend returns ["item1","item2"] correctly,
+        // and also cases like ["[\"item1\",\"item2\"]"] (stringified inside array)
+        normalizedList = rawList.flatMap((entry) => {
+          if (typeof entry !== 'string') return []
+          const e = entry.trim()
+          // Try parse JSON array within string element
+          if ((e.startsWith('[') && e.endsWith(']')) || (e.startsWith('"[') && e.endsWith(']"'))) {
+            try {
+              const parsedInner = JSON.parse(e.replace(/^\"|\"$/g, ''))
+              if (Array.isArray(parsedInner)) {
+                return parsedInner.filter(v => typeof v === 'string').map(v => v.trim()).filter(Boolean)
+              }
+            } catch (_) {
+              // fallthrough to splitting
+            }
+          }
+          // Fallback split by common separators/newlines
+          return e
+            .split(/\r?\n|\s*","\s*|\||,|;|·|•/)
+            .map(v => v.replace(/^\s*"|"\s*$/g, '').trim())
+            .filter(Boolean)
+        })
+      } else if (typeof rawList === 'string') {
+        const s = rawList.trim()
+        // Preferred: try JSON.parse directly
+        let parsed = null
+        try {
+          parsed = JSON.parse(s)
+        } catch (_) {
+          parsed = null
+        }
+        if (Array.isArray(parsed)) {
+          normalizedList = parsed.filter(v => typeof v === 'string').map(v => v.trim()).filter(Boolean)
+        } else {
+          // Fallback: remove wrapping brackets then split by common separators/newlines
+          const noBrackets = s.replace(/^\[|\]$/g, '')
+          normalizedList = noBrackets
+            .split(/\r?\n|\s*","\s*|\||,|;|·|•/)
+            .map(v => v.replace(/^\s*"|"\s*$/g, '').trim())
+            .filter(Boolean)
+        }
       }
-    },
-  },
+
+      console.log("✅ Normalized list for", item.title, ":", normalizedList);
+
+      return {
+        ...item,
+        image: getImageUrl(item.image),
+        list: normalizedList,
+      };
+    });
+    
+    console.log("🎯 Final services:", services.value);
+  } catch (err) {
+    console.error("❌ Gagal mengambil data services:", err);
+    error.value = err;
+    services.value = [];
+  } finally {
+    pending.value = false;
+  }
+}
+
+// Animations
+onMounted(() => {
+  console.log("✅ Component mounted, fetching services and initializing animations...");
+  fetchServices();
+  initAnimations();
+});
+
+const initAnimations = () => {
+  const animateOnScroll = (elem, vars) => {
+    if (!elem) return;
+    $gsap.from(elem, {
+      scrollTrigger: {
+        trigger: elem,
+        start: "top 85%",
+        toggleActions: "play none none none",
+      },
+      duration: 0.8,
+      autoAlpha: 0,
+      y: 50,
+      ease: "power3.out",
+      ...vars,
+    });
+  };
+
+  // Hero Section
+  if (heroSection.value) {
+    $gsap.from(heroSection.value.querySelector(".relative").children, {
+      duration: 1,
+      autoAlpha: 0,
+      y: 30,
+      ease: "power3.out",
+      stagger: 0.2,
+      delay: 0.2,
+    });
+  }
+
+  // Services Section
+  if (servicesSection.value) {
+    animateOnScroll(servicesSection.value.querySelector("p"));
+    animateOnScroll(servicesSection.value.querySelector("h1"), { delay: 0.1 });
+    const serviceCards = servicesSection.value.querySelectorAll(".grid > div");
+    serviceCards.forEach((card, index) => {
+      animateOnScroll(card, { delay: index * 0.15 });
+    });
+  }
 };
 </script>

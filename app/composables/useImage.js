@@ -22,6 +22,18 @@ export function getImageUrl(imageUrl) {
 
   // Jika sudah full URL (http/https)
   if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
+    // Jika URL berisi minio:9000 (internal Docker hostname), replace dengan MINIO_PUBLIC_URL
+    if (imageUrl.includes("minio:9000")) {
+      const path = imageUrl.replace(/https?:\/\/minio:9000/, "");
+      return `${minioPublicUrl}${path}`;
+    }
+    
+    // Jika URL berisi localhost:9000 (MinIO default port), replace dengan MINIO_PUBLIC_URL
+    if (imageUrl.includes("localhost:9000")) {
+      const path = imageUrl.replace(/https?:\/\/localhost:9000/, "");
+      return `${minioPublicUrl}${path}`;
+    }
+    
     // Jika URL berisi localhost:9004, replace dengan MINIO_PUBLIC_URL dari env
     if (imageUrl.includes("localhost:9004")) {
       const path = imageUrl.replace(/https?:\/\/localhost:9004/, "");
@@ -31,6 +43,12 @@ export function getImageUrl(imageUrl) {
     // Jika URL berisi 127.0.0.1:9004, replace dengan MINIO_PUBLIC_URL dari env
     if (imageUrl.includes("127.0.0.1:9004")) {
       const path = imageUrl.replace(/https?:\/\/127\.0\.0\.1:9004/, "");
+      return `${minioPublicUrl}${path}`;
+    }
+    
+    // Jika URL berisi 127.0.0.1:9000, replace dengan MINIO_PUBLIC_URL dari env
+    if (imageUrl.includes("127.0.0.1:9000")) {
+      const path = imageUrl.replace(/https?:\/\/127\.0\.0\.1:9000/, "");
       return `${minioPublicUrl}${path}`;
     }
     

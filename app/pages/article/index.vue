@@ -3,7 +3,7 @@
     ref="heroSection"
     class="relative h-[50vh] lg:h-[60vh] flex flex-col justify-center text-black overflow-hidden px-4 sm:px-8 pt-16 md:pt-0"
   >
-    <NuxtImg
+    <img
       src="/img/sample/sample-2.jpeg"
       class="absolute inset-0 w-full h-full object-cover brightness-50 -z-10"
       placeholder

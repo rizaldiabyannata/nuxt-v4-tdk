@@ -4,7 +4,7 @@
     class="flex flex-col sm:flex-row w-full bg-slate-800 justify-center items-center px-3 py-4 sm:px-4 sm:py-3 md:px-6 md:py-4 min-h-fit shadow-xl shadow-gray-400 rounded-xl transition-all duration-300 gap-3 sm:gap-4"
   >
     <div class="w-32 h-32 sm:w-32 sm:h-32 md:w-40 md:h-40 flex-shrink-0 rounded-md">
-      <NuxtImg
+      <img
         :src="image"
         class="w-full h-full object-cover rounded-md"
         alt=""

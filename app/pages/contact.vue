@@ -4,7 +4,7 @@
       ref="heroSection"
       class="flex flex-col md:flex-row w-full min-h-[50vh] md:h-screen"
     >
-      <NuxtImg
+      <img
         src="/img/contact-2.png"
         alt=""
         class="h-1/2 w-full md:h-full md:w-1/2 object-cover"
@@ -99,7 +99,7 @@
           </button>
         </form>
       </div>
-      <NuxtImg
+      <img
         src="/img/contact.png"
         crossorigin="anonymous"
         alt=""

@@ -324,43 +324,43 @@
     <div
       class="animate-marquee group-hover:[animation-play-state:paused] inline-block w-max"
     >
-      <NuxtImg
+      <img
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/tesla.png"
         alt="Tesla"
         loading="lazy"
       />
-      <NuxtImg
+      <img
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/porsche.png"
         alt="Porsche"
         loading="lazy"
       />
-      <NuxtImg
+      <img
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/aston-martin.png"
         alt="Aston Martin"
         loading="lazy"
       />
-      <NuxtImg
+      <img
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/nike.png"
         alt="Nike"
         loading="lazy"
       />
-      <NuxtImg
+      <img
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/jordan.png"
         alt="Jordan"
         loading="lazy"
       />
-      <NuxtImg
+      <img
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/adidas.png"
         alt="Adidas"
         loading="lazy"
       />
-      <NuxtImg
+      <img
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/bmw.png"
         alt="BMW"
@@ -371,43 +371,43 @@
       class="animate-marquee group-hover:[animation-play-state:paused] inline-block w-max"
       aria-hidden="true"
     >
-      <NuxtImg
+      <img
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/tesla.png"
         alt="Tesla"
         loading="lazy"
       />
-      <NuxtImg
+      <img
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/porsche.png"
         alt="Porsche"
         loading="lazy"
       />
-      <NuxtImg
+      <img
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/aston-martin.png"
         alt="Aston Martin"
         loading="lazy"
       />
-      <NuxtImg
+      <img
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/nike.png"
         alt="Nike"
         loading="lazy"
       />
-      <NuxtImg
+      <img
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/jordan.png"
         alt="Jordan"
         loading="lazy"
       />
-      <Nuxt_img
+      <img
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/adidas.png"
         alt="Adidas"
         loading="lazy"
       />
-      <NuxtImg
+      <img
         class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
         src="/img/bmw.png"
         alt="BMW"

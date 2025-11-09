@@ -6,11 +6,11 @@
         class="flex flex-col lg:flex-row-reverse lg:w-3/5 w-full max-w-4xl h-auto lg:h-[60vh] shadow-2xl rounded-3xl overflow-hidden"
       >
         <div class="relative h-48 lg:h-full lg:w-2/5">
-          <NuxtImg
+          <img
             src="/img/login-placeholder.png"
             alt="Halaman Login"
             class="w-full h-full object-cover"
-            placeholder
+            loading="lazy"
           />
         </div>
 

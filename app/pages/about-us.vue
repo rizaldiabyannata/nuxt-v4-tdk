@@ -169,7 +169,7 @@
     <h2 class="text-2xl text-[#EB5523] font-semibold mb-8">Direktur Utama</h2>
     <div class="flex flex-col lg:flex-row w-full items-center px-6 lg:w-180 h-fit pt-6 gap-0">
       <!-- Image untuk Desktop (outside card) -->
-      <NuxtImg
+      <img
         src="/img/Alireza.jpg"
         alt="Alireza"
         class="hidden lg:block lg:w-64 h-auto object-cover shadow-lg shadow-gray-400 rounded-lg"
@@ -181,7 +181,7 @@
       >
         <!-- Image untuk Mobile (inside card) -->
         <div class="flex justify-center lg:hidden -mx-8 -mt-8 mb-4 pt-4">
-          <NuxtImg
+          <img
             src="/img/Alireza.jpg"
             alt="Alireza"
             class="w-full max-w-[240px] h-auto aspect-square object-cover rounded-lg"
