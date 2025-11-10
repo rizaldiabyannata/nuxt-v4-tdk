@@ -7,7 +7,7 @@
       >
         <div class="relative h-48 lg:h-full lg:w-2/5">
           <img
-            src="/img/login-placeholder.png"
+            src="/img/loginTemplate.png"
             alt="Halaman Login"
             class="w-full h-full object-cover"
             loading="lazy"
