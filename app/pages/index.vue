@@ -318,103 +318,7 @@
     </div>
   </div>
 
-  <div
-    class="logos group bg-white relative overflow-hidden whitespace-nowrap py-12"
-  >
-    <div
-      class="animate-marquee group-hover:[animation-play-state:paused] inline-block w-max"
-    >
-      <img
-        class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
-        src="/img/tesla.png"
-        alt="Tesla"
-        loading="lazy"
-      />
-      <img
-        class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
-        src="/img/porsche.png"
-        alt="Porsche"
-        loading="lazy"
-      />
-      <img
-        class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
-        src="/img/aston-martin.png"
-        alt="Aston Martin"
-        loading="lazy"
-      />
-      <img
-        class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
-        src="/img/nike.png"
-        alt="Nike"
-        loading="lazy"
-      />
-      <img
-        class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
-        src="/img/jordan.png"
-        alt="Jordan"
-        loading="lazy"
-      />
-      <img
-        class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
-        src="/img/adidas.png"
-        alt="Adidas"
-        loading="lazy"
-      />
-      <img
-        class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
-        src="/img/bmw.png"
-        alt="BMW"
-        loading="lazy"
-      />
-    </div>
-    <div
-      class="animate-marquee group-hover:[animation-play-state:paused] inline-block w-max"
-      aria-hidden="true"
-    >
-      <img
-        class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
-        src="/img/tesla.png"
-        alt="Tesla"
-        loading="lazy"
-      />
-      <img
-        class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
-        src="/img/porsche.png"
-        alt="Porsche"
-        loading="lazy"
-      />
-      <img
-        class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
-        src="/img/aston-martin.png"
-        alt="Aston Martin"
-        loading="lazy"
-      />
-      <img
-        class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
-        src="/img/nike.png"
-        alt="Nike"
-        loading="lazy"
-      />
-      <img
-        class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
-        src="/img/jordan.png"
-        alt="Jordan"
-        loading="lazy"
-      />
-      <img
-        class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
-        src="/img/adidas.png"
-        alt="Adidas"
-        loading="lazy"
-      />
-      <img
-        class="mx-8 sm:mx-12 md:mx-16 inline h-12 sm:h-16"
-        src="/img/bmw.png"
-        alt="BMW"
-        loading="lazy"
-      />
-    </div>
-  </div>
+  <SponsorshipMarquee />
 
   <div
     class="flex flex-col md:flex-row min-h-screen bg-[#DDDDDD] justify-center items-stretch"
@@ -499,6 +403,7 @@ import SkeletonCarouselCardSkeleton from "~/components/skeleton/CarouselCardSkel
 import HomepageCard from "~/components/homepage-card.vue";
 import HomepageCardSmall from "~/components/homepage-card-small.vue";
 import CarouselCard from "~/components/carousel-card.vue";
+import SponsorshipMarquee from "~/components/SponsorshipMarquee.vue";
 
 export default {
   name: "HomePage",
@@ -509,6 +414,7 @@ export default {
     HomepageCard,
     HomepageCardSmall,
     CarouselCard,
+    SponsorshipMarquee,
   },
   setup() {
     const { $api } = useNuxtApp();
@@ -618,16 +524,5 @@ export default {
 </script>
 
 <style>
-.animate-marquee {
-  animation: marquee 25s linear infinite;
-  /* Durasi bisa disesuaikan */
-}
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
+/* Marquee styles moved to component */
 </style>

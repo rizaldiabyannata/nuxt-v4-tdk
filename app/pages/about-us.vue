@@ -293,14 +293,32 @@
         </div>
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 w-full px-8 lg:px-8 mt-12">
+    <div class="flex flex-wrap justify-center gap-4 sm:gap-6 lg:gap-8 w-full px-8 lg:px-8 mt-12">
       <bio-card
-        v-for="director in otherDirectors"
-        :key="director.name"
+        v-for="director in level2Directors"
+        :key="director._id"
         :name="director.name"
-        :title="director.title"
-        :image="director.image"
+        :title="director.position"
+        :image="director.photoUrl"
+        class="w-full md:w-[calc(50%-1rem)] xl:w-[calc(33.333%-1.5rem)]"
       />
+    </div>
+
+    <!-- Level 3 Staff Section -->
+    <div v-if="level3Staff.length > 0" class="w-full px-8 lg:px-8 mt-16">
+      <h2 class="text-2xl text-[#EB5523] font-semibold mb-8 text-center">Tim Manajemen</h2>
+      <div class="flex flex-wrap justify-center gap-4 sm:gap-6 lg:gap-8">
+        <bio-card-light
+          v-for="staff in level3Staff"
+          :key="staff._id"
+          :name="staff.name"
+          :title="staff.position"
+          :image="staff.photoUrl"
+          :short-description="staff.short_description"
+          :social-media="staff.socialMedia"
+          class="w-full md:w-[calc(50%-1rem)] xl:w-[calc(33.333%-1.5rem)]"
+        />
+      </div>
     </div>
 
   </div>
@@ -474,74 +492,116 @@
 <script>
 import { h } from "vue";
 import BioCard from "~/components/bio-card.vue";
+import BioCardLight from "~/components/bio-card-light.vue";
+import { getImageUrl } from "~/composables/useImage";
+
 export default {
   components: {
     BioCard,
+    BioCardLight,
   },
   data() {
     return {
-      managementTeam: [
-        {
-          level: 1,
-          name: "Andi Firman, ST.",
-          title: "Direktur Utama",
-          image: "/img/Alireza.jpg",
-        },
-        {
-          level: 2,
-          name: "Farida, AMd.",
-          title: "Direktur Keuangan",
-          image: "/img/Alireza.jpg",
-        },
-        {
-          level: 2,
-          name: "Ahmad Mujahid, ST.",
-          title: "Direktur Teknik",
-          image: "/img/Alireza.jpg",
-        },
-        {
-          level: 2,
-          name: "Mujiburrahman, ST.",
-          title: "Direktur Marketing",
-          image: "/img/Alireza.jpg",
-        },
-        {
-          level: 3,
-          name: "Tim Bendahara & Administrasi",
-          title: "Finance & Admin Staff",
-          image: "/img/Alireza.jpg",
-        },
-        {
-          level: 3,
-          name: "Devisi Perencanaan",
-          title: "Planning Division",
-          image: "/img/Alireza.jpg",
-        },
-        {
-          level: 3,
-          name: "Devisi Pengawasan",
-          title: "Supervision Division",
-          image: "/img/Alireza.jpg",
-        },
-        {
-          level: 3,
-          name: "Devisi Non Jasa Konstruksi",
-          title: "Non Construction Services",
-          image: "/img/Alireza.jpg",
-        },
-        {
-          level: 3,
-          name: "Staf Marketing",
-          title: "Marketing Staff",
-          image: "/img/Alireza.jpg",
-        },
-      ],
+      level2Directors: [], // Directors from API (level 2)
+      level3Staff: [], // Staff from API (level 3)
+      isLoadingDirectors: false,
+      isLoadingStaff: false,
     };
   },
-  mounted() {
+  async mounted() {
     this.initAnimations();
+    await Promise.all([
+      this.fetchLevel2Directors(),
+      this.fetchLevel3Staff()
+    ]);
   },
   methods: {
+    async fetchLevel2Directors() {
+      this.isLoadingDirectors = true;
+      try {
+        // Use nuxtApp correctly in Options API
+        const nuxtApp = useNuxtApp();
+        const response = await nuxtApp.$api.get('/api/staff/level/2');
+        
+        console.log('📥 Raw API Response:', response);
+        
+        // Response format: { success: true, data: [...], count: number }
+        let directors = [];
+        if (response.data && response.data.success && Array.isArray(response.data.data)) {
+          directors = response.data.data;
+        } else if (response.data && Array.isArray(response.data)) {
+          directors = response.data;
+        }
+        
+        console.log('📋 Directors before mapping:', directors);
+        
+        // Map data and convert MinIO URLs
+        this.level2Directors = directors.map(director => {
+          const mappedDirector = {
+            ...director,
+            photoUrl: getImageUrl(director.photoUrl)
+          };
+          console.log('🔄 Mapped director:', mappedDirector);
+          return mappedDirector;
+        });
+        
+        console.log('✅ Final Level 2 Directors:', this.level2Directors);
+      } catch (error) {
+        console.error('❌ Failed to fetch Level 2 Directors:', error);
+        console.error('Error details:', {
+          message: error.message,
+          response: error.response?.data,
+          status: error.response?.status
+        });
+        // Keep array empty if API fails
+        this.level2Directors = [];
+      } finally {
+        this.isLoadingDirectors = false;
+      }
+    },
+    async fetchLevel3Staff() {
+      this.isLoadingStaff = true;
+      try {
+        // Use nuxtApp correctly in Options API
+        const nuxtApp = useNuxtApp();
+        const response = await nuxtApp.$api.get('/api/staff/level/3');
+        
+        console.log('📥 Raw API Response (Level 3):', response);
+        
+        // Response format: { success: true, data: [...], count: number }
+        let staff = [];
+        if (response.data && response.data.success && Array.isArray(response.data.data)) {
+          staff = response.data.data;
+        } else if (response.data && Array.isArray(response.data)) {
+          staff = response.data;
+        }
+        
+        console.log('📋 Staff before mapping (Level 3):', staff);
+        
+        // Map data and convert MinIO URLs
+        this.level3Staff = staff.map(member => {
+          const mappedStaff = {
+            ...member,
+            photoUrl: getImageUrl(member.photoUrl)
+          };
+          console.log('🔄 Mapped staff:', mappedStaff);
+          return mappedStaff;
+        });
+        
+        console.log('✅ Final Level 3 Staff:', this.level3Staff);
+      } catch (error) {
+        console.error('❌ Failed to fetch Level 3 Staff:', error);
+        console.error('Error details:', {
+          message: error.message,
+          response: error.response?.data,
+          status: error.response?.status
+        });
+        // Keep array empty if API fails
+        this.level3Staff = [];
+      } finally {
+        this.isLoadingStaff = false;
+      }
+    },
     initAnimations() {
       const gsap = this.$gsap;
 
@@ -606,20 +666,6 @@ export default {
           animateOnScroll(card, { delay: index * 0.15 });
         });
       }
-    },
-  },
-  computed: {
-    // Computed property untuk Direktur Utama (ID 1)
-    mainDirector() {
-      return this.managementTeam.find((member) => member.level === 1);
-    },
-    // Computed property untuk Direksi Lainnya (ID 2, 3, 4)
-    otherDirectors() {
-      return this.managementTeam.filter((member) => member.level === 2);
-    },
-    // Computed property untuk Manajemen Umum (ID 5 ke atas)
-    generalManagement() {
-      return this.managementTeam.filter((member) => member.level >= 3);
     },
   },
 };

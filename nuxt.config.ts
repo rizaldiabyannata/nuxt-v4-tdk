@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   runtimeConfig: {
     public: {
-      apiBaseUrl: process.env.API_BASE_URL || "",
+      apiBaseUrl: process.env.NODE_ENV === 'production' ? (process.env.API_BASE_URL || "") : "",
       node_env: process.env.NODE_ENV || "development",
       minioProxyMode: process.env.MINIO_PROXY_MODE || "backend",
       minioPublicUrl: process.env.MINIO_PUBLIC_URL || "http://localhost:9004",

@@ -101,6 +101,14 @@
         <span class="font-medium">Employees</span>
       </NuxtLink>
 
+      <NuxtLink to="/admin/sponsorships" active-class="bg-white text-[#EB5523] shadow-sm"
+        class="flex items-center gap-x-4 w-full hover:bg-gray-100 py-3 px-4 rounded-lg text-black hover:text-[#EB5523] transition-colors duration-200">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
+          <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z" fill="currentColor"/>
+        </svg>
+        <span class="font-medium">Sponsorships</span>
+      </NuxtLink>
+
       <NuxtLink to="/admin/work-scope" active-class="bg-white text-[#EB5523] shadow-sm"
         class="flex items-center gap-x-4 w-full hover:bg-gray-100 py-3 px-4 rounded-lg text-black hover:text-[#EB5523] transition-colors duration-200">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">

@@ -24,7 +24,7 @@
             <th class="px-6 py-4 text-left text-gray-700 font-semibold">Photo</th>
             <th class="px-6 py-4 text-left text-gray-700 font-semibold">Name</th>
             <th class="px-6 py-4 text-left text-gray-700 font-semibold">Position</th>
-            <th class="px-6 py-4 text-left text-gray-700 font-semibold">Level</th>
+            <th class="px-10 py-4 text-left text-gray-700 font-semibold">Level</th>
             <th class="px-6 py-4 text-left text-gray-700 font-semibold">Order</th>
             <th class="px-6 py-4 text-left text-gray-700 font-semibold">Short Description</th>
             <th class="px-6 py-4 text-left text-gray-700 font-semibold">Status</th>
@@ -63,7 +63,7 @@
             </td>
             <td class="px-6 py-4 text-gray-800 font-medium">{{ emp.name }}</td>
             <td class="px-6 py-4 text-gray-600">{{ emp.position }}</td>
-            <td class="px-6 py-4 text-gray-600">
+            <td class="px-6 pl-8 py-4 text-gray-600">
               <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                 Level {{ emp.level }}
               </span>

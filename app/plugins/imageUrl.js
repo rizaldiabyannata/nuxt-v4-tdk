@@ -31,6 +31,18 @@ export default defineNuxtPlugin(() => {
         return `${minioPublicUrl}${path}`;
       }
 
+      // Handle minio-tdk:9000 (Docker internal container name)
+      if (imagePath.includes("minio-tdk:9000")) {
+        const path = imagePath.replace(/https?:\/\/minio-tdk:9000/, "");
+        return `${minioPublicUrl}${path}`;
+      }
+
+      // Handle minio:9000 (Docker internal service name)
+      if (imagePath.includes("minio:9000")) {
+        const path = imagePath.replace(/https?:\/\/minio:9000/, "");
+        return `${minioPublicUrl}${path}`;
+      }
+
       // Jika URL sudah correct, return as-is
       return imagePath;
     }
