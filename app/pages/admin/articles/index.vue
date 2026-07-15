@@ -394,7 +394,7 @@ export default {
     async updateArticle() {
       const formData = new FormData();
       formData.append("title", this.article.title);
-      formData.append("description", this.article.content);
+      formData.append("content", this.article.content);
       if (this.article.coverImage) {
         formData.append("coverImage", this.article.coverImage);
       }

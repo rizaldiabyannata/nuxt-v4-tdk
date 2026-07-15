@@ -139,7 +139,7 @@ export default {
           password,
         });
 
-        if (!response.data.email) {
+        if (!response.data.user?.email) {
           await navigateTo("/admin/profile");
         } else {
           const redirect = this.$route.query.redirect;

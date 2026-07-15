@@ -182,7 +182,7 @@ export default {
       }
 
       try {
-        await this.$api.put("/api/users/profile", formData, {
+        await this.$api.put("/api/user/update", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         this.$toast?.success?.("Profile updated successfully.");
@@ -195,13 +195,11 @@ export default {
     },
     async fetchProfile() {
       try {
-        const response = await this.$api.get("/api/users/profile");
-        const profile = response.data.data;
-        this.user.name = profile.name;
+        const response = await this.$api.get("/api/user/profile");
+        const profile = response.data.user;
+        this.user.name = profile.username;
         this.user.email = profile.email;
-        this.previewImageUrl = profile.avatar
-          ? `http://localhost:5000${profile.avatar}`
-          : "/img/bioprofile.png";
+        this.previewImageUrl = "/img/bioprofile.png";
       } catch (error) {
         console.error("Failed to fetch profile:", error);
       }
