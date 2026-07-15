@@ -70,7 +70,7 @@
             </td>
             <td class="px-6 py-4 text-gray-600 text-center">{{ emp.order }}</td>
             <td class="px-6 py-4 text-gray-600 max-w-xs">
-              <div class="line-clamp-2">{{ emp.short_description || '-' }}</div>
+              <div class="line-clamp-2">{{ emp.shortDescription || '-' }}</div>
             </td>
             <td class="px-6 py-4">
               <button
@@ -195,7 +195,7 @@
                 Short Description <span class="text-red-500">*</span>
               </label>
               <textarea 
-                v-model="newEmployee.short_description" 
+                v-model="newEmployee.shortDescription" 
                 rows="4" 
                 class="textarea textarea-bordered w-full rounded-lg mt-1" 
                 placeholder="Brief description about the employee..." 
@@ -365,7 +365,7 @@
                 Short Description
               </label>
               <textarea 
-                v-model="newEmployee.short_description" 
+                v-model="newEmployee.shortDescription" 
                 rows="4" 
                 class="textarea textarea-bordered w-full rounded-lg mt-1" 
                 placeholder="Brief description about the employee..."
@@ -455,7 +455,7 @@ const newEmployee = ref({
   name: '',
   position: '',
   photo: null,
-  short_description: '',
+  shortDescription: '',
   level: 1,
   order: 0,
   socialMedia: [],
@@ -487,7 +487,7 @@ function resetForm() {
     name: '',
     position: '',
     photo: null,
-    short_description: '',
+    shortDescription: '',
     level: 1,
     order: 0,
     socialMedia: [],
@@ -503,7 +503,7 @@ function openEditModal(employee) {
     name: employee.name,
     position: employee.position,
     photo: employee.photoUrl, // Store URL for preview, will be replaced if new file uploaded
-    short_description: employee.short_description,
+    shortDescription: employee.shortDescription,
     level: employee.level,
     order: employee.order,
     socialMedia: employee.socialMedia && employee.socialMedia.length > 0 
@@ -533,8 +533,8 @@ function removeSocialMedia(index) {
 }
 
 async function submitEmployee() {
-  // Validation: name, position, photo, short_description, and level are required
-  if (!newEmployee.value.name || !newEmployee.value.position || !newEmployee.value.photo || !newEmployee.value.short_description || !newEmployee.value.level) {
+  // Validation: name, position, photo, shortDescription, and level are required
+  if (!newEmployee.value.name || !newEmployee.value.position || !newEmployee.value.photo || !newEmployee.value.shortDescription || !newEmployee.value.level) {
     console.warn('⚠️ Validation failed: required fields are missing')
     alert('Name, Position, Photo, Short Description, and Level are required.')
     return
@@ -545,7 +545,7 @@ async function submitEmployee() {
     name: newEmployee.value.name,
     position: newEmployee.value.position,
     photo: newEmployee.value.photo instanceof File ? `File: ${newEmployee.value.photo.name}` : 'Existing URL',
-    short_description: newEmployee.value.short_description,
+    shortDescription: newEmployee.value.shortDescription,
     level: newEmployee.value.level,
     order: newEmployee.value.order,
     socialMedia: newEmployee.value.socialMedia,
@@ -559,7 +559,7 @@ async function submitEmployee() {
     formData.append('name', newEmployee.value.name)
     formData.append('position', newEmployee.value.position)
     formData.append('photo', newEmployee.value.photo)
-    formData.append('short_description', newEmployee.value.short_description)
+    formData.append('shortDescription', newEmployee.value.shortDescription)
     formData.append('level', newEmployee.value.level.toString())
     
     // Optional order field
@@ -618,7 +618,7 @@ async function submitEmployee() {
 
 async function submitUpdateEmployee() {
   // Validation: for update, at least one field should be provided
-  if (!newEmployee.value.name && !newEmployee.value.position && !newEmployee.value.short_description && !newEmployee.value.level) {
+  if (!newEmployee.value.name && !newEmployee.value.position && !newEmployee.value.shortDescription && !newEmployee.value.level) {
     console.warn('⚠️ Validation failed: no fields to update')
     alert('Please fill at least one field to update.')
     return
@@ -634,7 +634,7 @@ async function submitUpdateEmployee() {
     // Add fields only if they exist
     if (newEmployee.value.name) formData.append('name', newEmployee.value.name)
     if (newEmployee.value.position) formData.append('position', newEmployee.value.position)
-    if (newEmployee.value.short_description) formData.append('short_description', newEmployee.value.short_description)
+    if (newEmployee.value.shortDescription) formData.append('shortDescription', newEmployee.value.shortDescription)
     if (newEmployee.value.level) formData.append('level', newEmployee.value.level.toString())
     if (newEmployee.value.order !== undefined && newEmployee.value.order !== null) {
       formData.append('order', newEmployee.value.order.toString())
@@ -790,7 +790,7 @@ async function fetchEmployees() {
       id: item._id || item.id,
       name: item.name || '-',
       position: item.position || '-',
-      short_description: item.short_description || '-',
+      shortDescription: item.shortDescription || '-',
       photoUrl: item.photoUrl || '',
       level: item.level || 1,
       order: item.order || 0,

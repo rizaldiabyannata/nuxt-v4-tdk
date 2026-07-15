@@ -313,7 +313,7 @@
           :name="staff.name"
           :title="staff.position"
           :image="staff.photoUrl"
-          :short-description="staff.short_description"
+          :short-description="staff.shortDescription"
           :social-media="staff.socialMedia"
           class="w-full md:w-[calc(50%-1rem)] xl:w-[calc(33.333%-1.5rem)]"
         />
