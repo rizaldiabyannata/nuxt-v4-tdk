@@ -239,7 +239,10 @@
         </div>
         <div class="p-6 overflow-y-auto">
           <h1 class="text-3xl font-bold mb-4">{{ article.title }}</h1>
-          <div class="prose max-w-none" v-html="article.content"></div>
+          <div
+            class="prose max-w-none tiptap-content-view"
+            v-html="article.content"
+          ></div>
         </div>
         <div class="p-4 border-t flex justify-end">
           <button
@@ -334,11 +337,11 @@ export default {
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log("Article berhasil dibuat:", response.data);
+        console.log("Article created successfully:", response.data);
         this.tampilanAktif = "daftar";
         await this.fetchArticles();
       } catch (error) {
-        console.error("Gagal membuat article:", error);
+        console.error("Failed to create article:", error);
       }
     },
     togglePreview() {
@@ -384,7 +387,7 @@ export default {
         // 3. Ubah tampilan ke form edit
         this.tampilanAktif = "edit";
       } catch (error) {
-        console.error("Gagal mengambil data untuk diedit:", error);
+        console.error("Failed to fetch article for editing:", error);
       }
     },
 
@@ -406,14 +409,14 @@ export default {
           }
         );
 
-        console.log("Article berhasil diupdate:", response.data);
+        console.log("Article updated successfully:", response.data);
         this.tampilanAktif = "daftar"; // Kembali ke daftar
 
         // ✨ REFRESH DATA TANPA RELOAD HALAMAN (Best Practice)
         await this.fetchArticles();
         await this.fetchHighlighted();
       } catch (error) {
-        console.error("Gagal mengupdate portfolio:", error);
+        console.error("Failed to update article:", error);
       }
     },
 
@@ -423,7 +426,7 @@ export default {
 
       if (!articleId) {
         console.error("Error: articleId kosong atau undefined");
-        this.$toast?.error?.("ID article tidak ditemukan");
+        this.$toast?.error?.("Article ID not found.");
         return;
       }
 
@@ -438,24 +441,26 @@ export default {
           }
         );
 
-        console.log("Highlight berhasil:", res.data);
-        this.$toast?.success?.("Article berhasil di-highlight");
-        window.location.reload(true);
+        console.log("Highlight succeeded:", res.data);
+        this.$toast?.success?.("Article highlighted successfully.");
+        await this.fetchArticles();
+        await this.fetchHighlighted();
       } catch (err) {
         console.error("Gagal mengirim highlight:", err.response?.data || err);
-        this.$toast?.error?.("Gagal highlight article");
+        this.$toast?.error?.("Failed to highlight article.");
       }
     },
 
     async fetchHighlighted() {
       try {
-        let apiUrl = "/api/content-tracking/";
+        const apiUrl = "/api/content-tracking/";
         const response = await this.$api.get(apiUrl);
+        const contentData = response.data?.data || response.data || {};
         console.log(
           "Data highlited article berhasil diambil:",
-          response.data.featuredBlogs
+          contentData.featuredBlogs
         );
-        this.articleHighlightList = response.data.featuredBlogs || [];
+        this.articleHighlightList = contentData.featuredBlogs || [];
       } catch (error) {
         console.error("Gagal mengambil data highlited article:", error);
         this.articleHighlightList = []; // Default to empty array on error
@@ -464,12 +469,14 @@ export default {
 
     async deleteCard(articleSlug) {
       try {
-        let apiUrl = `/api/blogs/${articleSlug}`;
+        const apiUrl = `/api/blogs/${articleSlug}`;
         console.log(`slug berisi = ${articleSlug}`);
-        const response = await this.$api.delete(apiUrl);
+        await this.$api.delete(apiUrl);
         console.log(`Card dengan slug ${articleSlug} berhasil dihapus`);
+        await this.fetchArticles();
+        await this.fetchHighlighted();
       } catch (error) {
-        console.error("Gagal menghapus card:", error);
+        console.error("Failed to delete card:", error);
       }
     },
 
@@ -478,26 +485,26 @@ export default {
     async deleteArticleHighlight(articleId) {
       // 1. Minta konfirmasi dari pengguna
       if (
-        !window.confirm(`Yakin ingin menghapus artikel ini dari highlight?`)
+        !window.confirm("Remove this article from highlights?")
       ) {
         return; // Hentikan jika pengguna membatalkan
       }
 
       try {
-        let apiUrl = `/api/content-tracking/featured-blogs/${articleId}`;
+        const apiUrl = `/api/content-tracking/featured-blogs/${articleId}`;
         await this.$api.delete(apiUrl);
 
-        console.log(`Highlight dengan id ${articleId} berhasil dihapus.`);
+        console.log(`Highlight with id ${articleId} removed.`);
         // 2. Beri notifikasi sukses ke pengguna
-        this.$toast?.success?.("Artikel berhasil dihapus dari highlight.");
+        this.$toast?.success?.("Article removed from highlights.");
 
         // 3. ✨ PENTING: Panggil kembali fungsi fetchHighlighted untuk update UI
+        await this.fetchArticles();
         await this.fetchHighlighted();
-        window.location.reload(true);
       } catch (error) {
         console.error("Gagal menghapus highlight:", error);
         // 4. Beri notifikasi error ke pengguna
-        this.$toast?.error?.("Gagal menghapus highlight.");
+        this.$toast?.error?.("Failed to remove highlight.");
       }
     },
     getImageUrl(url) {

@@ -17,7 +17,7 @@
       <p class="text-gray-700 text-xs sm:text-sm md:text-base">{{ title }}</p>
       <hr class="border-gray-400 w-20 sm:w-24 mt-2" />
       <p class="text-justify pt-3 text-gray-600 text-xs sm:text-xs md:text-sm line-clamp-2 sm:line-clamp-3 md:line-clamp-none">
-        {{ shortDescription || 'Profesional berpengalaman dengan dedikasi tinggi terhadap pengembangan bisnis dan kepemimpinan organisasi yang berkelanjutan.' }}
+        {{ shortDescription || 'Experienced professional with strong dedication to business development and sustainable organizational leadership.' }}
       </p>
       <div v-if="socialMedia && socialMedia.length > 0" class="flex flex-row space-x-2 sm:space-x-3 pt-2">
         <a

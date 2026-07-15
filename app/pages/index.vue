@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div class="relative min-h-dvh flex flex-col pt-16 md:pt-0">
     <div
       class="absolute inset-0 bg-[url('/img/sample/sample-1.jpeg')] bg-cover bg-center brightness-50 -z-10"
@@ -393,6 +394,7 @@
       class="hidden md:flex h-auto md:h-full w-full md:w-2/5 lg:w-1/2 bg-[url(/img/form-pict.jpg)] bg-cover bg-center"
     ></div>
   </div>
+  </div>
 </template>
 
 <script>
@@ -418,28 +420,26 @@ export default {
   },
   setup() {
     const { $api } = useNuxtApp();
+    const emptyContent = { highlightedPortfolios: [], featuredBlogs: [] };
+    const getContentTrackingData = (response) =>
+      response?.data?.data || response?.data || emptyContent;
 
     const { data, pending } = useAsyncData(
       "content-tracking",
       async () => {
         try {
           const response = await $api.get(`/api/content-tracking/`);
-          return response.data;
+          return getContentTrackingData(response);
         } catch (error) {
           console.error("Gagal mengambil data:", error);
-          return { highlightedPortfolios: [], featuredBlogs: [] };
+          return emptyContent;
         }
       },
       {
         transform(input) {
           if (!input) {
-            return { highlightedPortfolios: [], featuredBlogs: [] };
+            return emptyContent;
           }
-          console.log("🔍 Raw data from backend:", input);
-          console.log(
-            "🖼️ First portfolio coverImage:",
-            input.highlightedPortfolios?.[0]?.coverImage
-          );
           return {
             highlightedPortfolios: input.highlightedPortfolios || [],
             featuredBlogs: input.featuredBlogs || [],

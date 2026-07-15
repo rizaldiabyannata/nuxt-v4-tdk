@@ -10,6 +10,7 @@
           @click="editor.chain().focus().undo().run()"
           :disabled="!editor.can().undo()"
           class="toolbar-button"
+          data-label="Undo"
           title="Undo"
         >
           <Icon name="mdi:undo" class="icon" />
@@ -19,6 +20,7 @@
           @click="editor.chain().focus().redo().run()"
           :disabled="!editor.can().redo()"
           class="toolbar-button"
+          data-label="Redo"
           title="Redo"
         >
           <Icon name="mdi:redo" class="icon" />
@@ -27,13 +29,14 @@
 
       <!-- Heading -->
       <div class="toolbar-group">
-        <div class="relative" ref="headerDropdown">
+        <div class="tiptap-dropdown" ref="headerDropdown">
           <button
             type="button"
             @click="toggleHeaderDropdown"
-            class="toolbar-button"
+            class="toolbar-button toolbar-select-button"
+            title="Text style"
           >
-            <span class="w-24">{{ getActiveHeaderText() }}</span>
+            <span class="toolbar-button-label">{{ getActiveHeaderText() }}</span>
             <Icon name="mdi:chevron-down" class="icon" />
           </button>
           <div v-if="showHeaderDropdown" class="dropdown-menu">
@@ -82,6 +85,7 @@
           @click="editor.chain().focus().toggleBold().run()"
           :class="{ 'is-active': editor.isActive('bold') }"
           class="toolbar-button"
+          data-label="B"
           title="Bold"
         >
           <Icon name="mdi:format-bold" class="icon" />
@@ -91,6 +95,7 @@
           @click="editor.chain().focus().toggleItalic().run()"
           :class="{ 'is-active': editor.isActive('italic') }"
           class="toolbar-button"
+          data-label="I"
           title="Italic"
         >
           <Icon name="mdi:format-italic" class="icon" />
@@ -100,6 +105,7 @@
           @click="editor.chain().focus().toggleUnderline().run()"
           :class="{ 'is-active': editor.isActive('underline') }"
           class="toolbar-button"
+          data-label="U"
           title="Underline"
         >
           <Icon name="mdi:format-underline" class="icon" />
@@ -109,6 +115,7 @@
           @click="editor.chain().focus().toggleStrike().run()"
           :class="{ 'is-active': editor.isActive('strike') }"
           class="toolbar-button"
+          data-label="S"
           title="Strikethrough"
         >
           <Icon name="mdi:format-strikethrough" class="icon" />
@@ -117,16 +124,14 @@
 
       <!-- Font Family -->
       <div class="toolbar-group">
-        <div class="relative" ref="fontFamilyDropdown">
+        <div class="tiptap-dropdown" ref="fontFamilyDropdown">
           <button
             type="button"
             @click="toggleFontFamilyDropdown"
-            class="toolbar-button"
-            style="width: 8rem"
+            class="toolbar-button toolbar-select-button toolbar-font-button"
+            title="Font family"
           >
-            <span class="truncate w-24 text-left">{{
-              getActiveFontFamily()
-            }}</span>
+            <span class="toolbar-button-label">{{ getActiveFontFamily() }}</span>
             <Icon name="mdi:chevron-down" class="icon ml-1" />
           </button>
           <div v-if="showFontFamilyDropdown" class="dropdown-menu">
@@ -188,6 +193,7 @@
           type="button"
           @click="unsetFontSize()"
           class="toolbar-button"
+          data-label="A-"
           title="Default Size"
         >
           <Icon name="mdi:format-font-size-decrease" class="icon" />
@@ -201,6 +207,7 @@
           @click="editor.chain().focus().toggleHighlight().run()"
           :class="{ 'is-active': editor.isActive('highlight') }"
           class="toolbar-button"
+          data-label="HL"
           title="Highlight"
         >
           <Icon name="mdi:marker" class="icon" />
@@ -213,6 +220,7 @@
           type="button"
           @click="triggerImageUpload"
           class="toolbar-button"
+          data-label="Img"
           title="Upload Image"
         >
           <Icon name="mdi:image-plus" class="icon" />
@@ -237,6 +245,7 @@
               editor.isActive('image', { 'data-align': 'left' }),
           }"
           class="toolbar-button"
+          data-label="L"
           title="Align Left"
         >
           <Icon name="mdi:format-align-left" class="icon" />
@@ -250,6 +259,7 @@
               editor.isActive('image', { 'data-align': 'center' }),
           }"
           class="toolbar-button"
+          data-label="C"
           title="Align Center"
         >
           <Icon name="mdi:format-align-center" class="icon" />
@@ -263,6 +273,7 @@
               editor.isActive('image', { 'data-align': 'right' }),
           }"
           class="toolbar-button"
+          data-label="R"
           title="Align Right"
         >
           <Icon name="mdi:format-align-right" class="icon" />
@@ -276,6 +287,7 @@
           @click="editor.chain().focus().toggleBulletList().run()"
           :class="{ 'is-active': editor.isActive('bulletList') }"
           class="toolbar-button"
+          data-label="UL"
           title="Bullet List"
         >
           <Icon name="mdi:format-list-bulleted" class="icon" />
@@ -285,6 +297,7 @@
           @click="editor.chain().focus().toggleOrderedList().run()"
           :class="{ 'is-active': editor.isActive('orderedList') }"
           class="toolbar-button"
+          data-label="OL"
           title="Ordered List"
         >
           <Icon name="mdi:format-list-numbered" class="icon" />
@@ -391,6 +404,9 @@ export default {
         }),
       ],
       content: this.modelValue,
+      editorProps: {
+        transformPastedHTML: (html) => this.sanitizePastedHtml(html),
+      },
       onUpdate: () => {
         this.$emit("update:modelValue", this.editor.getHTML());
       },
@@ -405,6 +421,26 @@ export default {
     document.removeEventListener("click", this.handleClickOutside, true);
   },
   methods: {
+    sanitizePastedHtml(html) {
+      if (typeof window === "undefined" || !html) {
+        return html;
+      }
+
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, "text/html");
+
+      doc.body.querySelectorAll("[style]").forEach((element) => {
+        element.style.removeProperty("color");
+        element.style.removeProperty("background");
+        element.style.removeProperty("background-color");
+
+        if (!element.getAttribute("style")?.trim()) {
+          element.removeAttribute("style");
+        }
+      });
+
+      return doc.body.innerHTML;
+    },
     setAlignment(align) {
       if (this.editor.isActive("image")) {
         this.editor
@@ -516,35 +552,42 @@ export default {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  padding: 0.5rem;
+  gap: 0.5rem;
+  padding: 0.625rem;
   border-bottom: 1px solid #d1d5db;
-  background-color: #f9fafb;
+  background-color: #f3f4f6;
 }
 
 .toolbar-group {
   display: flex;
   align-items: center;
+  gap: 0.25rem;
   border-right: 1px solid #d1d5db;
-  padding: 0 0.5rem;
+  padding-right: 0.5rem;
 }
 .toolbar-group:last-child {
   border-right: none;
+  padding-right: 0;
 }
 
 .toolbar-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
+  gap: 0.25rem;
   height: 2.25rem;
+  min-width: 2.25rem;
   border-radius: 0.375rem;
-  background-color: transparent;
-  border: none;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
   cursor: pointer;
-  color: #4b5563;
+  color: #111827;
   transition: all 0.2s ease-in-out;
-  width: 100%;
-  padding-left: 0.2rem;
-  padding-right: 0.2rem;
+  padding: 0 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .toolbar-button:hover {
@@ -552,21 +595,61 @@ export default {
   color: #111827;
 }
 .toolbar-button.is-active {
-  background-color: #dbeafe;
-  color: #1d4ed8;
+  background-color: #fde9e2;
+  border-color: #f6bda9;
+  color: #b73812;
 }
 .toolbar-button:disabled {
   color: #9ca3af;
+  background-color: #f9fafb;
+  border-color: #e5e7eb;
   cursor: not-allowed;
 }
-.toolbar-button .icon {
+.toolbar-button .icon,
+.toolbar-button .iconify {
   width: 1.25rem;
   height: 1.25rem;
+  flex-shrink: 0;
   fill: currentColor;
+  color: currentColor;
+  stroke: currentColor;
+  display: inline-block;
+  font-size: 1.25rem;
+}
+.toolbar-button[data-label] {
+  min-width: 2.25rem;
+  padding: 0 0.375rem;
+}
+.toolbar-button[data-label]::after {
+  content: attr(data-label);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+}
+.toolbar-select-button {
+  justify-content: space-between;
+  width: 8.5rem;
+  padding: 0 0.625rem;
+}
+.toolbar-font-button {
+  width: 9rem;
+}
+.toolbar-button-label {
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tiptap-toolbar svg {
+  fill: currentColor !important;
+  stroke: currentColor !important;
 }
 
 /* Header Dropdown */
-.relative {
+.tiptap-dropdown {
   position: relative;
 }
 .dropdown-menu {
@@ -636,7 +719,10 @@ export default {
   min-height: 250px;
   outline: none;
   line-height: 1.6;
-  color: #1f2937;
+  color: #000000;
+}
+.tiptap-editor .ProseMirror [style*="color"] {
+  color: #000000 !important;
 }
 .tiptap-editor .ProseMirror:focus {
   outline: none;
@@ -684,7 +770,7 @@ export default {
   margin-right: 0;
   padding-left: 1rem;
   font-style: italic;
-  color: #6b7280;
+  color: #000000;
 }
 .tiptap-editor .ProseMirror mark {
   background-color: #fef08a;

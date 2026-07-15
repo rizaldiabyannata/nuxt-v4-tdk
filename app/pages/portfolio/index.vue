@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div
     ref="heroSection"
     class="relative h-[50vh] lg:h-[60vh] flex flex-col justify-center items-center text-white px-4 sm:px-8 pt-16 md:pt-0"
@@ -18,7 +19,7 @@
     </div>
   </div>
 
-  <div
+  <!-- <div
     v-if="highlightedPortfolios.length > 0 || highlightedPending"
     ref="featuredSection"
     class="max-w-screen flex flex-col justify-center items-center px-4 py-16 sm:px-8 sm:py-24"
@@ -64,7 +65,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <div
     id="portfolio-section"
     ref="allProjectsSection"
@@ -129,7 +130,7 @@
         />
       </svg>
       <p class="text-gray-500 text-lg font-semibold">
-        Tidak ada data portfolio.
+        No portfolio data available.
       </p>
     </div>
     <div class="pagination flex gap-2 justify-center mt-8">
@@ -163,10 +164,11 @@
       </button>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
-import { ref, onMounted, nextTick, computed } from "vue";
+import { ref, nextTick, computed } from "vue";
 import SkeletonHomepageCardSkeleton from "~/components/skeleton/HomepageCardSkeleton.vue";
 import SkeletonHomepageCardSmallSkeleton from "~/components/skeleton/HomepageCardSmallSkeleton.vue";
 import SkeletonPortfolioCardSkeleton from "~/components/skeleton/PortfolioCardSkeleton.vue";
@@ -186,6 +188,8 @@ export default {
   },
   setup() {
     const { $api } = useNuxtApp();
+    const getContentTrackingData = (response) =>
+      response?.data?.data || response?.data || {};
 
     const currentPage = ref(1);
     const pageSize = 6;
@@ -196,7 +200,8 @@ export default {
       async () => {
         try {
           const response = await $api.get(`/api/content-tracking/`);
-          return response.data.highlightedPortfolios;
+          const contentData = getContentTrackingData(response);
+          return contentData.highlightedPortfolios || [];
         } catch (error) {
           console.error(
             "Gagal mengambil data portfolio yang di-highlight:",
@@ -264,7 +269,7 @@ export default {
   },
   watch: {
     // Watch for data changes to trigger animations
-    portfoliosList(newList, oldList) {
+    portfoliosList(newList) {
       if (newList.length > 0) {
         nextTick(() => {
           this.animatePortfolioCards();

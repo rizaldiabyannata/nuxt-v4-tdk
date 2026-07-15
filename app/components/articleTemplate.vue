@@ -1,17 +1,17 @@
 <template>
-  <div class="w-full max-w-4xl mx-auto flex flex-col items-center space-y-8">
+  <div
+    class="w-full max-w-4xl min-w-0 mx-auto flex flex-col items-center space-y-8 overflow-x-hidden text-justify"
+  >
     <MinioImage
-      crossorigin="anonymous"
       :src="image"
-      alt=""
-      class="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl rounded-lg shadow-md object-cover"
-      loading="lazy"
-      placeholder
+      alt="Article image"
+      img-class="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl rounded-lg shadow-md object-cover"
+      fallback="/img/placeholder.png"
     />
-    <div class="w-full">
+    <div class="w-full min-w-0 overflow-x-hidden">
       <div
         v-html="secondParagraph"
-        class="prose lg:prose-xl max-w-none break-words tiptap-content-view"
+        class="prose lg:prose-xl max-w-none min-w-0 overflow-x-hidden break-words tiptap-content-view"
       ></div>
     </div>
   </div>

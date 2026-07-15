@@ -13,14 +13,14 @@
     <div class="relative flex flex-col grow w-full justify-center">
       <div class="flex flex-col w-full md:w-1/2 justify-center items-start">
         <h1 class="font-bold text-3xl md:text-4xl text-white">
-          Solusi Inovatif untuk Setiap Proyek Anda
+          Innovative Solutions for Every Project
         </h1>
         <p class="mt-4 text-base lg:text-lg text-white">
-          Kami memanfaatkan teknologi canggih dan praktik modern untuk
-          memberikan layanan perencanaan dan supervisi terbaik. Tim profesional
-          kami yang berpengalaman menggabungkan keahlian teknis dengan komitmen
-          terhadap keunggulan, memastikan setiap proyek memenuhi standar
-          kualitas dan keberlanjutan tertinggi.
+          We leverage advanced technology and modern practices to deliver the
+          best planning and supervision services. Our experienced professionals
+          combine technical expertise with a commitment to excellence, ensuring
+          every project meets the highest standards of quality and
+          sustainability.
         </p>
       </div>
       <a

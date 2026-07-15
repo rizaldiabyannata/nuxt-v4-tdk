@@ -46,9 +46,9 @@
     >
       <h1 class="text-2xl sm:text-3xl lg:text-5xl font-bold text-[#EB5523]">Our Vision</h1>
       <p class="text-lg sm:text-xl lg:text-2xl text-center font-bold">
-        Menjadi pemimpin terpercaya dalam perencanaan dan supervisi proyek,
-        menciptakan solusi berkelanjutan dan inovatif yang berkontribusi pada
-        pembangunan infrastruktur dan kemajuan masyarakat.
+        Becoming a trusted leader in project planning and supervision,
+        creating sustainable and innovative solutions that contribute to
+        infrastructure development and social progress.
       </p>
     </div>
     <hr />
@@ -79,8 +79,8 @@
             </svg>
           </div>
           <p class="text-center text-sm sm:text-base font-semibold">
-            Memberikan layanan perencanaan dan supervisi terbaik untuk proyek
-            gedung, jalan, jembatan, dan sumber daya air.
+            Provide the best planning and supervision services for building,
+            road, bridge, and water resources projects.
           </p>
         </div>
         <div
@@ -102,8 +102,8 @@
             </svg>
           </div>
           <p class="text-center text-sm sm:text-base font-semibold">
-            Memastikan manajemen konstruksi yang efisien dan memenuhi ekspektasi
-            klien.
+            Ensure efficient construction management that meets client
+            expectations.
           </p>
         </div>
         <div
@@ -125,8 +125,8 @@
             </svg>
           </div>
           <p class="text-center text-sm sm:text-base font-semibold">
-            Mengadopsi teknologi dan praktik inovatif yang memprioritaskan
-            kualitas, keselamatan, dan keberlanjutan lingkungan.
+            Adopt innovative technologies and practices that prioritize
+            quality, safety, and environmental sustainability.
           </p>
         </div>
         <div
@@ -148,8 +148,7 @@
             </svg>
           </div>
           <p class="text-center text-sm sm:text-base font-semibold">
-            Membangun kemitraan jangka panjang yang didasarkan pada kepercayaan
-            dan profesionalisme.
+            Build long-term partnerships based on trust and professionalism.
           </p>
         </div>
       </div>
@@ -165,8 +164,8 @@
     ref="managementSection"
     class="flex flex-col max-w-screen min-h-screen bg-gray-200 justify-center items-center py-16 sm:py-24"
   >
-    <h1 class="text-3xl text-[#EB5523] font-bold">Struktur Manajemen</h1>
-    <h2 class="text-2xl text-[#EB5523] font-semibold mb-8">Direktur Utama</h2>
+    <h1 class="text-3xl text-[#EB5523] font-bold">Management Structure</h1>
+    <h2 class="text-2xl text-[#EB5523] font-semibold mb-8">President Director</h2>
     <div class="flex flex-col lg:flex-row w-full items-center px-6 lg:w-180 h-fit pt-6 gap-0">
       <!-- Image untuk Desktop (outside card) -->
       <img
@@ -190,7 +189,7 @@
           />
         </div>
         <h1 class="text-black font-bold text-lg lg:text-2xl">Firman</h1>
-        <h2 class="text-black font-semibold text-md lg:text-xl">Direktur Utama</h2>
+        <h2 class="text-black font-semibold text-md lg:text-xl">President Director</h2>
         <p class="text-black text-xs lg:text-base text-justify lg:mt-4">
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecati,
           sapiente ea ab minima quae alias odio velit labore, mollitia
@@ -306,7 +305,7 @@
 
     <!-- Level 3 Staff Section -->
     <div v-if="level3Staff.length > 0" class="w-full px-8 lg:px-8 mt-16">
-      <h2 class="text-2xl text-[#EB5523] font-semibold mb-8 text-center">Tim Manajemen</h2>
+      <h2 class="text-2xl text-[#EB5523] font-semibold mb-8 text-center">Management Team</h2>
       <div class="flex flex-wrap justify-center gap-4 sm:gap-6 lg:gap-8">
         <bio-card-light
           v-for="staff in level3Staff"
@@ -329,10 +328,10 @@
     <div class="flex flex-col w-full max-w-4xl space-y-12">
       <div class="flex flex-col space-y-2 justify-center items-center">
         <h1 class="text-2xl sm:text-3xl lg:text-5xl font-bold text-[#EB5523]">
-          Legalitas Perusahaan
+          Company Legal Documents
         </h1>
         <p class="text-sm sm:text-base lg:text-lg text-center text-gray-600 mt-4">
-          Dokumen resmi yang menandakan status dan kepercayaan perusahaan kami
+          Official documents that reflect our company's status and credibility.
         </p>
       </div>
 
@@ -357,19 +356,19 @@
             </div>
             <div>
               <h3 class="text-xl font-bold text-gray-800">SIUJK</h3>
-              <p class="text-sm text-gray-500">Surat Izin Usaha Jasa Konstruksi</p>
+              <p class="text-sm text-gray-500">Construction Services Business License</p>
             </div>
           </div>
           <div class="space-y-2">
             <p class="text-gray-700 font-semibold">No. SIUJK:</p>
             <p class="text-lg text-[#EB5523] font-bold">2020001-0115-0603-1055-358</p>
             <p class="text-sm text-gray-600 mt-2">
-              Dikeluarkan oleh Lalu Sriwibawa, S.H.
+              Issued by Lalu Sriwibawa, S.H.
             </p>
           </div>
           <div class="pt-4 border-t border-gray-200">
             <p class="text-xs text-gray-500">
-              <span class="font-semibold">Tanggal Berlaku:</span> 24 Juli 1998
+              <span class="font-semibold">Effective Date:</span> 24 July 1998
             </p>
           </div>
         </div>
@@ -393,20 +392,20 @@
               </svg>
             </div>
             <div>
-              <h3 class="text-xl font-bold text-gray-800">Surat Izin/SBU</h3>
+              <h3 class="text-xl font-bold text-gray-800">License/SBU</h3>
               <p class="text-sm text-gray-500">RK001</p>
             </div>
           </div>
           <div class="space-y-2">
-            <p class="text-gray-700 font-semibold">No Surat Izin/SBU:</p>
+            <p class="text-gray-700 font-semibold">License/SBU Number:</p>
             <p class="text-lg text-[#EB5523] font-bold">812011621170000002</p>
             <p class="text-sm text-gray-600 mt-2">
-              Nomor registrasi untuk klasifikasi RK001
+              Registration number for RK001 classification
             </p>
           </div>
           <div class="pt-4 border-t border-gray-200">
             <p class="text-xs text-gray-500">
-              <span class="font-semibold">Status:</span> Aktif dan Terdaftar
+              <span class="font-semibold">Status:</span> Active and Registered
             </p>
           </div>
         </div>
@@ -430,20 +429,20 @@
               </svg>
             </div>
             <div>
-              <h3 class="text-xl font-bold text-gray-800">Surat Izin/SBU</h3>
+              <h3 class="text-xl font-bold text-gray-800">License/SBU</h3>
               <p class="text-sm text-gray-500">RK002</p>
             </div>
           </div>
           <div class="space-y-2">
-            <p class="text-gray-700 font-semibold">No Surat Izin/SBU:</p>
+            <p class="text-gray-700 font-semibold">License/SBU Number:</p>
             <p class="text-lg text-[#EB5523] font-bold">812011621170000001</p>
             <p class="text-sm text-gray-600 mt-2">
-              Nomor registrasi untuk klasifikasi RK002
+              Registration number for RK002 classification
             </p>
           </div>
           <div class="pt-4 border-t border-gray-200">
             <p class="text-xs text-gray-500">
-              <span class="font-semibold">Status:</span> Aktif dan Terdaftar
+              <span class="font-semibold">Status:</span> Active and Registered
             </p>
           </div>
         </div>
@@ -467,20 +466,20 @@
               </svg>
             </div>
             <div>
-              <h3 class="text-xl font-bold text-gray-800">Surat Izin/SBU</h3>
+              <h3 class="text-xl font-bold text-gray-800">License/SBU</h3>
               <p class="text-sm text-gray-500">RK003</p>
             </div>
           </div>
           <div class="space-y-2">
-            <p class="text-gray-700 font-semibold">No Surat Izin/SBU:</p>
+            <p class="text-gray-700 font-semibold">License/SBU Number:</p>
             <p class="text-lg text-[#EB5523] font-bold">812011621170010003</p>
             <p class="text-sm text-gray-600 mt-2">
-              Nomor registrasi untuk klasifikasi RK003
+              Registration number for RK003 classification
             </p>
           </div>
           <div class="pt-4 border-t border-gray-200">
             <p class="text-xs text-gray-500">
-              <span class="font-semibold">Status:</span> Aktif dan Terdaftar
+              <span class="font-semibold">Status:</span> Active and Registered
             </p>
           </div>
         </div>

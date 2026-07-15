@@ -15,11 +15,10 @@
         class="flex flex-col bg-white text-black h-1/2 w-full md:h-full md:w-1/2 items-center justify-center text-center p-8"
       >
         <h1 class="text-3xl md:text-4xl font-bold">
-          Biarkan Kami Membantu Anda Mengubah Visi Menjadi Realitas
+          Let Us Help You Turn Vision Into Reality
         </h1>
         <p class="mt-4 text-lg">
-          Bersama-sama, mari membangun masa depan yang inovatif, berkelanjutan,
-          dan unggul
+          Together, let us build an innovative, sustainable, and excellent future.
         </p>
       </div>
     </div>
@@ -34,8 +33,8 @@
           Contact Us
         </h1>
         <p class="text-black text-lg leading-relaxed">
-          Kami siap mendengarkan kebutuhan proyek Anda dan memberikan solusi
-          terbaik. Hubungi kami untuk konsultasi dan layanan profesional.
+          We are ready to listen to your project needs and provide the best
+          solutions. Contact us for consultation and professional services.
         </p>
         <form @submit.prevent="submitMessage" class="space-y-6 w-full pt-4">
           <div>
@@ -134,12 +133,12 @@ export default {
           message: this.message.message,
         });
 
-        console.log("Pesan berhasil dikirim", response.data);
+        console.log("Message sent successfully", response.data);
         this.tampilanAktif = "daftar";
-        this.$toast?.success?.("Pesan berhasil dikirim!");
+        this.$toast?.success?.("Message sent successfully!");
         window.location.reload(true);
       } catch (error) {
-        console.error("Gagal mengirim pesan:", error);
+        console.error("Failed to send message:", error);
       }
     },
     initAnimations() {

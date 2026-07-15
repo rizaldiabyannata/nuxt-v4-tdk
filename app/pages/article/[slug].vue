@@ -3,7 +3,7 @@
     <p>Loading...</p>
     <!-- Replace with a proper skeleton loader if you have one -->
   </div>
-  <div v-else-if="blog">
+  <div v-else-if="blog" class="overflow-x-hidden">
     <div
       class="relative min-h-[300px] h-[50vh] flex flex-col justify-center text-white px-4 py-16 sm:px-8 sm:py-24"
     >
@@ -22,7 +22,7 @@
       </div>
     </div>
     <div
-      class="w-full flex flex-col lg:flex-row bg-white px-4 py-16 sm:px-8 sm:py-24"
+      class="w-full min-w-0 overflow-x-hidden flex flex-col lg:flex-row bg-white px-4 py-16 sm:px-8 sm:py-24"
     >
       <articleTemplate
         :image="blog.coverImage"
@@ -36,7 +36,6 @@
 </template>
 
 <script>
-import { computed } from "vue";
 import { getImageUrl } from "@/composables/useImage";
 import articleTemplate from "~/components/articleTemplate.vue";
 
@@ -50,11 +49,7 @@ export default {
     const route = useRoute();
     const slug = route.params.slug;
 
-    const {
-      data: blog,
-      pending,
-      error,
-    } = useAsyncData(
+    const { data: blog, pending } = useAsyncData(
       `blog-${slug}`,
       async () => {
         try {

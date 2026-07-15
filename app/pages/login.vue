@@ -8,7 +8,7 @@
         <div class="relative h-48 lg:h-full lg:w-2/5">
           <img
             src="/img/loginTemplate.png"
-            alt="Halaman Login"
+            alt="Login Page"
             class="w-full h-full object-cover"
             loading="lazy"
           />
@@ -139,16 +139,21 @@ export default {
           password,
         });
 
-        // Redirect berdasarkan status email
         if (!response.data.email) {
           await navigateTo("/admin/profile");
         } else {
-          await navigateTo("/admin");
+          const redirect = this.$route.query.redirect;
+          const target =
+            typeof redirect === "string" && redirect.startsWith("/admin")
+              ? redirect
+              : "/admin";
+
+          await navigateTo(target);
         }
       } catch (error) {
         console.error("Login failed:", error);
         // Tampilkan error message ke user (bisa tambahkan alert/toast)
-        alert("Login gagal. Periksa username dan password Anda.");
+        alert("Login failed. Check your username and password.");
       }
     },
   },

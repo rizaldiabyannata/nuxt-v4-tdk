@@ -85,7 +85,7 @@
           stroke-linejoin="round"
         />
       </svg>
-      <p class="text-gray-500 text-lg font-semibold">Tidak ada data artikel.</p>
+      <p class="text-gray-500 text-lg font-semibold">No articles available.</p>
     </div>
     <div class="pagination flex gap-2 justify-center mt-8">
       <button

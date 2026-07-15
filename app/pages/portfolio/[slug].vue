@@ -27,7 +27,7 @@
     </div>
   </div>
   <div v-else>
-    <p>Portfolio tidak ditemukan.</p>
+    <p>Portfolio not found.</p>
   </div>
 </template>
 

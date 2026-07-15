@@ -366,7 +366,6 @@ export default {
         this.resetForm();
         await this.fetchPortfolios();
         await this.fetchHighlighted();
-        window.location.reload(true);
       } catch (error) {
         console.error("Failed to create portfolio:", error);
         useToast().error?.({
@@ -415,7 +414,6 @@ export default {
         this.resetForm();
         await this.fetchPortfolios();
         await this.fetchHighlighted();
-        window.location.reload(true);
       } catch (error) {
         console.error("Failed to update portfolio:", error);
         useToast().error?.({
@@ -449,7 +447,7 @@ export default {
         useToast().error({
           title: "Limit Reached",
           message:
-            "Maksimal highlighted portfolio adalah 5. Silakan hapus salah satu sebelum menambah yang baru.",
+            "Maximum highlighted portfolios is 5. Please remove one before adding a new one.",
         });
         return;
       }
@@ -466,7 +464,6 @@ export default {
         });
         await this.fetchPortfolios();
         await this.fetchHighlighted();
-        window.location.reload(true);
       } catch (err) {
         console.error("Failed to highlight portfolio:", err);
         useToast().error?.("Failed to highlight portfolio.");
@@ -477,7 +474,8 @@ export default {
     async fetchHighlighted() {
       try {
         const response = await this.$api.get("/api/content-tracking/");
-        this.portoHighlightList = response.data.highlightedPortfolios || [];
+        const contentData = response.data?.data || response.data || {};
+        this.portoHighlightList = contentData.highlightedPortfolios || [];
       } catch (error) {
         console.error("Failed to fetch highlighted portfolios:", error);
         this.portoHighlightList = [];
@@ -494,7 +492,6 @@ export default {
         useToast().success?.("Portfolio deleted successfully.");
         await this.fetchPortfolios();
         await this.fetchHighlighted();
-        window.location.reload(true);
       } catch (error) {
         console.error("Failed to delete portfolio:", error);
         useToast().error?.("Failed to delete portfolio.");
@@ -511,8 +508,8 @@ export default {
           title: "Success",
           message: "Portfolio highlight removed.",
         });
+        await this.fetchPortfolios();
         await this.fetchHighlighted();
-        window.location.reload(true);
       } catch (error) {
         console.error("Failed to remove highlight:", error);
         useToast().error?.("Failed to remove portfolio highlight.");

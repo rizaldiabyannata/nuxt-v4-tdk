@@ -4,7 +4,7 @@
       <div class="flex flex-col md:flex-row justify-between items-center gap-12">
         <div class="w-full md:w-3/5 text-center md:text-left">
           <h2 class="text-4xl lg:text-5xl font-bold leading-tight">
-            Bersama-sama, mari membangun masa depan yang inovatif, berkelanjutan, dan unggul
+            Together, let us build an innovative, sustainable, and excellent future.
           </h2>
         </div>
         <div class="flex flex-col space-y-4">
