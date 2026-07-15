@@ -75,7 +75,7 @@ export default {
     async fetchMessages() {
       try {
         const response = await this.$api.get("/api/contact-form/");
-        this.messages = response.data;
+        this.messages = response.data.data;
       } catch (error) {
         console.error("Gagal mengambil data message:", error);
         this.messages = []; // Set to empty array on error

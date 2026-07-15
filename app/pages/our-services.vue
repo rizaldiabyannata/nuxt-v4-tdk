@@ -104,8 +104,8 @@ async function fetchServices() {
     const response = await $api.get("/api/services");
     console.log("🔍 Raw services response:", response.data);
     
-    const input = response.data;
-    
+    const input = response.data?.data;
+
     if (!input || !Array.isArray(input)) {
       console.warn("⚠️ Services data is not an array:", input);
       services.value = [];

@@ -594,8 +594,7 @@ async function fetchServices() {
     const { $api } = useNuxtApp()
     const res = await $api.get('/api/services')
     
-    // Response is directly an array according to documentation
-    const list = Array.isArray(res.data) ? res.data : []
+    const list = Array.isArray(res.data?.data) ? res.data.data : []
     
     console.log('📥 Fetched services:', list)
     
